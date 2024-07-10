@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { AppContext } from './context/AppContext';
-import Signup from './components/Signup';
 
 function App() {
   const { hello } = useContext(AppContext);
