@@ -1,3 +1,5 @@
+import { AppBar, Box, Toolbar, Typography, Button, IconButton, CssBaseline, } from '@mui/material';
+import { Home as HomeIcon } from '@mui/icons-material';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 
@@ -10,52 +12,61 @@ function Layout() {
     localStorage.clear();
     // setToken('');
   };
-
+  
   return (
     <>
-      <nav className='mt-4 bg-slate-500'>
-        <ul className='flex justify-around'>
-          <div className='flex gap-2'>
-            <NavLink to={'/'}>
-              <div className='px-5 py-3 border rounded-lg'>
-                <li>About</li>
-              </div>
+      <Box sx={{ flexGrow: 1 }}>
+      <CssBaseline />
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
+            <NavLink to="/" style={{  color: "inherit" }}>
+            <HomeIcon />
             </NavLink>
-            {token && (
-              <NavLink to={'/appointments'}>
-                <div className='px-5 py-3 border rounded-lg'>
-                  <li>Appointments</li>
-                </div>
+          </IconButton>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" >
+          <Button color="inherit">
+             <NavLink to="/category" style={{ textDecoration: "none", color: "white" }}>
+             Category
+           </NavLink> 
+          </Button>
+          <Button color="inherit">
+          <NavLink to="/about" style={{ textDecoration: "none", color: "white" }}>
+            About
+          </NavLink>
+          </Button>
+          </Typography>
+          </Typography>
+          <Typography variant="h6" component="div" sx={{ ml: 2 }}>
+          </Typography>
+          <Button color="inherit">
+             <NavLink to="/profile" style={{ textDecoration: "none", color: "white" }}>
+             Profile
+           </NavLink> 
+          </Button>
+          {token ? (
+            <Button color="inherit" onClick={clearToken}>
+              <NavLink to="/" style={{ textDecoration: "none", color: "inherit" }}>
+              Logout
               </NavLink>
-            )}
-          </div>
-          <div className='flex gap-2'>
-            {token ? (
-              <NavLink to={'/'}>
-                <div
-                  className='px-5 py-3 border rounded-lg'
-                  onClick={clearToken}
-                >
-                  <li>Log Out</li>
-                </div>
+            </Button>
+          ) : (
+            <Button color="inherit">
+              <NavLink to="/login" style={{ textDecoration: "none", color: "inherit" }}>
+                Login
               </NavLink>
-            ) : (
-              <>
-                <NavLink to={'/signup'}>
-                  <div className='px-5 py-3 border rounded-lg'>
-                    <li>Signup</li>
-                  </div>
-                </NavLink>
-                <NavLink to={'/login'}>
-                  <div className='px-5 py-3 border rounded-lg'>
-                    <li>Login</li>
-                  </div>
-                </NavLink>
-              </>
-            )}
-          </div>
-        </ul>
-      </nav>
+            </Button>
+          )}
+        </Toolbar>
+      </AppBar>
+    </Box>
       <Outlet />
     </>
   );
