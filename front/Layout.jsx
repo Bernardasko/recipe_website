@@ -1,6 +1,6 @@
-import { AppBar, Box, Toolbar, Typography, Button, IconButton, CssBaseline, Menu, MenuItem } from '@mui/material';
-import { ArrowDropDown as ArrowDropDownIcon, Home as HomeIcon } from '@mui/icons-material';
-import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { AppBar, Box, Toolbar, Typography, Button, IconButton, CssBaseline, } from '@mui/material';
+import { Home as HomeIcon } from '@mui/icons-material';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 
 function Layout() {
@@ -12,16 +12,7 @@ function Layout() {
     localStorage.clear();
     // setToken('');
   };
-  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-
-  const handleMenuClick = (event) => {
-    setMenuAnchorEl(event.currentTarget);
-  };
   
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-  };
-
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
