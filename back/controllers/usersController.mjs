@@ -62,14 +62,15 @@ export const loginUser = async (req,res) => {
   if(!email || !password){
     return res.status(400).json({message: 'Email or password is missing 😤'})
   }
+
   const existingUser = await pg_getUserByEmail(email)
+  
   //  check if user exsist
   if(!existingUser){
     return res.status(400).json({message: 'User with this email does not exists'})
   }
   // compare existing user passsword with entered password
   const isPasswordValid = await bcrypt.compare(password, existingUser.password)
-  console.log(password, existingUser.password);
   
   // if password doesnt match return
   if(!isPasswordValid){

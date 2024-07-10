@@ -13,7 +13,7 @@ function RecipeForm() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [steps, setSteps] = useState([""]);
-  const [ingredients, setIngredients] = useState([""])
+  const [ingredients, setIngredients] = useState([""]);
 
   const {
     handleSubmit,
@@ -25,10 +25,9 @@ function RecipeForm() {
   async function onSubmit(data) {
     console.log(data);
     try {
-      
     } catch (err) {
       console.log(err);
-      setError("An error occurred while submitting the form.")
+      setError("An error occurred while submitting the form.");
     }
   }
 
@@ -42,16 +41,15 @@ function RecipeForm() {
     setSteps(newSteps);
   };
 
-  const handleAddIngredient = ()=>{
+  const handleAddIngredient = () => {
     setIngredients([...ingredients, ""]);
   };
 
-  const handleIngredientChange
-=(index, value) =>{
+  const handleIngredientChange = (index, value) => {
     const newIngredient = [...ingredients];
     newIngredient[index] = value;
-    setIngredients(newIngredient)
-}
+    setIngredients(newIngredient);
+  };
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -72,7 +70,7 @@ function RecipeForm() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <Avatar/> 
+            <Avatar />
             <TextField
               margin="normal"
               required
@@ -82,10 +80,9 @@ function RecipeForm() {
               label="Title"
               name="title"
               {...register("title", {
-                required: "Title field is required"
+                required: "Title field is required",
               })}
               error={!!errors.email}
-             
             />
             <TextField
               margin="normal"
@@ -99,9 +96,8 @@ function RecipeForm() {
                 required: "Ingredients field is required",
               })}
               error={!!errors.password}
-              
             />
-          
+
             {steps.map((step, index) => (
               <TextField
                 key={index}
@@ -115,7 +111,9 @@ function RecipeForm() {
                 onChange={(e) => handleStepChange(index, e.target.value)}
                 error={!!errors[`steps${index}`]}
                 // helperText={errors[`steps${index}`] ? errors[`steps${index}`].message : ''}
-                {...register(`steps.${index}`, { required: `Step ${index + 1} is required` })}
+                {...register(`steps.${index}`, {
+                  required: `Step ${index + 1} is required`,
+                })}
               />
             ))}
 
@@ -126,9 +124,9 @@ function RecipeForm() {
               sx={{ mt: 2, mb: 2 }}
               onClick={handleAddStep}
             >
-             + Add Step
+              + Add Step
             </Button>
-            
+
             <TextField
               margin="normal"
               required
@@ -137,28 +135,25 @@ function RecipeForm() {
               label="Choose category"
               type="text"
               id="category"
-              {...register("category", { required: "Category field is required" })}
+              {...register("category", {
+                required: "Category field is required",
+              })}
               error={!!errors.password}
-              
->
-    <MenuItem value="option1" > Appetizers</MenuItem>
-    <MenuItem value="option1" > Main Course</MenuItem>
-    <MenuItem value="option1" > Desserts</MenuItem>
-    
+            >
+              <MenuItem value="option1"> Appetizers</MenuItem>
+              <MenuItem value="option1"> Main Course</MenuItem>
+              <MenuItem value="option1"> Desserts</MenuItem>
+            </TextField>
 
-</TextField>
-
-
-<TextField
+            <TextField
               margin="normal"
               fullWidth
               name="country"
               label="Recipe Country"
               type="text"
               id="country"
-              {...register("country" )}
+              {...register("country")}
               error={!!errors.password}
-              
             />
 
             {error && <div style={{ color: "red" }}>{error}</div>}
