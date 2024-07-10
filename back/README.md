@@ -1,3 +1,8 @@
+env info:
+PORT=3001
+JWT_SECRET=MEGAGIGA
+JWT_EXPIRES=300d
+
 Query to create postgreSQL database:
 1. register new user: name, lastname, email, password.
 CREATE TABLE users (
@@ -7,3 +12,8 @@ CREATE TABLE users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL
 );
+
+
+
+
+

@@ -1,9 +1,16 @@
-import express from 'express'
+import express from 'express';
 
-import { getAllUsers } from '../controllers/usersController.mjs'; 
+import {
+  signupUser,
+  loginUser,
+  test,
+} from '../controllers/usersController.mjs';
+import { isAdmin, isUser } from '../middlewares/authorizationMiddleware.mjs';
 
-const router = express.Router()
+const router = express.Router();
 
-router.route('/').get(getAllUsers)
+router.route('/signup').post(signupUser);
+router.route('/login').post(loginUser);
+router.route('/test').get(isUser, test);
 
 export default router;
