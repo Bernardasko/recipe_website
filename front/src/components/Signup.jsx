@@ -25,6 +25,7 @@ export default function Signup() {
       })
 
       async function onSubmit(values) {
+        
         try {
           await signup(values);
           navigate("/login");
