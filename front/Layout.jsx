@@ -46,9 +46,11 @@ function Layout() {
           </Typography>
           <Typography variant="h6" component="div" sx={{ ml: 2 }}>
           </Typography>
-          <Typography variant="h6" component="div" sx={{ ml: 2 }}>
-            Profile: 
-          </Typography>
+          <Button color="inherit">
+             <NavLink to="/profile" style={{ textDecoration: "none", color: "white" }}>
+             Profile
+           </NavLink> 
+          </Button>
           {token ? (
             <Button color="inherit" onClick={clearToken}>
               <NavLink to="/" style={{ textDecoration: "none", color: "inherit" }}>
