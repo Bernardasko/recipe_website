@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { AppContext } from './context/AppContext';
+import Signup from './compinents/Signup';
 
 function App() {
   const { hello } = useContext(AppContext);
@@ -8,7 +9,9 @@ function App() {
   return <>
   <h1 className="text-3xl font-bold underline">
       Hello world!
-    </h1></>;
+    </h1>
+  <Signup/>
+    </>
 }
 
 export default App;
