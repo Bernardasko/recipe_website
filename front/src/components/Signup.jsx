@@ -16,7 +16,7 @@ import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 
 export default function Signup() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { setToken } = useContext(AppContext);
 
   const signup_url =

@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
@@ -120,9 +120,9 @@ function Login() {
               </Button>
               <Grid container>
                 <Grid item>
-                  {/* <Link href="#" to = "/register" variant="body2">
+                  <NavLink href="#" to = "/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link> */}
+                </NavLink>
                 </Grid>
               </Grid>
             </Box>
