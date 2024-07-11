@@ -1,4 +1,4 @@
-import Avatar from "@mui/material/Avatar";
+// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
@@ -6,14 +6,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { MenuItem } from "@mui/material";
+import axios from "axios";
+import InputAdornment from '@mui/material/InputAdornment';
+
 
 function RecipeForm() {
-  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [steps, setSteps] = useState([""]);
-  const [ingredients, setIngredients] = useState([""])
+  const [ingredients, setIngredients] = useState([{ingredient:"", amount:""}]);
 
   const {
     handleSubmit,
@@ -23,12 +24,18 @@ function RecipeForm() {
   } = useForm();
 
   async function onSubmit(data) {
-    console.log(data);
+    const newRecipe = {
+      ...data,
+    };
+    console.log(newRecipe);
     try {
-      
+      const response = await axios.post("http", newRecipe);
+
+      console.log(response);
+      reset();
     } catch (err) {
       console.log(err);
-      setError("An error occurred while submitting the form.")
+      setError("An error occurred while submitting the form.");
     }
   }
 
@@ -42,16 +49,16 @@ function RecipeForm() {
     setSteps(newSteps);
   };
 
-  const handleAddIngredient = ()=>{
-    setIngredients([...ingredients, ""]);
+  const handleAddIngredient = () => {
+    setIngredients([...ingredients, {name:"", ingredients:""}]);
   };
 
-  const handleIngredientChange
-=(index, value) =>{
+  const handleIngredientChange = (index, field, value) => {
     const newIngredient = [...ingredients];
-    newIngredient[index] = value;
-    setIngredients(newIngredient)
-}
+    newIngredient[index][field] = value;
+    setIngredients(newIngredient);
+  };
+
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -72,7 +79,7 @@ function RecipeForm() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <Avatar/> 
+            
             <TextField
               margin="normal"
               required
@@ -82,40 +89,81 @@ function RecipeForm() {
               label="Title"
               name="title"
               {...register("title", {
-                required: "Title field is required"
+                required: "Title field is required",
               })}
               error={!!errors.email}
-             
+              helperText={errors.title ? errors.title.message : ""}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="Ingredients"
-              label="Ingredients"
-              type="text"
-              id="ingredients"
-              {...register("ingredients", {
-                required: "Ingredients field is required",
-              })}
-              error={!!errors.password}
+            {ingredients.map((ingredient, index) => (
+                <Box key={ingredient.id} sx={{
+                    display: "flex",
+                    gap: 1, 
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}>
+                    <TextField
+                margin="normal"
+                required
+                fullWidth
+                name={`ingredients[${index}].amount`}
+                label={`amount${index + 1}`}
+                type="text"
+                id="ingredients"
+                onChange={(e) => handleIngredientChange(index, "amount", e.target.value)}
+                {...register(`ingredients.${index}.amount`, {
+                  required: `amount ${index + 1} is required`,
+                })}
+                error={!!errors[`inggredients${index}`]}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name={`ingredients[${index}].ingredient`}
+                label={`ingredient${index + 1}`}
+                type="text"
+                id="ingredients"
+                onChange={(e) => handleIngredientChange(index, "ingredients", e.target.value)}
+                {...register(`ingredients.${index}.ingredient`, {
+                  required: `ingredient ${index + 1} is required`,
+                })}
+                error={!!errors[`inggredients${index}`]}
+                
+    
+              />
               
-            />
-          
+              </Box>
+            ))}
+            <Button
+              type="button"
+              fullWidth
+              variant="outlined"
+              sx={{ mt: 2, mb: 2 }}
+              onClick={handleAddIngredient}
+            >
+              + Add Ingredient
+            </Button>
+
             {steps.map((step, index) => (
               <TextField
-                key={index}
+                key={step.id}
                 margin="normal"
                 required
                 fullWidth
                 name={`steps[${index}]`}
                 label={`Step ${index + 1}`}
                 type="text"
+                id="steps"
                 onChange={(e) => handleStepChange(index, e.target.value)}
+                {...register(`steps.${index}`, {
+                  required: `Step ${index + 1} is required`,
+                })}
                 error={!!errors[`steps${index}`]}
+                InputProps={{startAdornment: (
+                    <InputAdornment position= "start">{index+1}</InputAdornment>
+                )}}
                 // helperText={errors[`steps${index}`] ? errors[`steps${index}`].message : ''}
-                {...register(`steps.${index}`, { required: `Step ${index + 1} is required` })}
-                />
+              />
             ))}
 
             <Button
@@ -125,9 +173,9 @@ function RecipeForm() {
               sx={{ mt: 2, mb: 2 }}
               onClick={handleAddStep}
             >
-             + Add Step
+              + Add Step
             </Button>
-            
+
             <TextField
               margin="normal"
               required
@@ -136,28 +184,40 @@ function RecipeForm() {
               label="Choose category"
               type="text"
               id="category"
-              {...register("category", { required: "Category field is required" })}
-              error={!!errors.password}
-              
->
-    <MenuItem value="option1" > Appetizers</MenuItem>
-    <MenuItem value="option1" > Main Course</MenuItem>
-    <MenuItem value="option1" > Desserts</MenuItem>
-    
+              {...register("category", {
+                required: "Category field is required",
+              })}
+              error={!!errors.category}
+            >
+              <MenuItem value="option1"> Appetizers</MenuItem>
+              <MenuItem value="option2"> Main Course</MenuItem>
+              <MenuItem value="option3"> Desserts</MenuItem>
+            </TextField>
 
-</TextField>
-
+            <TextField
+              margin="normal"
+              fullWidth
+              name="cuisine"
+              label="Cuisine"
+              type="text"
+              id="cuisine"
+              {...register("cuisine")}
+              error={!!errors.cuisine}
+            />
 
 <TextField
               margin="normal"
+              required
               fullWidth
-              name="country"
-              label="Recipe Country"
-              type="text"
-              id="country"
-              {...register("country" )}
-              error={!!errors.password}
-              
+              type="img"
+              id="image"
+              label="image URL"
+              name="imaga"
+              {...register("image", {
+                required: "Image URL field is required",
+              })}
+              error={!!errors.image}
+              helperText={errors.image ? errors.image.message : ""}
             />
 
             {error && <div style={{ color: "red" }}>{error}</div>}
@@ -169,6 +229,9 @@ function RecipeForm() {
             >
               Submit
             </Button>
+
+            
+
           </Box>
         </Box>
       </Container>
