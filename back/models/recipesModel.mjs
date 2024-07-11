@@ -6,7 +6,8 @@ export const pg_postRecipe = async (
   steps,
   category,
   cuisine,
-  images
+  images,
+  userId
 ) => {
   try {
     const recipe = await sql.begin(async (sql) => {

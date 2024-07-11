@@ -6,7 +6,7 @@ import {
 
 export const postRecipe = async (req, res) => {
   try {
-    let { title, ingredients, steps, category, cuisine, images } = req.body;
+    let { title, ingredients, steps, category, cuisine, images, userId } = req.body;
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase();
