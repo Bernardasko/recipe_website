@@ -70,7 +70,8 @@ export const loginUser = async (req,res) => {
   }
   // compare existing user passsword with entered password
   const isPasswordValid = await bcrypt.compare(password, existingUser.password)
-  
+  console.log(isPasswordValid);
+  console.log(password, existingUser.password);
   // if password doesnt match return
   if(!isPasswordValid){
     return res.status(400).json({message: 'Password does not match 😭'})
