@@ -46,7 +46,6 @@ export const signupUser = async (req, res) => {
 
     // create token for new user (automatically log him in)
     const token = getToken(signupuser.id, signupuser.name, signupuser.lastname ,signupuser.email, signupuser.role )
-    console.log(token);
     res.status(201).json(token);
   } catch (error) {
     console.error(error);
