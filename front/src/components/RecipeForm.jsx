@@ -162,7 +162,7 @@ function RecipeForm() {
                 InputProps={{startAdornment: (
                     <InputAdornment position= "start">{index+1}</InputAdornment>
                 )}}
-                // helperText={errors[`steps${index}`] ? errors[`steps${index}`].message : ''}
+                helperText={errors[`steps${index}`] ? errors[`steps${index}`].message : ''}
               />
             ))}
 
@@ -180,6 +180,7 @@ function RecipeForm() {
               margin="normal"
               required
               fullWidth
+              name="category"
               select
               label="Choose category"
               type="text"
@@ -188,6 +189,7 @@ function RecipeForm() {
                 required: "Category field is required",
               })}
               error={!!errors.category}
+              helperText={errors.category ? errors.category.message : ''}
             >
               <MenuItem value="option1"> Appetizers</MenuItem>
               <MenuItem value="option2"> Main Course</MenuItem>
@@ -203,6 +205,7 @@ function RecipeForm() {
               id="cuisine"
               {...register("cuisine")}
               error={!!errors.cuisine}
+              helperText={errors.cuisine ? errors.cuisine.message : ''}
             />
 
 <TextField
