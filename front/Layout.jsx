@@ -45,7 +45,7 @@ function Layout() {
                     to='/'
                     style={{ textDecoration: 'none', color: 'white' }}
                   >
-                   <HomeIcon/> About
+                   <HomeIcon sx={{ pb: 0.5 }} /> About
                   </NavLink>
                 </Button>
               </Typography>
