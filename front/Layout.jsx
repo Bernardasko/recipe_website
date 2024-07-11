@@ -12,13 +12,12 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 
 function Layout() {
-  //   const { setToken } = useContext(UserContext);
   const token = window.localStorage.getItem('token');
-  console.log(token, 'from layout');
   const navigate = useNavigate();
+
   const clearToken = () => {
     localStorage.clear();
-    // setToken('');
+    navigate('/');
   };
 
   return (
@@ -27,7 +26,6 @@ function Layout() {
         <CssBaseline />
         <AppBar position='static'>
           <Toolbar>
-            
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
               <Typography variant='h6' component='div'>
                 {token && (
@@ -45,16 +43,12 @@ function Layout() {
                     to='/'
                     style={{ textDecoration: 'none', color: 'white' }}
                   >
-                   <HomeIcon sx={{ pb: 0.5 }} /> About
+                    <HomeIcon sx={{ pb: 0.5 }} /> About
                   </NavLink>
                 </Button>
               </Typography>
             </Typography>
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{ ml: 2 }}
-            ></Typography>
+            <Typography variant='h6' component='div' sx={{ ml: 2 }}></Typography>
             <Button color='inherit'>
               <NavLink
                 to='/profile'
@@ -63,6 +57,16 @@ function Layout() {
                 Profile
               </NavLink>
             </Button>
+            {!token && (
+              <Button color='inherit'>
+                <NavLink
+                  to='/signup'
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  Signup
+                </NavLink>
+              </Button>
+            )}
             {token ? (
               <Button color='inherit' onClick={clearToken}>
                 <NavLink
