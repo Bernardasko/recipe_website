@@ -9,7 +9,7 @@ import { useState } from "react";
 import { MenuItem } from "@mui/material";
 import axios from "axios";
 import InputAdornment from '@mui/material/InputAdornment';
-
+import toast from "react-hot-toast";
 
 function RecipeForm() {
   const [error, setError] = useState("");
@@ -29,7 +29,10 @@ function RecipeForm() {
     };
     console.log(newRecipe);
     try {
-      const response = await axios.post("http", newRecipe);
+      const response = await axios.post("http://localhost:3001/v1/recipes/postRecipe", newRecipe);
+if (response.status === 200) {
+    toast.success('Recipe created successfully!');
+}
 
       console.log(response);
       reset();
