@@ -8,13 +8,15 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { MenuItem } from "@mui/material";
 import axios from "axios";
-import InputAdornment from '@mui/material/InputAdornment';
+import InputAdornment from "@mui/material/InputAdornment";
 import toast from "react-hot-toast";
 
 function RecipeForm() {
   const [error, setError] = useState("");
   const [steps, setSteps] = useState([""]);
-  const [ingredients, setIngredients] = useState([{ingredient:"", amount:""}]);
+  const [ingredients, setIngredients] = useState([
+    { ingredient: "", amount: "" },
+  ]);
 
   const {
     handleSubmit,
@@ -29,10 +31,13 @@ function RecipeForm() {
     };
     console.log(newRecipe);
     try {
-      const response = await axios.post("http://localhost:3001/v1/recipes/postRecipe", newRecipe);
-if (response.status === 200) {
-    toast.success('Recipe created successfully!');
-}
+      const response = await axios.post(
+        "http://localhost:3001/v1/recipes/postRecipe",
+        newRecipe
+      );
+      if (response.status === 200) {
+        toast.success("Recipe created successfully!");
+      }
 
       console.log(response);
       reset();
@@ -53,7 +58,7 @@ if (response.status === 200) {
   };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, {name:"", ingredients:""}]);
+    setIngredients([...ingredients, { name: "", ingredients: "" }]);
   };
 
   const handleIngredientChange = (index, field, value) => {
@@ -82,7 +87,6 @@ if (response.status === 200) {
             noValidate
             sx={{ mt: 1 }}
           >
-            
             <TextField
               margin="normal"
               required
@@ -94,47 +98,51 @@ if (response.status === 200) {
               {...register("title", {
                 required: "Title field is required",
               })}
-              error={!!errors.email}
+              error={!!errors.title}
               helperText={errors.title ? errors.title.message : ""}
             />
             {ingredients.map((ingredient, index) => (
-                <Box key={ingredient.id} sx={{
-                    display: "flex",
-                    gap: 1, 
-                    alignItems: "center",
-                    marginBottom: 2,
-                  }}>
-                    <TextField
-                margin="normal"
-                required
-                fullWidth
-                name={`ingredients[${index}].amount`}
-                label={`amount${index + 1}`}
-                type="text"
-                id="ingredients"
-                onChange={(e) => handleIngredientChange(index, "amount", e.target.value)}
-                {...register(`ingredients.${index}.amount`, {
-                  required: `amount ${index + 1} is required`,
-                })}
-                error={!!errors[`inggredients${index}`]}
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name={`ingredients[${index}].ingredient`}
-                label={`ingredient${index + 1}`}
-                type="text"
-                id="ingredients"
-                onChange={(e) => handleIngredientChange(index, "ingredients", e.target.value)}
-                {...register(`ingredients.${index}.ingredient`, {
-                  required: `ingredient ${index + 1} is required`,
-                })}
-                error={!!errors[`inggredients${index}`]}
-                
-    
-              />
-              
+              <Box
+                key={ingredient.id}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  marginBottom: 2,
+                }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name={`ingredients[${index}].amount`}
+                  label={`amount${index + 1}`}
+                  type="text"
+                  id="ingredients"
+                  onChange={(e) =>
+                    handleIngredientChange(index, "amount", e.target.value)
+                  }
+                  {...register(`ingredients.${index}.amount`, {
+                    required: `amount ${index + 1} is required`,
+                  })}
+                  error={!!errors[`inggredients${index}`]}
+                />
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name={`ingredients[${index}].ingredient`}
+                  label={`ingredient${index + 1}`}
+                  type="text"
+                  id="ingredients"
+                  onChange={(e) =>
+                    handleIngredientChange(index, "ingredients", e.target.value)
+                  }
+                  {...register(`ingredients.${index}.ingredient`, {
+                    required: `ingredient ${index + 1} is required`,
+                  })}
+                  error={!!errors[`inggredients${index}`]}
+                />
               </Box>
             ))}
             <Button
@@ -162,10 +170,16 @@ if (response.status === 200) {
                   required: `Step ${index + 1} is required`,
                 })}
                 error={!!errors[`steps${index}`]}
-                InputProps={{startAdornment: (
-                    <InputAdornment position= "start">{index+1}</InputAdornment>
-                )}}
-                helperText={errors[`steps${index}`] ? errors[`steps${index}`].message : ''}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      {index + 1}
+                    </InputAdornment>
+                  ),
+                }}
+                helperText={
+                  errors[`steps${index}`] ? errors[`steps${index}`].message : ""
+                }
               />
             ))}
 
@@ -192,7 +206,7 @@ if (response.status === 200) {
                 required: "Category field is required",
               })}
               error={!!errors.category}
-              helperText={errors.category ? errors.category.message : ''}
+              helperText={errors.category ? errors.category.message : ""}
             >
               <MenuItem value="option1"> Appetizers</MenuItem>
               <MenuItem value="option2"> Main Course</MenuItem>
@@ -208,10 +222,10 @@ if (response.status === 200) {
               id="cuisine"
               {...register("cuisine")}
               error={!!errors.cuisine}
-              helperText={errors.cuisine ? errors.cuisine.message : ''}
+              helperText={errors.cuisine ? errors.cuisine.message : ""}
             />
 
-<TextField
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -235,9 +249,6 @@ if (response.status === 200) {
             >
               Submit
             </Button>
-
-            
-
           </Box>
         </Box>
       </Container>
