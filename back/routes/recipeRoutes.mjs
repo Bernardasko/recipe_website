@@ -4,6 +4,6 @@ import { postRecipe,deleteRecipe, patchRecipe } from '../controllers/recipesCont
 
 const router = express.Router();
 
-router.route('/').post( postRecipe).delete(deleteRecipe).patch(patchRecipe)
+router.route('/').post(postRecipe).delete(deleteRecipe).patch(patchRecipe)
 
 export default router;
