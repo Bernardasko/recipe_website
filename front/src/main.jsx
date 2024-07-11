@@ -9,6 +9,7 @@ import ErrorPage from './error-page';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import CategoryPage from './pages/categoryPage/CategoryPage';
+import RecipeForm from './components/RecipeForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { path: '/signup', element: <Signup />, errorElement: <ErrorPage /> },
       { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
       { path: '/category', element: <CategoryPage />, errorElement: <ErrorPage /> },
+      { path: '/recipeform', element: <RecipeForm />, errorElement: <ErrorPage /> },
       
     ],
   },
