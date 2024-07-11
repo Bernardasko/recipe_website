@@ -92,12 +92,12 @@ export default function Signup() {
               required
               fullWidth
               id='lastname'
-              label='last name'
+              label='Last Name'
               name='lastname'
               autoComplete='lastname'
               autoFocus
               {...register('lastname', {
-                required: 'Please enter your last name',
+                required: 'Please enter your Last Name',
               })}
               error={!!errors.lastname}
               helperText={errors.lastname?.message}
@@ -132,6 +132,18 @@ export default function Signup() {
               autoComplete='current-password'
               {...register('password', {
                 required: 'Please enter your password',
+                // minLength: {
+                //   value: 8,
+                //   message: 'Password must be at least 8 characters long',
+                // },
+                // maxLength: {
+                //   value: 20,
+                //   message: 'Password must be at most 20 characters long',
+                // },
+                // pattern: {
+                //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                // },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
@@ -169,7 +181,6 @@ export default function Signup() {
           </Box>
         </Box>
       </Container>
-      <h1>test</h1>
     </>
   );
 }
