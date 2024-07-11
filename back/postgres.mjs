@@ -5,7 +5,7 @@ const sql = postgres({
   port: 5432, // Postgres server port
   database: 'recipe', // Database name
   username: 'postgres', // Database username
-  password: 'bernardas8821', // Database password
+  password: '', // Database password
 });
 
 export default sql;
