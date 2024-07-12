@@ -15,7 +15,6 @@ async function onSubmit(data) {
     console.log(newCategory);
   }
 
-
   return (
     <Container component="main" maxWidth="xs">
       <Box

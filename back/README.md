@@ -4,16 +4,17 @@ JWT_SECRET=MEGAGIGA
 JWT_EXPIRES=300d
 
 Query to create postgreSQL database:
-1. register new user: name, lastname, email, password.
+--1. register new user: name, lastname, email, password.
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     lastname VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL, 
+    role VARCHAR(50)
 );
 
-2. create recipe database
+--2. create recipe database
 -- Create Categories Table
 CREATE TABLE Categories (
     CategoryID SERIAL PRIMARY KEY,
@@ -39,9 +40,12 @@ CREATE TABLE Recipes (
     Title VARCHAR(255) NOT NULL,
     CategoryID INT,
     CuisineID INT,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID) ON DELETE SET NULL ON UPDATE CASCADE,
-    FOREIGN KEY (CuisineID) REFERENCES Cuisines(CuisineID) ON DELETE SET NULL ON UPDATE CASCADE
+    UserID INT,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+    FOREIGN KEY (CuisineID) REFERENCES Cuisines(CuisineID),
+    FOREIGN KEY (UserID) REFERENCES Users(id)
 );
+
 
 -- Create Recipe Steps Table
 CREATE TABLE Recipe_Steps (
