@@ -39,6 +39,7 @@ function Login() {
       const { status, data } = await axios.post(login_url, formInfo);
       if (status === 200) {
         setToken(data);
+        console.log(data);
         window.localStorage.setItem('token', data);
         toast.success('Login successful!');
         setTimeout(() => {
@@ -46,6 +47,7 @@ function Login() {
           }, 1000);
       }
     } catch (err) {
+      console.log(err);
       if (err.response && err.response.status === 401) {
         setError('Invalid email or password');
       } else {
