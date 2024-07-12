@@ -9,7 +9,9 @@ export const getCategoryById = async (id) => {
         headers: { Authorization: `Bearer ${token}` },
       }; 
 
-    const category = await axios.get(`${get_app_category}/${id}`, config);
+    const category = await axios.get(`${get_app_category}${id}`, config);
+    console.log(`${get_app_category}${id}`);
+    
     return category.data;
 };
 

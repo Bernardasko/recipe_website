@@ -9,14 +9,23 @@ import {
 } from '@mui/material';
 import { Home as HomeIcon } from '@mui/icons-material';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { useContext } from 'react';
+import { AppContext } from './src/context/AppContext';
 
 function Layout() {
+  const {setToken} = useContext(AppContext)
   const token = window.localStorage.getItem('token');
+  let decoded;
+  if (token) {
+    decoded = jwtDecode(token);
+  }
+
   const navigate = useNavigate();
 
   const clearToken = () => {
     localStorage.clear();
+    setToken(null)
     navigate('/');
   };
 
@@ -48,15 +57,21 @@ function Layout() {
                 </Button>
               </Typography>
             </Typography>
-            <Typography variant='h6' component='div' sx={{ ml: 2 }}></Typography>
-            <Button color='inherit'>
-              <NavLink
-                to='/profile'
-                style={{ textDecoration: 'none', color: 'white' }}
-              >
-                Profile
-              </NavLink>
-            </Button>
+            <Typography
+              variant='h6'
+              component='div'
+              sx={{ ml: 2 }}
+            ></Typography>
+            {token && (
+              <Button color='inherit'>
+                <NavLink
+                  to='/profile'
+                  style={{ textDecoration: 'none', color: 'white' }}
+                >
+                  profile ({decoded.name})
+                </NavLink>
+              </Button>
+            )}
             {!token && (
               <Button color='inherit'>
                 <NavLink

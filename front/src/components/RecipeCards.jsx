@@ -124,7 +124,7 @@ export default function RecipeCards() {
     <>
       {categorizedRecipes.main_dish && renderRecipeSection('Main Dishes', categorizedRecipes.main_dish)}
       {categorizedRecipes.drinks && renderRecipeSection('Drinks', categorizedRecipes.drinks)}
-      {categorizedRecipes.desserts && renderRecipeSection('Desserts', categorizedRecipes.desserts)}
+      {categorizedRecipes.dessert && renderRecipeSection('Desserts', categorizedRecipes.dessert)}
       {categorizedRecipes.appetiser && renderRecipeSection('Appetisers', categorizedRecipes.appetiser)}
     </>
   );

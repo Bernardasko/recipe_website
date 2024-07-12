@@ -132,18 +132,18 @@ export default function Signup() {
               autoComplete='current-password'
               {...register('password', {
                 required: 'Please enter your password',
-                // minLength: {
-                //   value: 8,
-                //   message: 'Password must be at least 8 characters long',
-                // },
-                // maxLength: {
-                //   value: 20,
-                //   message: 'Password must be at most 20 characters long',
-                // },
-                // pattern: {
-                //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
-                //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
-                // },
+                minLength: {
+                  value: 8,
+                  message: 'Password must be at least 8 characters long',
+                },
+                maxLength: {
+                  value: 20,
+                  message: 'Password must be at most 20 characters long',
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                  message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
