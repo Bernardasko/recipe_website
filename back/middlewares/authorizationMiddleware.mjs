@@ -1,38 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { pg_getUserByEmail } from '../models/usersModel.mjs';
 
-// export const protect = async (req, res, next) => {
-//   try {
-//     let token;
-//     const headerToken = req.headers.authorization;
-//     if (headerToken && headerToken.startsWith('Bearer')) {
-//       token = headerToken.split(' ')[1];
-//     }
-
-//     if (!token) {
-//       return res.status(401).json({ error: 'Go home, you are not allowed.🛑' });
-//     }
-
-//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//     console.log(decoded);
-//     const currentUser = await pg_getUserByEmail(decoded.email);
-//     if (!currentUser) {
-//       return res
-//         .status(401)
-//         .json({ message: 'The user belonging to this token does not exsist' });
-//     }
-//     // put verified token user to req
-//     // console.log(currentUser);
-//     req.user = currentUser;
-//     console.log('protect');
-//     next();
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-export const isAdmin = (req, res, next) => {
+const openToken = (req) => {
   try {
     let token;
     const headerToken = req.headers.authorization;
@@ -45,8 +14,15 @@ export const isAdmin = (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (error) {
+    throw new Error('Error while decoding token');
+  }
+};
 
-    console.log(decoded);
+export const isAdmin = (req, res, next) => {
+  try {
+    const decoded = openToken(req);
     if (decoded.role !== 'admin') {
       return res.status(401).json({ message: 'Premission denied' });
     }
@@ -58,25 +34,14 @@ export const isAdmin = (req, res, next) => {
   }
 };
 
-export const isUser = (req, res, next) => {
+export const isUser = async (req, res, next) => {
   try {
-    let token;
-    const headerToken = req.headers.authorization;
-    if (headerToken && headerToken.startsWith('Bearer')) {
-      token = headerToken.split(' ')[1];
+    const decoded = openToken(req);
+    if (decoded.role !== 'user' && decoded.role !== 'admin') {
+      return res.status(401).json({ message: 'Premission denied' });
     }
-
-    if (!token) {
-      return res.status(401).json({ error: 'Go home, you are not allowed.🛑' });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(decoded);
-    if (decoded.role === 'user' || decoded.role === 'admin') {
-        next();
-    }
-    
-    res.status(401).json({ message: 'Premission denied' });
+    req.user = decoded
+    next();
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error.message });

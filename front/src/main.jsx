@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
       { path: '/category', element: <CategoryPage />, errorElement: <ErrorPage /> },
       { path: '/recipeform', element: <RecipeForm />, errorElement: <ErrorPage /> },
-      {path: '/newcategory', element: <NewCategory />, errorElement: <ErrorPage />}
+      // {path: '/newcategory', element: <NewCategory />, errorElement: <ErrorPage />}
       
     ],
   },

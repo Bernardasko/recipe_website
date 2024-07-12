@@ -63,3 +63,9 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
   // Convert recipes object to an array
   return Object.values(recipes);
 };
+
+export const pg_getAllcusines = async () => {
+  const results = await sql`
+  SELECT * FROM cuisines`
+  return results
+}

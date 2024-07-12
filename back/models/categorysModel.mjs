@@ -58,3 +58,24 @@ export const pg_getRecipesByCategoryId = async (categoryId) => {
   return Object.values(recipes);
 };
 
+export const pg_getAllCategories = async () => {
+  const results = await sql`
+  SELECT * FROM categories`
+  return results
+}
+
+export const pg_addCategory = async (category) => {
+  const result = await sql`
+  INSERT INTO categories (name)
+  VALUES (${category})
+  RETURNING *`
+  return result
+}
+
+export const pg_deleteCategory = async (categoryId) => {
+  const result = await sql`
+  DELETE FROM categories
+  WHERE categories.categoryid = ${categoryId}
+  RETURNING *`
+  return result
+}

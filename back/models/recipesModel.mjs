@@ -9,15 +9,17 @@ export const pg_postRecipe = async (
   images,
   userId
 ) => {
+  console.log(category);
   try {
     const recipe = await sql.begin(async (sql) => {
       // Insert the recipe and get the RecipeID
       const recipe = await sql`
-        INSERT INTO recipes (title, categoryid, cuisineid)
+        INSERT INTO recipes (title, categoryid, cuisineid, userid)
         VALUES (
           ${title},
           (SELECT categoryid FROM categories WHERE name = ${category}),
-          (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
+          (SELECT cuisineid FROM cuisines WHERE name = ${cuisine}),
+          ${userId}
         )
         RETURNING *
       `;
