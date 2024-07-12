@@ -19,6 +19,7 @@ CREATE TABLE Categories (
     CategoryID SERIAL PRIMARY KEY,
     Name VARCHAR(50) NOT NULL UNIQUE
 );
+ALTER TABLE categories ADD CONSTRAINT unique_category_name UNIQUE (name);
 
 -- Create Cuisines Table
 CREATE TABLE Cuisines (
@@ -70,7 +71,7 @@ CREATE TABLE Images (
 );
 
 -- Insert the allowed categories
-INSERT INTO Categories (Name) VALUES ('drinks'), ('dessert'), ('appetiser'), ('main_dish');
+INSERT INTO Categories (Name) VALUES ('drinks'), ('dessert'), ('appetiser'), ('main dish');
 
 -- Insert the optional cuisines
 INSERT INTO Cuisines (Name)
