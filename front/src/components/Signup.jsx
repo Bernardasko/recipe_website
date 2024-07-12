@@ -14,6 +14,7 @@ import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -43,7 +44,10 @@ export default function Signup() {
       if (status == 201) {
         setToken(data);
         window.localStorage.setItem('token', data);
-        navigate('/')
+        toast.success('Signup successful!');
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
@@ -180,6 +184,7 @@ export default function Signup() {
             </Grid>
           </Box>
         </Box>
+        <Toaster />
       </Container>
     </>
   );

@@ -37,24 +37,24 @@ function Layout() {
           <Toolbar>
             <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
               <Typography variant='h6' component='div'>
-                {token && (
-                  <Button color='inherit'>
-                    <NavLink
-                      to='/category'
-                      style={{ textDecoration: 'none', color: 'white' }}
-                    >
-                      Category
-                    </NavLink>
-                  </Button>
-                )}
                 <Button color='inherit'>
                   <NavLink
                     to='/'
                     style={{ textDecoration: 'none', color: 'white' }}
-                  >
+                    >
                     <HomeIcon sx={{ pb: 0.5 }} /> About
                   </NavLink>
                 </Button>
+                    {token && (
+                      <Button color='inherit'>
+                        <NavLink
+                          to='/category'
+                          style={{ textDecoration: 'none', color: 'white' }}
+                        >
+                          Category
+                        </NavLink>
+                      </Button>
+                    )}
               </Typography>
             </Typography>
             <Typography
