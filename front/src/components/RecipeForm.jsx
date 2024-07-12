@@ -198,6 +198,7 @@ function RecipeForm() {
               margin='normal'
               required
               fullWidth
+              name="category"
               select
               label='Choose Category'
               type='text'
@@ -206,6 +207,7 @@ function RecipeForm() {
                 required: 'Category field is required',
               })}
               error={!!errors.category}
+              helperText={errors.category ? errors.category.message : ""}
             >
               {categories &&
                 categories.map((item, index) => {
