@@ -2,7 +2,14 @@ import {
   pg_postRecipe,
   pg_deleteRecipeById,
   pg_patchRecipe,
+  pg_getAllRecipes,
+  pg_getRecipesByUserId
 } from '../models/recipesModel.mjs';
+
+export const lol = (rqe,res,next) => {
+  console.log(lol);
+  next()
+}
 
 export const postRecipe = async (req, res) => {
   try {
@@ -87,4 +94,24 @@ export const patchRecipe = async (req, res) => {
   }
 };
 
-export 
+export const getRecipes = async (req, res) => {
+  try {
+    const user = req.user
+    console.log(user);
+
+    if(user.role === 'user'){
+      console.log(user.id);
+        const recipes = await pg_getRecipesByUserId(user.id)
+        console.log(recipes);
+        res.status(200).json(recipes)
+    } else {
+      const recipes = await pg_getAllRecipes()
+        console.log(recipes);
+        res.status(200).json(recipes)
+    }
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error });
+  }
+}

@@ -4,7 +4,7 @@ import { postNewCategory } from '../../services/post.mjs';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-function NewCategory({ refreshCategories }) {
+function NewCategory() {
   const navigate = useNavigate()
   const {
     handleSubmit,
@@ -20,7 +20,6 @@ function NewCategory({ refreshCategories }) {
     const newCategory = await postNewCategory(newCat);
     console.log(newCategory);
     if (newCategory.status === 201) {
-      refreshCategories();
       navigate('/profile/categories')
       toast.success('New category created 🔥');
     } else {

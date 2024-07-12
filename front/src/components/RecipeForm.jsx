@@ -8,8 +8,9 @@ import { useState, useEffect } from 'react';
 import { MenuItem } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { postRecipe } from '../services/post.mjs';
+import { useLoaderData } from 'react-router-dom';
 
-import { getAllCuisines, getAllCategories } from '../services/get.mjs';
+// import { getAllCuisines, getAllCategories } from '../services/get.mjs';
 
 function RecipeForm() {
   const [error, setError] = useState('');
@@ -20,6 +21,8 @@ function RecipeForm() {
   const [cuisines, setCuisines] = useState(null);
   const [categories, setCategories] = useState(null);
 
+  const data = useLoaderData()
+  console.log(data);
   const {
     handleSubmit,
     register,
@@ -56,20 +59,20 @@ function RecipeForm() {
     setIngredients(newIngredient);
   };
 
-  useEffect(() => {
-    (async () => {
-      const cuisineResponse = await getAllCuisines();
-      const cateroriesResponse = await getAllCategories();
+  // useEffect(() => {
+  //   (async () => {
+  //     const cuisineResponse = await getAllCuisines();
+  //     const cateroriesResponse = await getAllCategories();
 
-      if (cuisineResponse.status === 200) {
-        setCuisines(cuisineResponse.data);
-      }
+  //     if (cuisineResponse.status === 200) {
+  //       setCuisines(cuisineResponse.data);
+  //     }
 
-      if ((cateroriesResponse.status = 200)) {
-        setCategories(cateroriesResponse.data);
-      }
-    })();
-  }, []);
+  //     if ((cateroriesResponse.status = 200)) {
+  //       setCategories(cateroriesResponse.data);
+  //     }
+  //   })();
+  // }, []);
   return (
     <>
       <Container component='main' maxWidth='xs'>
@@ -209,8 +212,8 @@ function RecipeForm() {
               error={!!errors.category}
               helperText={errors.category ? errors.category.message : ""}
             >
-              {categories &&
-                categories.map((item, index) => {
+              {data.categories &&
+                data.categories.map((item, index) => {
                   return (
                     <MenuItem key={index} value={`${item.name}`}>
                       {item.name}
@@ -232,8 +235,8 @@ function RecipeForm() {
               })}
               error={!!errors.category}
             >
-              {cuisines &&
-                cuisines.map((item, index) => {
+              {data.cuisines.data &&
+                data.cuisines.data.map((item, index) => {
                   return (
                     <MenuItem key={index} value={`${item.name}`}>
                       {item.name}

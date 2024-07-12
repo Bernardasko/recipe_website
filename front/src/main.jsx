@@ -12,8 +12,13 @@ import CategoryPage from './pages/categoryPage/CategoryPage';
 import RecipeForm from './components/RecipeForm.jsx';
 import Profile from './components/Profile';
 import Categories from './components/categories/Categories';
-import { getAllCategories } from './services/get.mjs';
+import {
+  getAllCategories,
+  getAllRecipesProfile,
+  getAllCuisines,
+} from './services/get.mjs';
 
+import RecipeProfile from './components/recipeProfile/RecipeProfile';
 
 const router = createBrowserRouter([
   {
@@ -40,7 +45,23 @@ const router = createBrowserRouter([
           {
             path: '/profile/categories',
             element: <Categories />,
-            loader: async () => await getAllCategories()  ,
+            loader: getAllCategories,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: '/profile/recipes',
+            element: <RecipeProfile />,
+            loader: getAllRecipesProfile,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: '/profile/add_recipe',
+            element: <RecipeForm />,
+            loader: async () => {
+              const cuisines = await getAllCuisines();
+              const categories = await getAllCategories();
+              return { cuisines, categories };
+            },
             errorElement: <ErrorPage />,
           },
         ],

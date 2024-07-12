@@ -1,7 +1,8 @@
 import axios from 'axios';
-const post_recipe_url = import.meta.env.VITE_POST_RECIPE;
-const token = window.localStorage.getItem('token');
+
 export const postRecipe = async (formInfo) => {
+  const post_recipe_url = import.meta.env.VITE_POST_RECIPE;
+  const token = window.localStorage.getItem('token');
   try {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -16,6 +17,7 @@ export const postRecipe = async (formInfo) => {
 };
 
 export const postNewCategory = async (categoryName) => {
+  const token = window.localStorage.getItem('token');
   const post_cat_url = import.meta.env.VITE_POST_CAT;
   console.log(post_cat_url);
   try {

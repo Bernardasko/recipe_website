@@ -4,6 +4,16 @@ import { useLoaderData } from 'react-router-dom';
 
 function Categories() {
   const data = useLoaderData();
+  console.log(data);
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  // Ensure data is an array before attempting to map over it
+  if (!Array.isArray(data)) {
+    return <div>Error: Data is not an array</div>;
+  }
+
   return (
     <>
       <NewCategory />

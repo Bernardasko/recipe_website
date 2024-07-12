@@ -1,9 +1,15 @@
-import { getAllCategories } from '../../services/get.mjs';
 import { deleteCategoryById } from '../../services/delete.mjs';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
+
+
 function CategoryListProfile({ data, refreshCategories }) {
   const [refresh, setRefresh] = useState([]);
+
+const data1 = useLoaderData()
+console.log(data1, '11hfbnevdbkhadjsnfgbckauhdsjnhgcx');
+
   const navigate = useNavigate()
   const deleteCat = async (categoryid) => {
     try {
@@ -18,7 +24,7 @@ function CategoryListProfile({ data, refreshCategories }) {
     <>
       <h1>cat list</h1>
       <ul>
-        {data.data.map((item, index) => {
+        {data.map((item, index) => {
           return (
             <li key={index}>
               <div>
