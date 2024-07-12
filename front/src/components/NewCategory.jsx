@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 
 function NewCategory() {
 const [error, setError] =useState("");
-const {handleSubmit, register, formState:{errors}} =useForm();
+const {handleSubmit, register, formState:{errors}, reset} =useForm();
 
 const checkCategoryExists = async (category) => {
     try {
-      const response = await axios.get(`http://localhost:3001/v1/category?name=${category}`);//ar geriau id?
+      const response = await axios.get(`http://localhost:3001/v1/categorys?name=${category}`);
       return response.data.exists; 
     } catch (err) {
       console.log(err);
@@ -34,15 +34,14 @@ async function onSubmit(data) {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/v1/category/postCategory",
+        "http://localhost:3001/v1/categorys",
         newCategory
       );
       if (response.status === 200) {
         toast.success("Category created successfully!");
       }
-
       console.log(response);
-    //   reset();
+      reset();
     } catch (err) {
       console.log(err);
       setError("An error occurred while submitting the form.");

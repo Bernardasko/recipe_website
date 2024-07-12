@@ -32,7 +32,7 @@ function RecipeForm() {
     console.log(newRecipe);
     try {
       const response = await axios.post(
-        "http://localhost:3001/v1/recipes/postRecipe",
+        "http://localhost:3001/v1/recipes",
         newRecipe
       );
       if (response.status === 200) {
