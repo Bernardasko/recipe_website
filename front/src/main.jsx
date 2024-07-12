@@ -11,6 +11,9 @@ import Login from './components/Login';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import RecipeForm from './components/RecipeForm.jsx';
 import Profile from './components/Profile';
+import Categories from './components/categories/Categories';
+import { getAllCategories } from './services/get.mjs';
+
 
 const router = createBrowserRouter([
   {
@@ -19,10 +22,29 @@ const router = createBrowserRouter([
       { path: '/', element: <App />, errorElement: <ErrorPage /> },
       { path: '/signup', element: <Signup />, errorElement: <ErrorPage /> },
       { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
-      { path: '/category', element: <CategoryPage />, errorElement: <ErrorPage /> },
-      { path: '/recipeform', element: <RecipeForm />, errorElement: <ErrorPage /> },
-      {path: '/profile', element: <Profile />, errorElement: <ErrorPage />}
-      
+      {
+        path: '/category',
+        element: <CategoryPage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/recipeform',
+        element: <RecipeForm />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: '/profile/categories',
+            element: <Categories />,
+            loader: async () => await getAllCategories()  ,
+            errorElement: <ErrorPage />,
+          },
+        ],
+      },
     ],
   },
 ]);

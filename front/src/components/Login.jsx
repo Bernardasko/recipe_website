@@ -14,6 +14,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AppContext } from '../context/AppContext';
 import toast, { Toaster } from 'react-hot-toast';
+import { jwtDecode } from 'jwt-decode';
+
 
 const theme = createTheme();
 
@@ -38,7 +40,9 @@ function Login() {
     try {
       const { status, data } = await axios.post(login_url, formInfo);
       if (status === 200) {
-        setToken(data);
+        const decoded = jwtDecode(data)
+        console.log(decoded);
+        setToken(decoded);
         console.log(data);
         window.localStorage.setItem('token', data);
         toast.success('Login successful!');

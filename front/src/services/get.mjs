@@ -50,6 +50,7 @@ export const getAllCategories = async () => {
   try {
     const response = await axios.get(categories_url, config);
     if (response.status === 200) {
+      console.log(response);
       return response;
     }
   } catch (error) {

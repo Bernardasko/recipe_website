@@ -1,13 +1,16 @@
-import {useState} from 'react'
-import NewCategory from './categories/NewCategory'
-import CategoryListProfile from './categories/CategoryListProfile';
+import { Link, Outlet } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 function Profile() {
-    const [refresh, setRefresh] = useState(false);
-    return (
+  const token = jwtDecode(window.localStorage.getItem('token'));
+  console.log(token);
+  return (
     <>
       <h1>profile page</h1>
-        <NewCategory refresh={refresh} setRefresh={setRefresh}/>
-        <CategoryListProfile refresh={refresh} setRefresh={setRefresh}/>
+      {token.role === 'admin' && (
+        <Link to={'/profile/categories'}>categories</Link>
+      )}
+      <button>Recipes</button>
+      <Outlet />
     </>
   );
 }

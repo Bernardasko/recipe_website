@@ -1,11 +1,11 @@
 import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { postNewCategory } from '../../services/post.mjs';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
-function NewCategory({ setRefresh }) {
-  const [error, setError] = useState('');
+function NewCategory({ refreshCategories }) {
+  const navigate = useNavigate()
   const {
     handleSubmit,
     register,
@@ -20,8 +20,12 @@ function NewCategory({ setRefresh }) {
     const newCategory = await postNewCategory(newCat);
     console.log(newCategory);
     if (newCategory.status === 201) {
-      setRefresh((p) => !p);
+      refreshCategories();
+      navigate('/profile/categories')
       toast.success('New category created 🔥');
+    } else {
+      
+      toast.danger('Error while creating category 🫤');
     }
     try {
     } catch (error) {
