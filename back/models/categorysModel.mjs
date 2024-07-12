@@ -58,23 +58,3 @@ export const pg_getRecipesByCategoryId = async (categoryId) => {
   return Object.values(recipes);
 };
 
-export const pg_getCategoryByName = async (name) => {
-  // console.log("show:", name);
-  const getCategory = await sql`
-  SELECT * FROM categories 
-  WHERE "name"=${name} 
- `;
- 
-  return getCategory[0];
-};
-
-export const pg_postCategory = async (name)=>{
-const postCategory  = await sql`
-INSERT INTO categories (name)
-    VALUES (${name})
-    RETURNING *
-    `;
-  // console.log("show:", postCategory);
-  return postCategory[0];
-
-}
