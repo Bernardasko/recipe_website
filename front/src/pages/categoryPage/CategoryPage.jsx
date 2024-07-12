@@ -1,5 +1,10 @@
+import RecipeCards from "../../components/RecipeCards";
 function CategoryPage() {
-    return ( <><h1>hello from cat</h1></> );
+    return ( 
+    <>
+    <RecipeCards />
+    </> 
+    );
 }
 
 export default CategoryPage;
