@@ -1,30 +1,24 @@
 import { getAllCategories } from '../../services/get.mjs';
 import { deleteCategoryById } from '../../services/delete.mjs';
 import { useEffect, useState } from 'react';
-function CategoryListProfile({refresh, setRefresh}) {
-  const [allCategories, setAllCategories] = useState([]);
-  
-
+import { useNavigate } from 'react-router-dom';
+function CategoryListProfile({ data, refreshCategories }) {
+  const [refresh, setRefresh] = useState([]);
+  const navigate = useNavigate()
   const deleteCat = async (categoryid) => {
     try {
       const deletedCategory = await deleteCategoryById(categoryid);
-      setRefresh(prev => !prev)
+      navigate('/profile/categories')
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const allCat = await getAllCategories();
-      setAllCategories(allCat.data);
-    })();
-  }, [refresh]);
   return (
     <>
       <h1>cat list</h1>
       <ul>
-        {allCategories.map((item, index) => {
+        {data.data.map((item, index) => {
           return (
             <li key={index}>
               <div>
@@ -33,7 +27,7 @@ function CategoryListProfile({refresh, setRefresh}) {
                 </p>
                 <button
                   className='border bg-slate-500 p-2 rounded-lg'
-                  onClick={()=>deleteCat(item.categoryid)}
+                  onClick={() => deleteCat(item.categoryid)}
                 >
                   delete {item.name} category
                 </button>

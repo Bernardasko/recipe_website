@@ -27,6 +27,8 @@ function Layout() {
     localStorage.clear();
     setToken(null)
     navigate('/');
+    window.location.reload();
+
   };
 
   return (

@@ -13,11 +13,10 @@ import { useForm } from 'react-hook-form';
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { AppContext } from '../context/AppContext';
+
 
 export default function Signup() {
   const navigate = useNavigate();
-  const { setToken } = useContext(AppContext);
   
 
   const signup_url =
@@ -41,7 +40,6 @@ export default function Signup() {
       console.log(values);
       const { status, data } = await axios.post(signup_url, values);
       if (status == 201) {
-        setToken(data);
         window.localStorage.setItem('token', data);
         navigate('/')
       }
@@ -132,18 +130,18 @@ export default function Signup() {
               autoComplete='current-password'
               {...register('password', {
                 required: 'Please enter your password',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 8 characters long',
-                },
-                maxLength: {
-                  value: 20,
-                  message: 'Password must be at most 20 characters long',
-                },
-                pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
-                  message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
-                },
+                // minLength: {
+                //   value: 8,
+                //   message: 'Password must be at least 8 characters long',
+                // },
+                // maxLength: {
+                //   value: 20,
+                //   message: 'Password must be at most 20 characters long',
+                // },
+                // pattern: {
+                //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                // },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
