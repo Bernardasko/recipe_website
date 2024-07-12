@@ -5,7 +5,7 @@ import { getRecipesByCategoryId, getAllCategories, addCategory, deleteCategory }
 const router = express.Router()
 
 router.route('/:categoryId/recipes').get(getRecipesByCategoryId)
-router.route('/').get(getAllCategories).post(isAdmin, addCategory)
+router.route('/').get(isUser, getAllCategories).post(isAdmin, addCategory)
 router.route('/:categoryId').delete(isAdmin, deleteCategory)
 
 
