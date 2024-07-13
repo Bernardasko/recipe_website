@@ -83,6 +83,100 @@ export const pg_deleteRecipeById = async (recipeId) => {
   return deletedRecipe;
 };
 
+// export const pg_patchRecipe = async (
+//   recipeId,
+//   title,
+//   ingredients,
+//   steps,
+//   category,
+//   cuisine,
+//   images
+// ) => {
+//   console.log(recipeId,
+//     title,
+//     ingredients,
+//     steps,
+//     category,
+//     cuisine,
+//     images);
+//   try {
+//     const patchedRecipe = await sql.begin(async (sql) => {
+//       // Update the recipe title, category, and cuisine
+//       const result = await sql`
+//           UPDATE recipes
+//           SET title = ${title},
+//               categoryid = (SELECT categoryid FROM categories WHERE name = ${category}),
+//               cuisineid = (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
+//           WHERE recipeid = ${recipeId}
+//         `;
+
+//       // Delete existing recipe ingredients
+//       await sql`
+//           DELETE FROM recipe_ingredients
+//           WHERE recipeid = ${recipeId}
+//         `;
+
+//       // Insert updated ingredients
+//       for (const ingredient of ingredients) {
+//         let existingIngredient = await sql`
+//             SELECT ingredientid FROM ingredients WHERE name = ${ingredient.ingredient}
+//           `;
+
+//         if (existingIngredient.length === 0) {
+//           existingIngredient = await sql`
+//               INSERT INTO ingredients (name)
+//               VALUES (${ingredient.ingredient})
+//               RETURNING ingredientid
+//             `;
+//         }
+
+//         const ingredientId = existingIngredient[0].ingredientid;
+
+//         // Link the ingredient to the recipe with the amount
+//         await sql`
+//             INSERT INTO recipe_ingredients (recipeid, ingredientid, amount)
+//             VALUES (${recipeId}, ${ingredientId}, ${ingredient.amount})
+//           `;
+//       }
+
+//       // Delete existing recipe steps
+//       await sql`
+//           DELETE FROM recipe_steps
+//           WHERE recipeid = ${recipeId}
+//         `;
+
+//       // Insert updated steps
+//       for (let i = 0; i < steps.length; i++) {
+//         await sql`
+//             INSERT INTO recipe_steps (recipeid, stepnumber, description)
+//             VALUES (${recipeId}, ${i + 1}, ${steps[i]})
+//           `;
+//       }
+
+//       // Delete existing images
+//       await sql`
+//           DELETE FROM images
+//           WHERE recipeid = ${recipeId}
+//         `;
+
+//       // Insert updated images if provided
+//       if (images) {
+//         for (const imageUrl of images) {
+//           await sql`
+//               INSERT INTO images (recipeid, imageurl)
+//               VALUES (${recipeId}, ${imageUrl})
+//             `;
+//         }
+//       }
+//       return result[0];
+//     });
+//     return patchedRecipe;
+//   } catch (error) {
+//     console.error('Error updating recipe:', error);
+//   }
+// };
+
+
 export const pg_patchRecipe = async (
   recipeId,
   title,
@@ -92,82 +186,96 @@ export const pg_patchRecipe = async (
   cuisine,
   images
 ) => {
+  console.log(recipeId, title, ingredients, steps, category, cuisine, images);
   try {
     const patchedRecipe = await sql.begin(async (sql) => {
+      // Ensure the recipe exists before making updates
+      const recipeExists = await sql`
+        SELECT 1 FROM recipes WHERE recipeid = ${recipeId}
+      `;
+
+      if (recipeExists.length === 0) {
+        throw new Error(`Recipe with ID ${recipeId} does not exist.`);
+      }
+
       // Update the recipe title, category, and cuisine
-      const result = await sql`
-          UPDATE recipes
-          SET title = ${title},
-              categoryid = (SELECT categoryid FROM categories WHERE name = ${category}),
-              cuisineid = (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
-          WHERE recipeid = ${recipeId}
-        `;
+      await sql`
+        UPDATE recipes
+        SET title = ${title},
+            categoryid = (SELECT categoryid FROM categories WHERE name = ${category}),
+            cuisineid = (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
+        WHERE recipeid = ${recipeId}
+      `;
 
       // Delete existing recipe ingredients
       await sql`
-          DELETE FROM recipe_ingredients
-          WHERE recipeid = ${recipeId}
-        `;
+        DELETE FROM recipe_ingredients
+        WHERE recipeid = ${recipeId}
+      `;
 
       // Insert updated ingredients
       for (const ingredient of ingredients) {
         let existingIngredient = await sql`
-            SELECT ingredientid FROM ingredients WHERE name = ${ingredient.ingredient}
-          `;
+          SELECT ingredientid FROM ingredients WHERE name = ${ingredient.ingredient}
+        `;
 
         if (existingIngredient.length === 0) {
           existingIngredient = await sql`
-              INSERT INTO ingredients (name)
-              VALUES (${ingredient.ingredient})
-              RETURNING ingredientid
-            `;
+            INSERT INTO ingredients (name)
+            VALUES (${ingredient.ingredient})
+            RETURNING ingredientid
+          `;
         }
 
         const ingredientId = existingIngredient[0].ingredientid;
 
         // Link the ingredient to the recipe with the amount
         await sql`
-            INSERT INTO recipe_ingredients (recipeid, ingredientid, amount)
-            VALUES (${recipeId}, ${ingredientId}, ${ingredient.amount})
-          `;
+          INSERT INTO recipe_ingredients (recipeid, ingredientid, amount)
+          VALUES (${recipeId}, ${ingredientId}, ${ingredient.amount})
+        `;
       }
 
       // Delete existing recipe steps
       await sql`
-          DELETE FROM recipe_steps
-          WHERE recipeid = ${recipeId}
-        `;
+        DELETE FROM recipe_steps
+        WHERE recipeid = ${recipeId}
+      `;
 
       // Insert updated steps
       for (let i = 0; i < steps.length; i++) {
         await sql`
-            INSERT INTO recipe_steps (recipeid, stepnumber, description)
-            VALUES (${recipeId}, ${i + 1}, ${steps[i]})
-          `;
+          INSERT INTO recipe_steps (recipeid, stepnumber, description)
+          VALUES (${recipeId}, ${i + 1}, ${steps[i]})
+        `;
       }
 
       // Delete existing images
       await sql`
-          DELETE FROM images
-          WHERE recipeid = ${recipeId}
-        `;
+        DELETE FROM images
+        WHERE recipeid = ${recipeId}
+      `;
 
       // Insert updated images if provided
       if (images) {
         for (const imageUrl of images) {
           await sql`
-              INSERT INTO images (recipeid, imageurl)
-              VALUES (${recipeId}, ${imageUrl})
-            `;
+            INSERT INTO images (recipeid, imageurl)
+            VALUES (${recipeId}, ${imageUrl})
+          `;
         }
       }
-      return result[0];
+
+      return { message: 'Recipe updated successfully' };
     });
+
     return patchedRecipe;
   } catch (error) {
     console.error('Error updating recipe:', error);
+    throw error;
   }
 };
+
 
 export const pg_getRecipesByUserId = async (userId) => {
   const flatResults = await sql`
@@ -231,7 +339,6 @@ export const pg_getRecipesByUserId = async (userId) => {
   // Convert recipes object to an array
   return Object.values(recipes);
 }
-
 
 export const pg_getAllRecipes = async () => {
   const flatResults = await sql`

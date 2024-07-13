@@ -3,13 +3,8 @@ import {
   pg_deleteRecipeById,
   pg_patchRecipe,
   pg_getAllRecipes,
-  pg_getRecipesByUserId
+  pg_getRecipesByUserId,
 } from '../models/recipesModel.mjs';
-
-export const lol = (rqe,res,next) => {
-  console.log(lol);
-  next()
-}
 
 export const postRecipe = async (req, res) => {
   try {
@@ -48,7 +43,7 @@ export const postRecipe = async (req, res) => {
 
 export const deleteRecipe = async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     const deletedRecipe = await pg_deleteRecipeById(id);
     res.status(200).json(deletedRecipe);
   } catch (error) {
@@ -59,22 +54,17 @@ export const deleteRecipe = async (req, res) => {
 
 export const patchRecipe = async (req, res) => {
   try {
-    let {
-      id: recipeId,
-      title,
-      ingredients,
-      steps,
-      category,
-      cuisine,
-      images,
-    } = req.body;
+    const recipeId = req.params.id;
+    console.log(recipeId);
+    let { title, ingredients, steps, category, cuisine, images } = req.body;
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase();
       }
     });
     steps.forEach((step, index) => {
-      steps[index] = step.toLowerCase();
+      console.log(step);
+      steps[index].description = step.description.toLowerCase();
     });
     cuisine = cuisine.toLowerCase();
 
@@ -96,22 +86,21 @@ export const patchRecipe = async (req, res) => {
 
 export const getRecipes = async (req, res) => {
   try {
-    const user = req.user
+    const user = req.user;
     console.log(user);
 
-    if(user.role === 'user'){
+    if (user.role === 'user') {
       console.log(user.id);
-        const recipes = await pg_getRecipesByUserId(user.id)
-        console.log(recipes);
-        res.status(200).json(recipes)
+      const recipes = await pg_getRecipesByUserId(user.id);
+      console.log(recipes);
+      res.status(200).json(recipes);
     } else {
-      const recipes = await pg_getAllRecipes()
-        console.log(recipes);
-        res.status(200).json(recipes)
+      const recipes = await pg_getAllRecipes();
+      console.log(recipes);
+      res.status(200).json(recipes);
     }
-    
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });
   }
-}
+};

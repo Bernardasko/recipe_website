@@ -5,16 +5,11 @@ import {
   deleteRecipe,
   patchRecipe,
   getRecipes,
-  lol,
 } from '../controllers/recipesController.mjs';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(isUser, getRecipes)
-  .post(isUser, postRecipe)
-  .delete(isUser, deleteRecipe)
-  .patch(patchRecipe);
+router.route('/').get(isUser, getRecipes).post(isUser, postRecipe);
+router.route('/:id').delete(isUser, deleteRecipe).patch(isUser, patchRecipe);
 
 export default router;

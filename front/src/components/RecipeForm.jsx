@@ -9,10 +9,12 @@ import { MenuItem } from '@mui/material';
 import InputAdornment from '@mui/material/InputAdornment';
 import { postRecipe } from '../services/post.mjs';
 import { useLoaderData } from 'react-router-dom';
+import { patchRecipeById } from '../services/patch.mjs';
 
 // import { getAllCuisines, getAllCategories } from '../services/get.mjs';
 
-function RecipeForm() {
+function RecipeForm({ recipeInfo }) {
+  console.log(recipeInfo);
   const [error, setError] = useState('');
   const [steps, setSteps] = useState(['']);
   const [ingredients, setIngredients] = useState([
@@ -21,22 +23,25 @@ function RecipeForm() {
   const [cuisines, setCuisines] = useState(null);
   const [categories, setCategories] = useState(null);
 
-  const data = useLoaderData()
-  console.log(data);
+  const data = useLoaderData();
+
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
 
   async function onSubmit(data) {
     const newRecipe = {
       ...data,
     };
-    console.log(newRecipe);
-    const posted = await postRecipe(newRecipe);
-    console.log(posted);
+    if(recipeInfo){
+      const patched = await patchRecipeById(newRecipe)
+    } else {
+      const posted = await postRecipe(newRecipe);
+    }
   }
 
   const handleAddStep = () => {
@@ -58,21 +63,22 @@ function RecipeForm() {
     newIngredient[index][field] = value;
     setIngredients(newIngredient);
   };
+  useEffect(() => {
+    if (recipeInfo) {
+      setValue('title', recipeInfo.name);
+      setValue('cuisine', recipeInfo.cuisine);
+      setValue('category', recipeInfo.category);
+      setValue('image', recipeInfo.image);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const cuisineResponse = await getAllCuisines();
-  //     const cateroriesResponse = await getAllCategories();
-
-  //     if (cuisineResponse.status === 200) {
-  //       setCuisines(cuisineResponse.data);
-  //     }
-
-  //     if ((cateroriesResponse.status = 200)) {
-  //       setCategories(cateroriesResponse.data);
-  //     }
-  //   })();
-  // }, []);
+      recipeInfo.ingredients.map((ingredient, index) => {
+        setValue(`ingredients.${index}.amount`, ingredient.amount);
+        setValue(`ingredients.${index}.ingredient`, ingredient.ingredient);
+      });
+      recipeInfo.steps.map((ingredient, index) => {
+        setValue(`steps.${index}`, ingredient.description);
+      });
+    }
+  }, []);
   return (
     <>
       <Container component='main' maxWidth='xs'>
@@ -197,70 +203,82 @@ function RecipeForm() {
               + Add Step
             </Button>
 
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name="category"
-              select
-              label='Choose Category'
-              type='text'
-              id='category'
-              {...register('category', {
-                required: 'Category field is required',
-              })}
-              error={!!errors.category}
-              helperText={errors.category ? errors.category.message : ""}
+            <Box
+              sx={{
+                mt: 2,
+                display: 'flex',
+                flexDirection: 'row',
+                gap: 2, // Space between items
+                alignItems: 'center',
+                justifyContent: 'space-between', // Adjusts space between items for alignment
+              }}
             >
-              {data.categories &&
-                data.categories.map((item, index) => {
-                  return (
-                    <MenuItem key={index} value={`${item.name}`}>
-                      {item.name}
-                    </MenuItem>
-                  );
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                name='category'
+                select
+                label='Category'
+                type='text'
+                id='category'
+                {...register('category', {
+                  required: 'Category field is required',
                 })}
-            </TextField>
+                error={!!errors.category}
+                helperText={errors.category ? errors.category.message : ''}
+              >
+                {data.categories &&
+                  data.categories.map((item, index) => {
+                    return (
+                      <MenuItem key={index} value={`${item.name}`}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+              </TextField>
 
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              select
-              label='Choose Cuisine'
-              type='text'
-              id='category'
-              {...register('cuisine', {
-                required: 'Category field is required',
-              })}
-              error={!!errors.category}
-            >
-              {data.cuisines.data &&
-                data.cuisines.data.map((item, index) => {
-                  return (
-                    <MenuItem key={index} value={`${item.name}`}>
-                      {item.name}
-                    </MenuItem>
-                  );
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                name='cuisine'
+                select
+                label='Cuisine'
+                type='text'
+                id='category'
+                {...register('cuisine', {
+                  required: 'Category field is required',
                 })}
-            </TextField>
+                error={!!errors.category}
+              >
+                {data.cuisines.data &&
+                  data.cuisines.data.map((item, index) => {
+                    return (
+                      <MenuItem key={index} value={`${item.name}`}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+              </TextField>
 
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              type='img'
-              id='image'
-              label='image URL'
-              name='imaga'
-              {...register('image', {
-                required: 'Image URL field is required',
-              })}
-              error={!!errors.image}
-              helperText={errors.image ? errors.image.message : ''}
-            />
+              <TextField
+                margin='normal'
+                required
+                fullWidth
+                type='img'
+                id='image'
+                label='image URL'
+                name='imaga'
+                {...register('image', {
+                  required: 'Image URL field is required',
+                })}
+                error={!!errors.image}
+                helperText={errors.image ? errors.image.message : ''}
+              />
 
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+              {error && <div style={{ color: 'red' }}>{error}</div>}
+            </Box>
             <Button
               type='submit'
               fullWidth

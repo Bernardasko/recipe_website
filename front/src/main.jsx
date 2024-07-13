@@ -51,7 +51,12 @@ const router = createBrowserRouter([
           {
             path: '/profile/recipes',
             element: <RecipeProfile />,
-            loader: getAllRecipesProfile,
+            loader: async () => {
+              const recipes = await getAllRecipesProfile();
+              const cuisines = await getAllCuisines();
+              const categories = await getAllCategories();
+              return {recipes, cuisines, categories}
+            },
             errorElement: <ErrorPage />,
           },
           {
