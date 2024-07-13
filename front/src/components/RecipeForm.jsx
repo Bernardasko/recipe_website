@@ -3,9 +3,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useState, useEffect } from 'react';
-import * as React from 'react';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -27,13 +26,16 @@ function RecipeForm({ recipeInfo }) {
     formState: { errors },
     reset,
     setValue,
+    control,
   } = useForm();
 
   useEffect(() => {
     if (recipeInfo) {
       setValue('title', recipeInfo.name);
-      setValue('cuisine', recipeInfo.cuisine);
-      setValue('category', recipeInfo.category);
+      const cuisineObject = data.cuisines.data.find(cuisine => cuisine.name.toLowerCase() === recipeInfo.cuisine.toLowerCase());
+      setValue('cuisine', cuisineObject ? cuisineObject.name : '');
+      const categoryObject = data.categories.find(cat => cat.name.toLowerCase() === recipeInfo.category.toLowerCase());
+      setValue('category', categoryObject ? categoryObject.name : '');
       setValue('image', recipeInfo.image);
 
       setIngredients(recipeInfo.ingredients.map((ingredient) => ({
@@ -204,48 +206,58 @@ function RecipeForm({ recipeInfo }) {
           </Button>
 
           <FormControl fullWidth margin="normal" required>
-            <InputLabel id="category-label">Category</InputLabel>
-            <Select
-              labelId="category-label"
-              id="category"
-              label="Category"
-              defaultValue={recipeInfo ? recipeInfo.category : ''}
-              {...register('category', {
-                required: 'Category field is required',
-              })}
-              error={!!errors.category}
-            >
-              {data.categories &&
-                data.categories.map((item, index) => (
-                  <MenuItem key={index} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-            </Select>
+            <Controller
+            name="category"
+            control={control}
+            defaultValue=""
+            rules={{ required: 'Category is required' }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                displayEmpty
+                fullWidth
+                error={!!errors.category}
+              >
+                <MenuItem value="" disabled>Category</MenuItem>
+                {data.categories &&
+                  data.categories.map((item) => (
+                    <MenuItem key={item.categoryId} value={item.name}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+              </Select>
+            )}
+          />
             {errors.category && (
               <Typography color="error">{errors.category.message}</Typography>
             )}
           </FormControl>
 
           <FormControl fullWidth margin="normal" required>
-            <InputLabel id="cuisine-label">Cuisine</InputLabel>
+          < Controller
+          name="cuisine"
+          control={control}
+          defaultValue=""
+          rules={{ required: 'Cuisine is required' }}
+          render={({ field }) => (
             <Select
-              labelId="cuisine-label"
-              id="cuisine"
-              label="Cuisine"
-              defaultValue={recipeInfo ? recipeInfo.cuisine : ''}
-              {...register('cuisine', {
-                required: 'Cuisine field is required',
-              })}
+              {...field}
+              displayEmpty
+              fullWidth
               error={!!errors.cuisine}
             >
-              {data.cuisines &&
-                data.cuisines.data.map((item, index) => (
-                  <MenuItem key={index} value={item.name}>
-                    {item.name}
-                  </MenuItem>
-                ))}
+          <MenuItem value="" disabled>Cuisine</MenuItem>
+          {data.cuisines.data &&
+                  data.cuisines.data.map((item, index) => {
+                    return (
+                      <MenuItem key={index} value={`${item.name}`}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
             </Select>
+          )}
+          />
             {errors.cuisine && (
               <Typography color="error">{errors.cuisine.message}</Typography>
             )}
