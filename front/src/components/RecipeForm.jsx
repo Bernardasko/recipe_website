@@ -218,7 +218,6 @@ function RecipeForm({ recipeInfo }) {
                 required
                 fullWidth
                 name='category'
-                select
                 label='Category'
                 type='text'
                 id='category'
@@ -243,7 +242,6 @@ function RecipeForm({ recipeInfo }) {
                 required
                 fullWidth
                 name='cuisine'
-                select
                 label='Cuisine'
                 type='text'
                 id='category'
