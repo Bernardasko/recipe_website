@@ -34,6 +34,7 @@ function RecipeCardProfile({ data }) {
         </figure>
         <div className='card-body'>
           <h2 className='card-title'>Name: {data.name}</h2>
+          <h2 className='card-title'>Cusine: {data.cuisine}</h2>
           <p>Category: {data.category}</p>
           <div className='flex justify-around my-2'>
             <ResponsiveModal recipeInfo={data}/>

@@ -44,7 +44,6 @@ export const getAllCuisines = async () => {
 export const getAllCategories = async () => {
   const categories_url = import.meta.env.VITE_CATEGORIES;
   const token = window.localStorage.getItem('token');
-  console.log(token);
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };

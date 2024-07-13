@@ -3,7 +3,6 @@ import { pg_getUserByEmail } from '../models/usersModel.mjs';
 
 const openToken = (req) => {
   try {
-    console.log(123);
     let token;
     const headerToken = req.headers.authorization;
     if (headerToken && headerToken.startsWith('Bearer')) {
@@ -42,7 +41,7 @@ export const isUser = async (req, res, next) => {
       return res.status(401).json({ message: 'Premission denied' });
     }
     req.user = decoded
-    console.log(decoded.role, 'from is user');
+    console.log('Decoded role is: ',decoded.role);
     next();
   } catch (error) {
     console.error(error);
