@@ -76,3 +76,21 @@ export const getAllRecipesProfile = async () => {
     throw error;
   }
 }
+
+export const getAllRecipes = async () => {
+  const getRecipes_url = import.meta.env.VITE_GET_RECIPE;
+  console.log(getRecipes_url);
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(getRecipes_url, config);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
