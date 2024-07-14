@@ -60,7 +60,8 @@ export const pg_getRecipesByCategoryId = async (categoryId) => {
 
 export const pg_getAllCategories = async () => {
   const results = await sql`
-  SELECT * FROM categories`
+  SELECT * FROM categories
+  ORDER BY `
   return results
 }
 

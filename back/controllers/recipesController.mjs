@@ -17,13 +17,13 @@ export const postRecipe = async (req, res) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase();
       }
-    });
+    }); 
     steps.forEach((step, index) => {
       steps[index] = step.toLowerCase();
     });
     cuisine = cuisine.toLowerCase();
 
-    //  console.log(title, ingredients, steps, category, cuisine, image);
+    //  console.log(title, ingredients, steps, category, cuisine, image, id, 'I AM FROM RECIPES CONTROLLER BEFORE ' );
 
     const newRecipe = await pg_postRecipe(
       title,
