@@ -6,7 +6,7 @@ function RecipeListProfile() {
     <>
       <div className='flex flex-wrap justify-center gap-10'>
         {data.recipes.length === 0 ? (
-          <p>No data</p>
+          <p>You have no recipes</p>
         ) : (
           data.recipes.map((item, index) => {
             return <RecipeCardProfile key={index} data={item}/>;

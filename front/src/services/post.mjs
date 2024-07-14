@@ -8,7 +8,6 @@ export const postRecipe = async (formInfo) => {
       headers: { Authorization: `Bearer ${token}` },
     };
     const response = await axios.post(post_recipe_url, formInfo, config);
-    console.log(config);
     return response;
   } catch (error) {
     console.error(error);

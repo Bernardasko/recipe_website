@@ -43,11 +43,18 @@ export const pg_postRecipe = async (
 
         const ingredientId = existingIngredient[0].ingredientid;
 
-        // Link the ingredient to the recipe with the amount
-        await sql`
-          INSERT INTO recipe_ingredients (recipeid, ingredientid, amount)
-          VALUES (${recipeId}, ${ingredientId}, ${ingredient.amount})
+        // Check if the (recipeid, ingredientid) pair already exists
+        const existingRecipeIngredient = await sql`
+          SELECT 1 FROM recipe_ingredients WHERE recipeid = ${recipeId} AND ingredientid = ${ingredientId}
         `;
+
+        if (existingRecipeIngredient.length === 0) {
+          // Link the ingredient to the recipe with the amount
+          await sql`
+            INSERT INTO recipe_ingredients (recipeid, ingredientid, amount)
+            VALUES (${recipeId}, ${ingredientId}, ${ingredient.amount})
+          `;
+        }
       }
 
       // Insert steps
@@ -73,6 +80,7 @@ export const pg_postRecipe = async (
     return recipe;
   } catch (error) {
     console.error('Error adding recipe:', error);
+    throw error; // Re-throw the error to handle it outside
   }
 };
 
@@ -176,7 +184,6 @@ export const pg_deleteRecipeById = async (recipeId) => {
 //   }
 // };
 
-
 export const pg_patchRecipe = async (
   recipeId,
   title,
@@ -276,7 +283,6 @@ export const pg_patchRecipe = async (
   }
 };
 
-
 export const pg_getRecipesByUserId = async (userId) => {
   const flatResults = await sql`
   SELECT 
@@ -303,7 +309,7 @@ export const pg_getRecipesByUserId = async (userId) => {
 
   const recipes = {};
 
-  flatResults.forEach(row => {
+  flatResults.forEach((row) => {
     if (!recipes[row.recipeid]) {
       recipes[row.recipeid] = {
         recipeId: row.recipeid,
@@ -313,34 +319,41 @@ export const pg_getRecipesByUserId = async (userId) => {
         category: row.category,
         cuisine: row.cuisine,
         ingredients: [],
-        steps: []
+        steps: [],
       };
     }
 
     // Check if the ingredient already exists
-    const existingIngredient = recipes[row.recipeid].ingredients.find(ing => ing.ingredient === row.ingredient);
+    const existingIngredient = recipes[row.recipeid].ingredients.find(
+      (ing) => ing.ingredient === row.ingredient
+    );
     if (!existingIngredient) {
       recipes[row.recipeid].ingredients.push({
         ingredient: row.ingredient,
-        amount: row.amount
+        amount: row.amount,
       });
     }
 
     // Check if the step already exists
-    const existingStep = recipes[row.recipeid].steps.find(step => step.step_number === row.step_number && step.description === row.step_description);
+    const existingStep = recipes[row.recipeid].steps.find(
+      (step) =>
+        step.step_number === row.step_number &&
+        step.description === row.step_description
+    );
     if (!existingStep) {
       recipes[row.recipeid].steps.push({
         step_number: row.step_number,
-        description: row.step_description
+        description: row.step_description,
       });
     }
   });
 
   // Convert recipes object to an array
   return Object.values(recipes);
-}
+};
 
 export const pg_getAllRecipes = async () => {
+  console.log('im in effect');
   const flatResults = await sql`
   SELECT 
     recipes.recipeid AS recipeId,
@@ -352,7 +365,8 @@ export const pg_getAllRecipes = async () => {
     ingredients.name AS ingredient,
     recipe_ingredients.amount AS amount,
     recipe_steps.stepnumber AS step_number,
-    recipe_steps.description AS step_description
+    recipe_steps.description AS step_description,
+    images.imageurl AS image_url
   FROM recipes
   INNER JOIN users ON recipes.userid = users.id
   INNER JOIN categories ON recipes.categoryid = categories.categoryid
@@ -360,45 +374,45 @@ export const pg_getAllRecipes = async () => {
   INNER JOIN ingredients ON recipe_ingredients.ingredientid = ingredients.ingredientid
   INNER JOIN recipe_steps ON recipes.recipeid = recipe_steps.recipeid
   INNER JOIN cuisines ON recipes.cuisineid = cuisines.cuisineid
+  LEFT JOIN images ON recipes.recipeid = images.recipeid
   ORDER BY recipes.recipeid, recipe_steps.stepnumber;
 `;
 
-const recipes = {};
+  const recipes = {};
 
-flatResults.forEach(row => {
-  if (!recipes[row.recipeid]) {
-    recipes[row.recipeid] = {
-      recipeId: row.recipeid,
-      name: row.name,
-      username: row.username,
-      userlastname: row.userlastname,
-      category: row.category,
-      cuisine: row.cuisine,
-      ingredients: [],
-      steps: []
-    };
-  }
+  flatResults.forEach((row) => {
+    if (!recipes[row.recipeid]) {
+      recipes[row.recipeid] = {
+        recipeId: row.recipeid,
+        name: row.name,
+        username: row.username,
+        userlastname: row.userlastname,
+        category: row.category,
+        cuisine: row.cuisine,
+        ingredients: [],
+        steps: [],
+        images: [],
+      };
+    }
 
-  // Check if the ingredient already exists
-  const existingIngredient = recipes[row.recipeid].ingredients.find(ing => ing.ingredient === row.ingredient);
-  if (!existingIngredient) {
+    // Add ingredient
     recipes[row.recipeid].ingredients.push({
       ingredient: row.ingredient,
-      amount: row.amount
+      amount: row.amount,
     });
-  }
 
-  // Check if the step already exists
-  const existingStep = recipes[row.recipeid].steps.find(step => step.step_number === row.step_number && step.description === row.step_description);
-  if (!existingStep) {
+    // Add step
     recipes[row.recipeid].steps.push({
       step_number: row.step_number,
-      description: row.step_description
+      description: row.step_description,
     });
-  }
-});
 
-// Convert recipes object to an array
-return Object.values(recipes);
+    // Add image if exists
+    if (row.image_url) {
+      recipes[row.recipeid].images.push(row.image_url);
+    }
+  });
 
-}
+  // Convert recipes object to an array
+  return Object.values(recipes);
+};

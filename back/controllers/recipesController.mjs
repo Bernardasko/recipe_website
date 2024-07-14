@@ -34,7 +34,8 @@ export const postRecipe = async (req, res) => {
       images,
       id
     );
-    // res.status(201).json(newRecipe);
+    console.log(newRecipe);
+    res.status(201).json(newRecipe);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });

@@ -68,6 +68,7 @@ export const getAllRecipesProfile = async () => {
   try {
     const response = await axios.get(getRecipes_url, config);
     if (response.status === 200) {
+      console.log(response.data);
       return response.data;
     }
   } catch (error) {

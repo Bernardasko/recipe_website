@@ -201,3 +201,72 @@ VALUES
 
 
 
+
+
+
+
+
+
+££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££££
+
+
+
+Copy code
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    role VARCHAR(50)
+);
+
+CREATE TABLE Categories (
+    CategoryID SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Cuisines (
+    CuisineID SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Ingredients (
+    IngredientID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE Recipes (
+    RecipeID SERIAL PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    CategoryID INT,
+    CuisineID INT,
+    UserID INT,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID),
+    FOREIGN KEY (CuisineID) REFERENCES Cuisines(CuisineID),
+    FOREIGN KEY (UserID) REFERENCES Users(id)
+);
+
+CREATE TABLE Recipe_Steps (
+    StepID SERIAL PRIMARY KEY,
+    RecipeID INT,
+    StepNumber INT NOT NULL,
+    Description TEXT NOT NULL,
+    FOREIGN KEY (RecipeID) REFERENCES Recipes(RecipeID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Recipe_Ingredients (
+    RecipeID INT,
+    IngredientID INT,
+    Amount VARCHAR(50),
+    PRIMARY KEY (RecipeID, IngredientID),
+    FOREIGN KEY (RecipeID) REFERENCES Recipes(RecipeID) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (IngredientID) REFERENCES Ingredients(IngredientID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE Images (
+    ImageID SERIAL PRIMARY KEY,
+    RecipeID INT,
+    ImageURL TEXT,
+    FOREIGN KEY (RecipeID) REFERENCES Recipes(RecipeID) ON DELETE CASCADE ON UPDATE CASCADE
+);
