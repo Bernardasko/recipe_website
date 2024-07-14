@@ -25,7 +25,7 @@ export const postNewCategory = async (categoryName) => {
     };
 
     const response = await axios.post(post_cat_url, categoryName, config);
-
+    console.log(response, 'im from post');
     return response
   } catch (error) {
     console.error(error);

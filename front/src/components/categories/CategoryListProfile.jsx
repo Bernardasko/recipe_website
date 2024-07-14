@@ -1,14 +1,12 @@
 import { deleteCategoryById } from '../../services/delete.mjs';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoaderData } from 'react-router-dom';
 
 
-function CategoryListProfile({ data, refreshCategories }) {
+function CategoryListProfile({ data }) {
   const [refresh, setRefresh] = useState([]);
 
-const data1 = useLoaderData()
-console.log(data1, '11hfbnevdbkhadjsnfgbckauhdsjnhgcx');
+
 
   const navigate = useNavigate()
   const deleteCat = async (categoryid) => {

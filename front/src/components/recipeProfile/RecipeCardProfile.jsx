@@ -27,8 +27,8 @@ function RecipeCardProfile({ data }) {
         <figure>
           <img
             className='rounded-tl-lg rounded-tr-lg'
-            src={data.image}
-            alt={data.image}
+            src={data.images}
+            alt={data.images}
           />
         </figure>
         <div className='card-body'>

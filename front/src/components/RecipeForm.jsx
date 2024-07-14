@@ -44,7 +44,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
     } else {
       console.log(123);
       const posted = await postRecipe(newRecipe);
-      // console.log(posted);
+      console.log(posted);
       // setOpen(false)
     } 
   }
