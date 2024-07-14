@@ -5,15 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import ResponsiveModal from './MuiModal.jsx';
 function RecipeCardProfile({ data }) {
   const navigate = useNavigate();
-
-  const editRecipe = async (recipeId) => {
-    // const result = await patchRecipeById(recipeId)
-    // console.log(result);
-  };
-
   const deleteRecipe = async (recipeId) => {
-    console.log(data);
-    console.log(recipeId);
+    
+    
+    
+    console.log(data.name);
+
+
+
     const result = await deleteRecipyById(recipeId);
     if (result === 200) {
       toast.success(`${data.name} was deleted !`);
@@ -28,8 +27,8 @@ function RecipeCardProfile({ data }) {
         <figure>
           <img
             className='rounded-tl-lg rounded-tr-lg'
-            src='https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg'
-            alt='Shoes'
+            src={data.image}
+            alt={data.image}
           />
         </figure>
         <div className='card-body'>
@@ -37,13 +36,7 @@ function RecipeCardProfile({ data }) {
           <h2 className='card-title'>Cusine: {data.cuisine}</h2>
           <p>Category: {data.category}</p>
           <div className='flex justify-around my-2'>
-            <ResponsiveModal recipeInfo={data}/>
-            {/* <button
-              className='btn btn-warning'
-              onClick={() => editRecipe(data.recipeId)}
-            >
-              Edit
-            </button> */}
+            <ResponsiveModal recipeInfo={data} />
             <button
               className='btn btn-outline btn-error'
               onClick={() => deleteRecipe(data.recipeId)}

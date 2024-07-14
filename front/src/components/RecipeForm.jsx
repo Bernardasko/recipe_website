@@ -14,7 +14,7 @@ import { patchRecipeById } from '../services/patch.mjs';
 
 // import { getAllCuisines, getAllCategories } from '../services/get.mjs';
 
-function RecipeForm({ recipeInfo }) {
+function RecipeForm({ recipeInfo, setOpen }) {
   const [error, setError] = useState('');
   const [steps, setSteps] = useState(['']);
   const [ingredients, setIngredients] = useState([
@@ -40,11 +40,13 @@ function RecipeForm({ recipeInfo }) {
     console.log(newRecipe);
     if (recipeInfo) {
       const patched = await patchRecipeById(newRecipe);
+      setOpen(false)
     } else {
       console.log(123);
       const posted = await postRecipe(newRecipe);
       // console.log(posted);
-    }
+      // setOpen(false)
+    } 
   }
 
   const handleAddStep = () => {

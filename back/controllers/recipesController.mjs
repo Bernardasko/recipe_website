@@ -8,7 +8,7 @@ import {
 
 export const postRecipe = async (req, res) => {
   try {
-    let { title, ingredients, steps, category, cuisine, images } = req.body;
+    let { title, ingredients, steps, category, cuisine, image } = req.body;
     console.log(req.body);
 
     const { id } = req.user;
@@ -23,7 +23,7 @@ export const postRecipe = async (req, res) => {
     });
     cuisine = cuisine.toLowerCase();
 
-    //  console.log(title, ingredients, steps, category, cuisine, images);
+    //  console.log(title, ingredients, steps, category, cuisine, image);
 
     const newRecipe = await pg_postRecipe(
       title,
@@ -31,7 +31,7 @@ export const postRecipe = async (req, res) => {
       steps,
       category.toLowerCase(),
       cuisine,
-      images,
+      image,
       id
     );
     console.log(newRecipe);

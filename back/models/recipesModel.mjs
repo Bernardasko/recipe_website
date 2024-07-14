@@ -9,7 +9,7 @@ export const pg_postRecipe = async (
   images,
   userId
 ) => {
-  console.log(category);
+  console.log(images);
   try {
     const recipe = await sql.begin(async (sql) => {
       // Insert the recipe and get the RecipeID

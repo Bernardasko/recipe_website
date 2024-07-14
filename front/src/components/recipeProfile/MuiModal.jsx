@@ -22,6 +22,7 @@ export default function ResponsiveModal({recipeInfo}) {
           sx={(theme) => ({
             width: '80%', // Set the width to 80% of the parent container
             maxWidth: '600px', // Set a max-width for larger screens
+            overflow: 'scroll',
             [theme.breakpoints.only('xs')]: {
               width: '100%', // Set the width to 80% of the parent container
               // maxWidth: '600px',
@@ -35,7 +36,7 @@ export default function ResponsiveModal({recipeInfo}) {
             },
           })}
         >
-          <RecipeForm recipeInfo={recipeInfo}/>
+          <RecipeForm recipeInfo={recipeInfo} setOpen={setOpen}/>
           <Box
             sx={{
               mt: 1,
