@@ -22,7 +22,7 @@ export const pg_postRecipe = async (
           ${userId}
         )
         RETURNING *
-      `; 
+      `;
       const recipeId = recipe[0].recipeid;
 
       // Insert ingredients
@@ -67,12 +67,10 @@ export const pg_postRecipe = async (
 
       // Insert images if provided
       if (image) {
-
-          await sql`
+        await sql`
             INSERT INTO images (recipeid, imageurl)
             VALUES (${recipeId}, ${image})
           `;
-        
       }
       return recipe[0];
     });
@@ -91,7 +89,6 @@ export const pg_deleteRecipeById = async (recipeId) => {
   return deletedRecipe;
 };
 
-
 export const pg_patchRecipe = async (
   recipeId,
   title,
@@ -99,9 +96,8 @@ export const pg_patchRecipe = async (
   steps,
   category,
   cuisine,
-  images
+  image
 ) => {
-  console.log(recipeId, title, ingredients, steps, category, cuisine, images);
   try {
     const patchedRecipe = await sql.begin(async (sql) => {
       // Ensure the recipe exists before making updates
@@ -117,7 +113,7 @@ export const pg_patchRecipe = async (
       await sql`
         UPDATE recipes
         SET title = ${title},
-            categoryid = (SELECT categoryid FROM categories WHERE name = ${category}),
+            categoryid = (SELECT categoryid FROM categories WHERE name = ${category.toLowerCase()}),
             cuisineid = (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
         WHERE recipeid = ${recipeId}
       `;
@@ -171,15 +167,10 @@ export const pg_patchRecipe = async (
         WHERE recipeid = ${recipeId}
       `;
 
-      // Insert updated images if provided
-      if (images) {
-        for (const imageUrl of images) {
-          await sql`
-            INSERT INTO images (recipeid, imageurl)
-            VALUES (${recipeId}, ${imageUrl})
-          `;
-        }
-      }
+      await sql`
+        INSERT into images (recipeid, imageurl)
+        VALUES (${recipeId}, ${image})
+        `
 
       return { message: 'Recipe updated successfully' };
     });
@@ -230,7 +221,7 @@ export const pg_getRecipesByUserId = async (userId) => {
         cuisine: row.cuisine,
         ingredients: [],
         steps: [],
-        images: null,  // Initialize as null
+        images: null, // Initialize as null
       };
     }
 
@@ -255,7 +246,6 @@ export const pg_getRecipesByUserId = async (userId) => {
   // Convert recipes object to an array
   return Object.values(recipes);
 };
-
 
 export const pg_getAllRecipes = async () => {
   console.log('im in effect');
@@ -296,25 +286,37 @@ export const pg_getAllRecipes = async () => {
         cuisine: row.cuisine,
         ingredients: [],
         steps: [],
-        images: [],
+        images: row.image_url || null, // Use a single string for the image URL
       };
     }
 
-    // Add ingredient
-    recipes[row.recipeid].ingredients.push({
-      ingredient: row.ingredient,
-      amount: row.amount,
-    });
+    // Add ingredient if it does not already exist
+    if (
+      !recipes[row.recipeid].ingredients.some(
+        (ing) => ing.ingredient === row.ingredient
+      )
+    ) {
+      recipes[row.recipeid].ingredients.push({
+        ingredient: row.ingredient,
+        amount: row.amount,
+      });
+    }
 
-    // Add step
-    recipes[row.recipeid].steps.push({
-      step_number: row.step_number,
-      description: row.step_description,
-    });
+    // Add step if it does not already exist
+    if (
+      !recipes[row.recipeid].steps.some(
+        (step) => step.step_number === row.step_number
+      )
+    ) {
+      recipes[row.recipeid].steps.push({
+        step_number: row.step_number,
+        description: row.step_description,
+      });
+    }
 
-    // Add image if exists
+    // Update image if it exists
     if (row.image_url) {
-      recipes[row.recipeid].images.push(row.image_url);
+      recipes[row.recipeid].images = row.image_url;
     }
   });
 

@@ -8,7 +8,7 @@ const openToken = (req) => {
     if (headerToken && headerToken.startsWith('Bearer')) {
       token = headerToken.split(' ')[1];
     }
-    console.log(headerToken);
+    // console.log(headerToken);
     if (!token) {
       return res.status(401).json({ error: 'Go home, you are not allowed.🛑' });
     }
@@ -47,4 +47,4 @@ export const isUser = async (req, res, next) => {
     console.error(error);
     res.status(500).json({ message: error.message });
   }
-}
+} 

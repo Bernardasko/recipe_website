@@ -60,7 +60,6 @@ export const getAllCategories = async () => {
 
 export const getAllRecipesProfile = async () => {
   const getRecipes_url = import.meta.env.VITE_GET_RECIPE;
-  console.log(getRecipes_url);
   const token = window.localStorage.getItem('token');
   const config = {
     headers: { Authorization: `Bearer ${token}` },

@@ -45,9 +45,6 @@ export default function ResponsiveModal({recipeInfo}) {
               flexDirection: { xs: 'column', sm: 'row-reverse' },
             }}
           >
-            <Button variant="solid" color="success" onClick={() => setOpen(false)}>
-              Save
-            </Button>
             <Button
               variant="outlined"
               color="danger"

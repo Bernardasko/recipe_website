@@ -11,8 +11,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { postRecipe } from '../services/post.mjs';
 import { useLoaderData } from 'react-router-dom';
 import { patchRecipeById } from '../services/patch.mjs';
-
-// import { getAllCuisines, getAllCategories } from '../services/get.mjs';
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 function RecipeForm({ recipeInfo, setOpen }) {
   const [error, setError] = useState('');
@@ -22,6 +22,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   ]);
   const [cuisines, setCuisines] = useState(null);
   const [categories, setCategories] = useState(null);
+  const navigate = useNavigate();
 
   const data = useLoaderData();
   const {
@@ -37,16 +38,25 @@ function RecipeForm({ recipeInfo, setOpen }) {
     const newRecipe = {
       ...data,
     };
-    console.log(newRecipe);
     if (recipeInfo) {
+      newRecipe.recipeId = recipeInfo.recipeId;
       const patched = await patchRecipeById(newRecipe);
-      setOpen(false)
+      setOpen(false);
+      navigate('/profile/recipes');
+
+      if (patched.status !== 200) {
+        toast.error('Error occured, recipe is not updated');
+        setOpen(false);
+        navigate('/profile/recipes');
+      } else {
+        toast.success('Recipe updated');
+
+        setOpen(false);
+        navigate('/profile/recipes');
+      }
     } else {
-      console.log(123);
       const posted = await postRecipe(newRecipe);
-      console.log(posted);
-      // setOpen(false)
-    } 
+    }
   }
 
   const handleAddStep = () => {
@@ -60,7 +70,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   };
 
   const handleAddIngredient = () => {
-    setIngredients([...ingredients, { name: '', ingredients: '' }]);
+    setIngredients([...ingredients, { ingredient: '', amount: '' }]);
   };
 
   const handleIngredientChange = (index, field, value) => {
@@ -68,6 +78,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
     newIngredient[index][field] = value;
     setIngredients(newIngredient);
   };
+
   useEffect(() => {
     if (recipeInfo) {
       setValue('title', recipeInfo.name);
@@ -80,17 +91,28 @@ function RecipeForm({ recipeInfo, setOpen }) {
         (cat) => cat.name.toLowerCase() === recipeInfo.category.toLowerCase()
       );
       setValue('category', categoryObject ? categoryObject.name : '');
-      setValue('image', recipeInfo.image);
+      setValue('image', recipeInfo.images);
 
-      recipeInfo.ingredients.map((ingredient, index) => {
+      // Update the ingredients state
+      setIngredients(
+        recipeInfo.ingredients.map((ing) => ({
+          amount: ing.amount,
+          ingredient: ing.ingredient,
+        }))
+      );
+
+      recipeInfo.ingredients.forEach((ingredient, index) => {
         setValue(`ingredients.${index}.amount`, ingredient.amount);
         setValue(`ingredients.${index}.ingredient`, ingredient.ingredient);
       });
-      recipeInfo.steps.map((ingredient, index) => {
-        setValue(`steps.${index}`, ingredient.description);
+
+      setSteps(recipeInfo.steps.map((step) => step.description));
+      recipeInfo.steps.forEach((step, index) => {
+        setValue(`steps.${index}`, step.description);
       });
     }
   }, []);
+
   return (
     <>
       <Container component='main' maxWidth='xs'>
@@ -100,10 +122,15 @@ function RecipeForm({ recipeInfo, setOpen }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            maxWidth: 500,
+            mx: 'auto',
+            mt: 3,
+            height: '90vh',
+            overflowY: 'auto',
           }}
         >
           <Typography component='h1' variant='h5'>
-            Add new recipe
+            {recipeInfo ? 'Edit Recipe' : 'Add New Recipe'}
           </Typography>
           <Box
             component='form'
@@ -122,7 +149,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               {...register('title', {
                 required: 'Title field is required',
               })}
-              error={!!errors.email}
+              error={!!errors.title}
               helperText={errors.title ? errors.title.message : ''}
             />
             {ingredients.map((ingredient, index) => (
@@ -140,32 +167,34 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   required
                   fullWidth
                   name={`ingredients[${index}].amount`}
-                  label={`amount${index + 1}`}
+                  label={`Amount ${index + 1}`}
                   type='text'
-                  id='ingredients'
+                  id={`ingredients-amount-${index}`}
                   onChange={(e) =>
                     handleIngredientChange(index, 'amount', e.target.value)
                   }
                   {...register(`ingredients.${index}.amount`, {
-                    required: `amount ${index + 1} is required`,
+                    required: `Amount ${index + 1} is required`,
                   })}
-                  error={!!errors[`inggredients${index}`]}
+                  error={!!errors.ingredients?.[index]?.amount}
+                  helperText={errors.ingredients?.[index]?.amount?.message}
                 />
                 <TextField
                   margin='normal'
                   required
                   fullWidth
                   name={`ingredients[${index}].ingredient`}
-                  label={`ingredient${index + 1}`}
+                  label={`Ingredient ${index + 1}`}
                   type='text'
-                  id='ingredients'
+                  id={`ingredients-name-${index}`}
                   onChange={(e) =>
-                    handleIngredientChange(index, 'ingredients', e.target.value)
+                    handleIngredientChange(index, 'ingredient', e.target.value)
                   }
                   {...register(`ingredients.${index}.ingredient`, {
-                    required: `ingredient ${index + 1} is required`,
+                    required: `Ingredient ${index + 1} is required`,
                   })}
-                  error={!!errors[`inggredients${index}`]}
+                  error={!!errors.ingredients?.[index]?.ingredient}
+                  helperText={errors.ingredients?.[index]?.ingredient?.message}
                 />
               </Box>
             ))}
@@ -179,101 +208,49 @@ function RecipeForm({ recipeInfo, setOpen }) {
               + Add Ingredient
             </Button>
 
-            {recipeInfo ? (
-              recipeInfo.steps.map((step, index) => (
-                <TextField
-                  key={index}
-                  margin='normal'
-                  required
-                  fullWidth
-                  name={`steps[${index}]`}
-                  label={`Step ${index + 1}`}
-                  type='text'
-                  id='steps'
-                  onChange={(e) => handleStepChange(index, e.target.value)}
-                  {...register(`steps.${index}`, {
-                    required: `Step ${index + 1} is required`,
-                  })}
-                  error={!!errors[`steps${index}`]}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position='start'>
-                        {index + 1}
-                      </InputAdornment>
-                    ),
-                  }}
-                  helperText={
-                    errors[`steps${index}`]
-                      ? errors[`steps${index}`].message
-                      : ''
-                  }
-                />
-              ))
-            ) : (
-              <>
-                {steps.map((step, index) => (
-                  <TextField
-                    key={index}
-                    margin='normal'
-                    required
-                    fullWidth
-                    name={`steps[${index}]`}
-                    label={`Step ${index + 1}`}
-                    type='text'
-                    id='steps'
-                    onChange={(e) => handleStepChange(index, e.target.value)}
-                    {...register(`steps.${index}`, {
-                      required: `Step ${index + 1} is required`,
-                    })}
-                    error={!!errors[`steps${index}`]}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position='start'>
-                          {index + 1}
-                        </InputAdornment>
-                      ),
-                    }}
-                    helperText={
-                      errors[`steps${index}`]
-                        ? errors[`steps${index}`].message
-                        : ''
-                    }
-                  />
-                ))}
-              </>
-            )}
-            {recipeInfo ? (
-              <>
-                <Button
-                  type='button'
-                  fullWidth
-                  variant='outlined'
-                  sx={{ mt: 2, mb: 2 }}
-                  onClick={handleAddStep}
-                >
-                  + Add Step
-                </Button>
-              </>
-            ) : (
-              <Button
-                type='button'
+            {steps.map((step, index) => (
+              <TextField
+                key={index}
+                margin='normal'
+                required
                 fullWidth
-                variant='outlined'
-                sx={{ mt: 2, mb: 2 }}
-                onClick={handleAddStep}
-              >
-                + Add Step
-              </Button>
-            )}
+                name={`steps[${index}]`}
+                label={`Step ${index + 1}`}
+                type='text'
+                id={`step-${index}`}
+                onChange={(e) => handleStepChange(index, e.target.value)}
+                {...register(`steps.${index}`, {
+                  required: `Step ${index + 1} is required`,
+                })}
+                error={!!errors.steps?.[index]}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      {index + 1}
+                    </InputAdornment>
+                  ),
+                }}
+                helperText={errors.steps?.[index]?.message}
+              />
+            ))}
+            <Button
+              type='button'
+              fullWidth
+              variant='outlined'
+              sx={{ mt: 2, mb: 2 }}
+              onClick={handleAddStep}
+            >
+              + Add Step
+            </Button>
 
             <Box
               sx={{
                 mt: 3,
                 display: 'flex',
                 flexDirection: 'row',
-                gap: 2, // Space between items
+                gap: 2,
                 alignItems: 'center',
-                justifyContent: 'space-between', // Adjusts space between items for alignment
+                justifyContent: 'space-between',
               }}
             >
               <Controller
@@ -316,45 +293,43 @@ function RecipeForm({ recipeInfo, setOpen }) {
                       Cuisine
                     </MenuItem>
                     {data.cuisines.data &&
-                      data.cuisines.data.map((item, index) => {
-                        return (
-                          <MenuItem key={index} value={`${item.name}`}>
-                            {item.name}
-                          </MenuItem>
-                        );
-                      })}
+                      data.cuisines.data.map((item, index) => (
+                        <MenuItem key={index} value={item.name}>
+                          {item.name}
+                        </MenuItem>
+                      ))}
                   </Select>
                 )}
               />
-              <TextField
-                margin='normal'
-                required
-                fullWidth
-                type='img'
-                id='image'
-                label='image URL'
-                name='imaga'
-                {...register('image', {
-                  required: 'Image URL field is required',
-                })}
-                error={!!errors.image}
-                helperText={errors.image ? errors.image.message : ''}
-              />
-
-              {error && <div style={{ color: 'red' }}>{error}</div>}
             </Box>
+            <TextField
+              margin='normal'
+              required
+              fullWidth
+              type='url'
+              id='image'
+              label='Image URL'
+              name='image'
+              {...register('image', {
+                required: 'Image URL field is required',
+              })}
+              error={!!errors.image}
+              helperText={errors.image ? errors.image.message : ''}
+            />
+
+            {error && <div style={{ color: 'red' }}>{error}</div>}
             <Button
               type='submit'
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
-              onSubmit={onSubmit}
             >
-              Submit
+              {recipeInfo ? 'Update Recipe' : 'Add Recipe'}
             </Button>
           </Box>
         </Box>
       </Container>
+      <Toaster />
     </>
   );
 }

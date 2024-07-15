@@ -7,6 +7,7 @@ import {
 } from '../models/recipesModel.mjs';
 
 export const postRecipe = async (req, res) => {
+  console.log('IMA FROM POST');
   try {
     let { title, ingredients, steps, category, cuisine, image } = req.body;
     console.log(req.body);
@@ -17,7 +18,7 @@ export const postRecipe = async (req, res) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase();
       }
-    }); 
+    });
     steps.forEach((step, index) => {
       steps[index] = step.toLowerCase();
     });
@@ -56,19 +57,20 @@ export const deleteRecipe = async (req, res) => {
 export const patchRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
-    console.log(recipeId);
-    let { title, ingredients, steps, category, cuisine, images } = req.body;
+    // console.log(recipeId);
+    let { title, ingredients, steps, category, cuisine, image } = req.body;
+    console.log(title, ingredients, steps, category, cuisine, image, 'im image' );
+    steps.forEach((step, index) => {
+      steps[index] = step.toLowerCase();
+    });
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase();
       }
     });
-    steps.forEach((step, index) => {
-      console.log(step);
-      steps[index].description = step.description.toLowerCase();
-    });
     cuisine = cuisine.toLowerCase();
-
+    
+    // console.log(recipeId, title, ingredients, steps, category, cuisine, image);
     const patchedRecipe = await pg_patchRecipe(
       recipeId,
       title,
@@ -76,7 +78,7 @@ export const patchRecipe = async (req, res) => {
       steps,
       category,
       cuisine,
-      images
+      image
     );
     res.status(200).json(patchedRecipe);
   } catch (error) {
@@ -88,10 +90,10 @@ export const patchRecipe = async (req, res) => {
 export const getRecipes = async (req, res) => {
   try {
     const user = req.user;
-    console.log(user);
+    console.log(user.role, ' - is user role');
 
     if (user.role === 'user') {
-      console.log(user.id);
+      console.log(user.id, ' - is user id');
       const recipes = await pg_getRecipesByUserId(user.id);
       console.log(recipes);
       res.status(200).json(recipes);

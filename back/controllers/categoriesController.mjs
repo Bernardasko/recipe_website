@@ -25,7 +25,6 @@ export const getRecipesByCategoryId = async (req, res) => {
 
 export const getAllCategories = async (req, res) => {
   try {
-    console.log(112);
     const allCategories = await pg_getAllCategories();
     
     if (allCategories.length === 0)
