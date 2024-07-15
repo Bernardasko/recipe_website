@@ -48,6 +48,7 @@ export const getAllCategories = async () => {
     headers: { Authorization: `Bearer ${token}` },
   };
   try {
+    console.log(categories_url);
     const response = await axios.get(categories_url, config);
     if (response.status === 200) {
       return response.data;
@@ -92,4 +93,23 @@ export const getAllRecipes = async () => {
     console.error(error);
     throw error;
   }
+}
+
+export const getRecipeByCategoryId = async (id) => {
+  const getRecipes_url = import.meta.env.VITE_CATEGORIES;
+  // console.log(getRecipes_url+'/'+id);
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+try {
+  const response = await axios.get(`${getRecipes_url}/${id}`, config)
+  // console.log(response);
+  return response.data
+} catch (error) {
+  console.error(error);
+    throw error;
+}
+
+
 }

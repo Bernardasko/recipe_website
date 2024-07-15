@@ -7,11 +7,13 @@ import { useContext, useState } from "react";
 import { AppContext } from "./src/context/AppContext";
 import SearchBar from "./src/components/SearchBar";
 import AppDrawer from "./src/components/AppDrawer";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
 function Layout() {
   const { setToken } = useContext(AppContext);
+  const navigate = useNavigate()
   const token = window.localStorage.getItem("token");
   let decoded;
   if (token) {
@@ -27,7 +29,8 @@ function Layout() {
   const clearToken = () => {
     localStorage.clear();
     setToken(null);
-    window.location.reload();
+    // navigate('/', {replace: true})
+    window.location.reload('/')
   };
 
   return (
@@ -65,6 +68,16 @@ function Layout() {
                     style={{ textDecoration: "none", color: "white" }}
                   >
                     Category
+                  </NavLink>
+                </Button>
+              )}
+              {token && (
+                <Button color="inherit">
+                  <NavLink
+                    to="/category"
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    Recipes
                   </NavLink>
                 </Button>
               )}

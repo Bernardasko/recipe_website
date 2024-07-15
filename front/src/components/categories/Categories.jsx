@@ -1,23 +1,20 @@
-import NewCategory from './NewCategory';
-import CategoryListProfile from './CategoryListProfile';
 import { useLoaderData } from 'react-router-dom';
+import AllcategoriesRecipes from './AllCategoriesRecipes.jsx';
 
 function Categories() {
   const data = useLoaderData();
   console.log(data);
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
-  // Ensure data is an array before attempting to map over it
-  if (!Array.isArray(data)) {
-    return <div>Error: Data is not an array</div>;
-  }
-
   return (
     <>
-      <NewCategory />
-      <CategoryListProfile data={data} />
+      <h1>hello</h1>
+      {data.map((category, index) => {
+        return (
+          <div key={index}>
+            <p>{category.name}</p>
+            <AllcategoriesRecipes categoryId={category.categoryid} />
+          </div>
+        );
+      })}
     </>
   );
 }

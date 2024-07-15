@@ -11,11 +11,18 @@ import Login from './components/Login';
 import CategoryPage from './pages/categoryPage/CategoryPage';
 import RecipeForm from './components/RecipeForm.jsx';
 import Profile from './components/Profile';
+
+import CategoriesProfile from './components/categories/CategoriesProfile';
+
+import Category from './pages/categoryPage/Category';
+
 import Categories from './components/categories/Categories';
+
 import {
   getAllCategories,
   getAllRecipesProfile,
   getAllCuisines,
+  getCategoryById,
 } from './services/get.mjs';
 
 import RecipeProfile from './components/recipeProfile/RecipeProfile';
@@ -29,8 +36,16 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
       {
         path: '/category',
-        element: <CategoryPage />,
-        errorElement: <ErrorPage />,
+
+        children: [
+          {
+            index: true,
+            element: <Categories />,
+            loader: getAllCategories,
+            errorElement: <ErrorPage />,
+          },
+          { path: '/category/:categoryName', element: <Category /> },
+        ],
       },
       {
         path: '/recipeform',
@@ -44,7 +59,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: '/profile/categories',
-            element: <Categories />,
+            element: <CategoriesProfile />,
             loader: getAllCategories,
             errorElement: <ErrorPage />,
           },
@@ -55,7 +70,7 @@ const router = createBrowserRouter([
               const recipes = await getAllRecipesProfile();
               const cuisines = await getAllCuisines();
               const categories = await getAllCategories();
-              return {recipes, cuisines, categories}
+              return { recipes, cuisines, categories };
             },
             errorElement: <ErrorPage />,
           },

@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.route('/:categoryId/recipes').get(getRecipesByCategoryId)
 router.route('/').get(isUser, getAllCategories).post(isAdmin, addCategory)
-router.route('/:categoryId').delete(isAdmin, deleteCategory)
+router.route('/:categoryId').delete(isAdmin, deleteCategory).get(getRecipesByCategoryId)
 
 
 export default router

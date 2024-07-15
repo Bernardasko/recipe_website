@@ -3,8 +3,15 @@ import { styled } from '@mui/material/styles';
 import { Card, CardMedia, CardContent, CardActions, Collapse, IconButton, Typography, Box } from '@mui/material';
 import { Favorite as FavoriteIcon, Share as ShareIcon, ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { getCategoryById } from '../services/get.mjs';
+import { useLoaderData } from 'react-router-dom';
+import { data } from 'autoprefixer';
+import { useNavigate } from 'react-router-dom';
 
 const ExpandMore = styled((props) => {
+  const data = useLoaderData()
+  console.log(data);
+  const navigate = useNavigate()
+  const [ids, setIds ] = useState([])
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
@@ -111,6 +118,7 @@ export default function RecipeCards() {
           borderBottom: '2px solid #1976d2',
           paddingBottom: 1
         }}
+        onClick={navigate(`/`)}
       >
         {title}
       </Typography>
@@ -122,7 +130,11 @@ export default function RecipeCards() {
 
   return (
     <>
-      {categorizedRecipes.main_dish && renderRecipeSection('Main Dishes', categorizedRecipes.main_dish)}
+    {/* {data.map((category, index) => {
+      return (categorizedRecipes.drinks && renderRecipeSection('Drinks', categorizedRecipes.drinks))
+
+    })} */}
+      {categorizedRecipes['main dish'] && renderRecipeSection('Main Dishes', categorizedRecipes['main dish'])}
       {categorizedRecipes.drinks && renderRecipeSection('Drinks', categorizedRecipes.drinks)}
       {categorizedRecipes.dessert && renderRecipeSection('Desserts', categorizedRecipes.dessert)}
       {categorizedRecipes.appetiser && renderRecipeSection('Appetisers', categorizedRecipes.appetiser)}
