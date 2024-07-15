@@ -270,3 +270,30 @@ CREATE TABLE Images (
     ImageURL TEXT,
     FOREIGN KEY (RecipeID) REFERENCES Recipes(RecipeID) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Comments Table
+CREATE TABLE comments (
+    commentid SERIAL PRIMARY KEY,
+    recipeid INTEGER REFERENCES recipes(recipeid) ON DELETE CASCADE,
+    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Ratings Table
+CREATE TABLE ratings (
+    ratingid SERIAL PRIMARY KEY,
+    recipeid INTEGER REFERENCES recipes(recipeid) ON DELETE CASCADE,
+    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 10),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Followers Table
+CREATE TABLE followers (
+    followerid SERIAL PRIMARY KEY,
+    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    followsid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (userid, followsid)
+);

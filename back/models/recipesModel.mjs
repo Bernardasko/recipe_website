@@ -323,3 +323,114 @@ export const pg_getAllRecipes = async () => {
   // Convert recipes object to an array
   return Object.values(recipes);
 };
+
+export const pg_getRecipeByIdWithSocials = async (recipeId) => {
+  const flatResults = await sql`
+  SELECT 
+    r.recipeid AS recipeId,
+    r.title AS name,
+    u.name AS username,
+    u.lastname AS userlastname,
+    c.name AS category,
+    cu.name AS cuisine,
+    i.name AS ingredient,
+    ri.amount AS amount,
+    rs.stepnumber AS step_number,
+    rs.description AS step_description,
+    im.imageurl AS image_url,
+    com.commentid AS comment_id,
+    com.comment AS comment_text,
+    com.created_at AS comment_date,
+    ucom.name AS commenter_name,
+    ucom.lastname AS commenter_lastname,
+    rat.ratingid AS rating_id,
+    rat.rating AS rating_value,
+    urat.name AS rater_name,
+    urat.lastname AS rater_lastname,
+    rat.created_at AS rating_date
+  FROM recipes r
+  INNER JOIN users u ON r.userid = u.id
+  INNER JOIN categories c ON r.categoryid = c.categoryid
+  INNER JOIN recipe_ingredients ri ON r.recipeid = ri.recipeid
+  INNER JOIN ingredients i ON ri.ingredientid = i.ingredientid
+  INNER JOIN recipe_steps rs ON r.recipeid = rs.recipeid
+  INNER JOIN cuisines cu ON r.cuisineid = cu.cuisineid
+  LEFT JOIN images im ON r.recipeid = im.recipeid
+  LEFT JOIN comments com ON r.recipeid = com.recipeid
+  LEFT JOIN users ucom ON com.userid = ucom.id
+  LEFT JOIN ratings rat ON r.recipeid = rat.recipeid
+  LEFT JOIN users urat ON rat.userid = urat.id
+  WHERE r.recipeid = ${recipeId}
+  ORDER BY rs.stepnumber, com.created_at, rat.created_at;
+  `;
+
+  const recipe = {
+    recipeId: recipeId,
+    name: '',
+    username: '',
+    userlastname: '',
+    category: '',
+    cuisine: '',
+    ingredients: [],
+    steps: [],
+    images: [],
+    comments: [],
+    ratings: [],
+  };
+
+  flatResults.forEach((row) => {
+    // Set basic recipe info
+    if (!recipe.name) {
+      recipe.name = row.name;
+      recipe.username = row.username;
+      recipe.userlastname = row.userlastname;
+      recipe.category = row.category;
+      recipe.cuisine = row.cuisine;
+    }
+
+    // Add ingredients
+    if (row.ingredient && row.amount) {
+      recipe.ingredients.push({
+        ingredient: row.ingredient,
+        amount: row.amount,
+      });
+    }
+
+    // Add steps
+    if (row.step_number && row.step_description) {
+      recipe.steps.push({
+        step_number: row.step_number,
+        description: row.step_description,
+      });
+    }
+
+    // Add images
+    if (row.image_url) {
+      recipe.images.push(row.image_url);
+    }
+
+    // Add comments
+    if (row.comment_id) {
+      recipe.comments.push({
+        comment_id: row.comment_id,
+        comment_text: row.comment_text,
+        comment_date: row.comment_date,
+        commenter_name: row.commenter_name,
+        commenter_lastname: row.commenter_lastname,
+      });
+    }
+
+    // Add ratings
+    if (row.rating_id) {
+      recipe.ratings.push({
+        rating_id: row.rating_id,
+        rating_value: row.rating_value,
+        rating_date: row.rating_date,
+        rater_name: row.rater_name,
+        rater_lastname: row.rater_lastname,
+      });
+    }
+  });
+
+  return recipe;
+};

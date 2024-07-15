@@ -4,6 +4,7 @@ import {
   pg_patchRecipe,
   pg_getAllRecipes,
   pg_getRecipesByUserId,
+  pg_getRecipeByIdWithSocials
 } from '../models/recipesModel.mjs';
 
 export const postRecipe = async (req, res) => {
@@ -107,3 +108,15 @@ export const getRecipes = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+export const getRecipeByIdWithSocials = async (req, res) => {
+  try {
+    const { id } = req.params
+    const recipe = await pg_getRecipeByIdWithSocials(id)
+    res.status(200).json(recipe)
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error });
+  }
+}

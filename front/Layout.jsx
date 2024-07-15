@@ -107,15 +107,24 @@ function Layout() {
                 </Button>
               </>
             )}
-            {!token && (
+            {!token && ( <>
+              <Button color="inherit">
+                <NavLink
+                  to="/signup"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  >
+                  SignUp
+                </NavLink>
+              </Button>
               <Button color="inherit">
                 <NavLink
                   to="/login"
                   style={{ textDecoration: "none", color: "inherit" }}
-                >
+                  >
                   Login
                 </NavLink>
               </Button>
+                  </>
             )}
           </Toolbar>
         </AppBar>

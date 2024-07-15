@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  RouterProvider,
+  useParams,
+} from 'react-router-dom';
 import AppProvider from './context/AppProvider';
 import Layout from '../Layout.jsx';
 import App from './App.jsx';
@@ -23,9 +27,12 @@ import {
   getAllRecipesProfile,
   getAllCuisines,
   getCategoryById,
+  getRecipeById
 } from './services/get.mjs';
 
 import RecipeProfile from './components/recipeProfile/RecipeProfile';
+import RecipeCardNew from './components/categories/RecipeCardNew';
+import RecipeCardBig from './components/recipe/RecipeCardBig'
 
 const router = createBrowserRouter([
   {
@@ -36,7 +43,6 @@ const router = createBrowserRouter([
       { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
       {
         path: '/category',
-
         children: [
           {
             index: true,
@@ -44,7 +50,22 @@ const router = createBrowserRouter([
             loader: getAllCategories,
             errorElement: <ErrorPage />,
           },
-          { path: '/category/:categoryName', element: <Category /> },
+          {
+            path: '/category/:categoryId',
+            element: <Category />,
+            loader: async ({ params }) => {
+              const { categoryId } = params;
+              return await getCategoryById(categoryId);
+            },
+          },
+          {
+            path: `/category/:categoryId/:recipeId`,
+            element: <RecipeCardBig/>,
+            loader: async ({params}) => {
+              const {recipeId} = params
+              return await getRecipeById(recipeId)
+            }
+          },
         ],
       },
       {
