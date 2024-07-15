@@ -18,6 +18,7 @@ import toast, { Toaster } from 'react-hot-toast';
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   
 
   const signup_url =
@@ -26,6 +27,7 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { errors },
+    watch
   } = useForm({
     defaultValues: {
       name: '',
@@ -36,7 +38,17 @@ export default function Signup() {
     },
   });
 
+  const password = watch("password");
+
   async function onSubmit(values) {
+    if (values.password !== values.repeatPassword) {
+      setError("repeatPassword", {
+        type: "manual",
+        message: "The passwords do not match"
+      });
+      return;
+    }
+
     try {
       console.log(values);
       const { status, data } = await axios.post(signup_url, values);
@@ -81,11 +93,16 @@ export default function Signup() {
               required
               fullWidth
               id='name'
-              label='Name'
+              label='First Name'
               name='name'
               autoComplete='name'
               autoFocus
-              {...register('name', { required: 'Please enter your name' })}
+              {...register('name', { required: 'Please enter your name',
+                maxLength: {
+                  value: 100,
+                  message: 'First Name must be less than 100 characters',
+                }
+               })}
               error={!!errors.name}
               helperText={errors.name?.message}
             />
@@ -134,37 +151,38 @@ export default function Signup() {
               autoComplete='current-password'
               {...register('password', {
                 required: 'Please enter your password',
-                // minLength: {
-                //   value: 8,
-                //   message: 'Password must be at least 8 characters long',
-                // },
-                // maxLength: {
-                //   value: 20,
-                //   message: 'Password must be at most 20 characters long',
-                // },
-                // pattern: {
-                //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
-                //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
-                // },
+                minLength: {
+                  value: 8,
+                  message: 'Password must be at least 8 characters long',
+                },
+                maxLength: {
+                  value: 100,
+                  message: 'Password must be at most 20 characters long',
+                },
+                pattern: {
+                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                  message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}
             />
             <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='repeatPassword'
-              label='Password Confirm'
-              type='password'
-              id='repeatPassword'
-              autoComplete='new-password'
-              {...register('repeatPassword', {
-                required: 'Please confirm your password',
-              })}
-              error={!!errors.repeatPassword}
-              helperText={errors.repeatPassword?.message}
-            />
+            margin='normal'
+            required
+            fullWidth
+            name='repeatPassword'
+            label='Password Confirm'
+            type='password'
+            id='repeatPassword'
+            autoComplete='new-password'
+            {...register('repeatPassword', {
+              required: 'Please confirm your password',
+              validate: (value) => value === password || "The passwords do not match"
+            })}
+            error={!!errors.repeatPassword}
+            helperText={errors.repeatPassword?.message}
+          />
             <Button
               type='submit'
               fullWidth
