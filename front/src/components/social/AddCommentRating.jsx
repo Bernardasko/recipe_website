@@ -1,4 +1,4 @@
-[3:57 PM] Bernardas Kondratavičius
+
 import { useState, useContext } from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
@@ -51,7 +51,7 @@ const labels = {
     return (
 <Box
       component="form"
-      onSubmit={handleSubmit(formSubmitHandler)}
+      // onSubmit={handleSubmit(formSubmitHandler)}
       style={{
         display: 'flex',
         flexDirection: 'row',

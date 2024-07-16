@@ -28,10 +28,10 @@ const AddCommentRating = () => {
 
   return (
     <Box>
-      {filteredUserTours.map((user) => (
-        user.tours.map((tour, index) => (
+      {/* {filteredUserTours.map((user) => (
+        user.tours.map((tour, index) => ( */}
           <Box 
-            key={index} 
+            // key={index} 
             style={{
               width: '500px',
               display: 'flex',
@@ -45,20 +45,20 @@ const AddCommentRating = () => {
             }}
           >
             <Typography variant="body1" gutterBottom>
-              Comment: {comment}
+              Comment: {}
             </Typography>
             <Typography variant="h6" gutterBottom>
               Your Rating
             </Typography>
             <Rating
-              value={}
+              // value={}
               precision={0.5}
               readOnly
             />
-            <Typography variant="body1">{labels[recipe.rating]}</Typography>
+            {/* <Typography variant="body1">{labels[recipe.rating]}</Typography> */}
           </Box>
-        ))
-      ))}
+        {/* ))
+      ))} */}
     </Box>
   );
 };

@@ -14,6 +14,8 @@ import {
 import { useLoaderData } from "react-router-dom";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
 import PublicIcon from "@mui/icons-material/Public";
+import AddCommentRating from '../social/AddCommentRating';
+ import CommentRaitingCards from '../social/CommentRaitingCards';
 
 const theme = createTheme({
   palette: {
@@ -30,6 +32,7 @@ const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData()
   console.log(data);
   return (
+    <>
     <Card sx={{ maxWidth: 600, margin: 'auto', marginTop: 4 }}>
       <CardMedia
         component="img"
@@ -85,6 +88,9 @@ const RecipeCardBig = ({ recipe }) => {
         </List>
       </CardContent>
     </Card>
+    <CommentRaitingCards/>
+    <AddCommentRating/>
+    </>
   );
 };
 
