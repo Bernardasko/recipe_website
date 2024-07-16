@@ -94,7 +94,6 @@ function Login() {
               label='Email Address'
               name='email'
               autoComplete='email'
-              autoFocus
               {...register('email', {
                 required: 'Please enter your email',
                 pattern: {

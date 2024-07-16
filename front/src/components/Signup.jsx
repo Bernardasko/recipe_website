@@ -117,6 +117,10 @@ export default function Signup() {
               autoFocus
               {...register('lastname', {
                 required: 'Please enter your Last Name',
+                maxLength: {
+                  value: 100,
+                  message: 'Last Name must be less than 100 characters',
+                }
               })}
               error={!!errors.lastname}
               helperText={errors.lastname?.message}

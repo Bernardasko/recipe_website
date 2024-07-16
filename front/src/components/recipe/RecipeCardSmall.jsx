@@ -1,14 +1,49 @@
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { CardActionArea } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
 function RecipeCardSmall({ recipeData }) {
+console.log(recipeData);
+  const exampleImgUrl = "https://www.sauletavirtuve.lt/wp-content/uploads/Biskvitinis-tortas-su-mangais-ir-braskemis_1200-1170x1753.jpg";
+  const {categoryId} = useParams()
   return (
-    <div>
-      <div className='mx-4 p-3 border border-black rounded-lg'>
-        <h1>Recipe card small</h1>
-        <p>recipe name: {recipeData.name}</p>
-        <p>Cuisine: {recipeData.cuisine}</p>
-        <p>Category: {recipeData.category}</p>
-      </div>
-    </div>
+    <Card   sx={{ maxWidth: 345 }}>
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          height="140px"
+          image={exampleImgUrl}
+          alt="green iguana"
+          sx={{
+            height: "200px",
+          }}
+
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+          recipe name: {recipeData.name}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          Cuisine: {recipeData.cuisine}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+          Category: {recipeData.category}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <Button>
+        <Link to={`/category/${categoryId}/recipe/${recipeData.recipeId}`}>
+          View Recipe
+        </Link>
+      </Button>
+    </Card>
   );
 }
 
 export default RecipeCardSmall;
+
+
+
