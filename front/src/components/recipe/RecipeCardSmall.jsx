@@ -6,6 +6,7 @@ function RecipeCardSmall({ recipeData }) {
         <p>recipe name: {recipeData.name}</p>
         <p>Cuisine: {recipeData.cuisine}</p>
         <p>Category: {recipeData.category}</p>
+        
       </div>
     </div>
   );

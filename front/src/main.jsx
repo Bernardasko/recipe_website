@@ -1,26 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import {
   createBrowserRouter,
   RouterProvider,
   useParams,
-} from 'react-router-dom';
-import AppProvider from './context/AppProvider';
-import Layout from '../Layout.jsx';
-import App from './App.jsx';
-import ErrorPage from './error-page';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import CategoryPage from './pages/categoryPage/CategoryPage';
-import RecipeForm from './components/RecipeForm.jsx';
-import Profile from './components/Profile';
+} from "react-router-dom";
+import AppProvider from "./context/AppProvider";
+import Layout from "../Layout.jsx";
+import App from "./App.jsx";
+import ErrorPage from "./error-page";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import CategoryPage from "./pages/categoryPage/CategoryPage";
+import RecipeForm from "./components/RecipeForm.jsx";
+import Profile from "./components/Profile";
 
-import CategoriesProfile from './components/categories/CategoriesProfile';
+import CategoriesProfile from "./components/categories/CategoriesProfile";
 
-import Category from './pages/categoryPage/Category';
+import Category from "./pages/categoryPage/Category";
 
-import Categories from './pages/categoryPage/Categories';
+import Categories from "./pages/categoryPage/Categories";
 
 import {
   getAllCategories,
@@ -28,20 +28,25 @@ import {
   getAllCuisines,
   getCategoryById,
   getRecipeById,
-} from './services/get.mjs';
+  getCuisineById,
+} from "./services/get.mjs";
 
-import RecipeProfile from './components/recipeProfile/RecipeProfile';
-import RecipeCardBig from './components/recipe/RecipeCardBig';
+import RecipeProfile from "./components/recipeProfile/RecipeProfile";
+import RecipeCardBig from "./components/recipe/RecipeCardBig";
+
+import Cuisines from "./pages/cuisines/Cuisines.jsx";
+import AllCuisinesRecipes from "./pages/cuisines/AllCuisineRecipes.jsx";
+import Cuisine from "./pages/cuisines/Cuisine.jsx";
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
     children: [
-      { path: '/', element: <App />, errorElement: <ErrorPage /> },
-      { path: '/signup', element: <Signup />, errorElement: <ErrorPage /> },
-      { path: '/login', element: <Login />, errorElement: <ErrorPage /> },
+      { path: "/", element: <App />, errorElement: <ErrorPage /> },
+      { path: "/signup", element: <Signup />, errorElement: <ErrorPage /> },
+      { path: "/login", element: <Login />, errorElement: <ErrorPage /> },
       {
-        path: '/category',
+        path: "/category",
         children: [
           {
             index: true,
@@ -50,7 +55,7 @@ const router = createBrowserRouter([
             errorElement: <ErrorPage />,
           },
           {
-            path: '/category/:categoryId',
+            path: "/category/:categoryId",
             element: <Category />,
             loader: async ({ params }) => {
               const { categoryId } = params;
@@ -68,23 +73,42 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: '/recipeform',
+        path: "/cuisines",
+        children: [
+          {
+            index: true,
+            element: <Cuisines />,
+            loader: getAllCuisines,
+            errorElement: <ErrorPage />,
+          },
+          {
+            path: "/cuisines/:cuisineId",
+            element: <Cuisine />,
+            loader: async ({ params }) => {
+              const { cuisineId } = params;
+              return await getCuisineById(cuisineId);
+            },
+          },
+        ],
+      },
+      {
+        path: "/recipeform",
         element: <RecipeForm />,
         errorElement: <ErrorPage />,
       },
       {
-        path: '/profile',
+        path: "/profile",
         element: <Profile />,
         errorElement: <ErrorPage />,
         children: [
           {
-            path: '/profile/categories',
+            path: "/profile/categories",
             element: <CategoriesProfile />,
             loader: getAllCategories,
             errorElement: <ErrorPage />,
           },
           {
-            path: '/profile/recipes',
+            path: "/profile/recipes",
             element: <RecipeProfile />,
             loader: async () => {
               const recipes = await getAllRecipesProfile();
@@ -95,7 +119,7 @@ const router = createBrowserRouter([
             errorElement: <ErrorPage />,
           },
           {
-            path: '/profile/add_recipe',
+            path: "/profile/add_recipe",
             element: <RecipeForm />,
             loader: async () => {
               const cuisines = await getAllCuisines();
@@ -110,7 +134,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AppProvider>
       <RouterProvider router={router} />

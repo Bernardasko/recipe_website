@@ -7,20 +7,27 @@ export const getCategoryById = async (id) => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-
+  
   const category = await axios.get(`${get_app_category}/${id}`, config);
-
+  
   return category.data;
 };
 
 export const getCuisineById = async (id) => {
+  const get_app_cuisine = import.meta.env.VITE_CUISINE_BY_ID;
   const token = window.localStorage.getItem('token');
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+  try {
 
   const cuisine = await axios.get(`${get_app_cuisine}/${id}`, config);
-  return cuisine.data;
+  return cuisine.data
+    
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
 };
 
 export const getAllCuisines = async () => {
@@ -110,6 +117,7 @@ export const getRecipeByCategoryId = async (id) => {
     throw error;
   }
 };
+
 
 export const getRecipeById = async (id) => {
   const recipe_url = import.meta.env.VITE_GET_RECIPE;

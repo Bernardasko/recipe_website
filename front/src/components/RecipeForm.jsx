@@ -24,7 +24,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const [categories, setCategories] = useState(null);
   const navigate = useNavigate();
 
-  const data = useLoaderData();
+  const data = useLoaderData(); 
   const {
     handleSubmit,
     register,

@@ -74,10 +74,10 @@ function Layout() {
               {token && (
                 <Button color="inherit">
                   <NavLink
-                    to="/category"
+                    to="/cuisines"
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    Recipes
+                    Cuisines
                   </NavLink>
                 </Button>
               )}

@@ -4,6 +4,6 @@ import {getRecipesByCuisineId, getAllcusines} from '../controllers/cuisinesContr
 const router = express.Router()
 
 router.route('/').get(getAllcusines)
-router.route('/:cuisineId/recipes').get(getRecipesByCuisineId)
+router.route('/:cuisineId').get(getRecipesByCuisineId)
 
 export default router

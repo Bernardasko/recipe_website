@@ -30,7 +30,7 @@ export const postRecipe = async (req, res) => {
     const newRecipe = await pg_postRecipe(
       title,
       ingredients,
-      steps,
+      steps, 
       category.toLowerCase(),
       cuisine,
       image,
