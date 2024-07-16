@@ -10,7 +10,6 @@ export const getCategoryById = async (id) => {
 
   const category = await axios.get(`${get_app_category}/${id}`, config);
 
-
   return category.data;
 };
 
@@ -48,7 +47,7 @@ export const getAllCategories = async () => {
     headers: { Authorization: `Bearer ${token}` },
   };
   try {
-    console.log(categories_url);
+    // console.log(categories_url);
     const response = await axios.get(categories_url, config);
     if (response.status === 200) {
       return response.data;
@@ -75,7 +74,7 @@ export const getAllRecipesProfile = async () => {
     console.error(error);
     throw error;
   }
-}
+};
 
 export const getAllRecipes = async () => {
   const getRecipes_url = import.meta.env.VITE_GET_RECIPE;
@@ -93,7 +92,7 @@ export const getAllRecipes = async () => {
     console.error(error);
     throw error;
   }
-}
+};
 
 export const getRecipeByCategoryId = async (id) => {
   const getRecipes_url = import.meta.env.VITE_CATEGORIES;
@@ -102,32 +101,30 @@ export const getRecipeByCategoryId = async (id) => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-try {
-  const response = await axios.get(`${getRecipes_url}/${id}`, config)
-  // console.log(response);
-  return response.data
-} catch (error) {
-  console.error(error);
-    throw error;
-}
-
-
-}
-
-export const getRecipeById = async (id) => {
-  const recipe_url = import.meta.env.VITE_GET_RECIPE;
-  console.log(recipe_url+'/'+id);
-  const token = window.localStorage.getItem('token');
-  const config = {
-    headers: { Authorization: `Bearer ${token}` },
-  };
-  
   try {
-    const response = await axios.get(`${recipe_url}/${id}`, config)
-
-    return response.data
+    const response = await axios.get(`${getRecipes_url}/${id}`, config);
+    // console.log(response);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
-}
+};
+
+export const getRecipeById = async (id) => {
+  const recipe_url = import.meta.env.VITE_GET_RECIPE;
+  console.log(recipe_url + '/' + id);
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  try {
+    const response = await axios.get(`${recipe_url}/${id}`, config);
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

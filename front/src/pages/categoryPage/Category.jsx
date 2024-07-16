@@ -9,13 +9,14 @@ function Category() {
       <h1 className='text-4xl text-center'>{data[0].category}</h1>
       {data.map((recipe, index) => {
         return (
-          
-          <Link
-            key={index}
-            to={`/category/${recipe.category}/${recipe.recipeId}`}
-          >
-            <RecipeCardSmall recipeData={recipe} />
-          </Link>
+          <div>
+            <Link
+              key={index}
+              to={`/category/${recipe.category}/recipe/${recipe.recipeId}`}
+            >
+              <RecipeCardSmall recipeData={recipe} />
+            </Link>
+          </div>
         );
       })}
     </>
