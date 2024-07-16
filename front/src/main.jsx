@@ -20,19 +20,18 @@ import CategoriesProfile from './components/categories/CategoriesProfile';
 
 import Category from './pages/categoryPage/Category';
 
-import Categories from './components/categories/Categories';
+import Categories from './pages/categoryPage/Categories';
 
 import {
   getAllCategories,
   getAllRecipesProfile,
   getAllCuisines,
   getCategoryById,
-  getRecipeById
+  getRecipeById,
 } from './services/get.mjs';
 
 import RecipeProfile from './components/recipeProfile/RecipeProfile';
-import RecipeCardNew from './components/categories/RecipeCardNew';
-import RecipeCardBig from './components/recipe/RecipeCardBig'
+import RecipeCardBig from './components/recipe/RecipeCardBig';
 
 const router = createBrowserRouter([
   {
@@ -59,12 +58,12 @@ const router = createBrowserRouter([
             },
           },
           {
-            path: `/category/:categoryId/:recipeId`,
-            element: <RecipeCardBig/>,
-            loader: async ({params}) => {
-              const {recipeId} = params
-              return await getRecipeById(recipeId)
-            }
+            path: `/category/:categoryId/recipe/:recipeId`,
+            element: <RecipeCardBig />,
+            loader: async ({ params }) => {
+              const { recipeId } = params;
+              return await getRecipeById(recipeId);
+            },
           },
         ],
       },

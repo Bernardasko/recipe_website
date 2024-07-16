@@ -1,12 +1,10 @@
-import RecipeCards from "../../components/RecipeCards";
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 function CategoryPage() {
-    return ( 
+  return (
     <>
-    <RecipeCards />
-
-    </> 
-    );
+      <h1>hello</h1>
+    </>
+  );
 }
 
 export default CategoryPage;
