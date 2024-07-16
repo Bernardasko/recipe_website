@@ -26,7 +26,7 @@ const theme = createTheme({
   },
 });
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData()
   console.log(data);
   return (
@@ -88,4 +88,4 @@ const RecipeCard = ({ recipe }) => {
   );
 };
 
-export default RecipeCard;
+export default RecipeCardBig;

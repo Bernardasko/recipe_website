@@ -120,6 +120,7 @@ export const getRecipeByCategoryId = async (id) => {
 
 
 export const getRecipeById = async (id) => {
+
   const recipe_url = import.meta.env.VITE_GET_RECIPE;
   console.log(recipe_url + '/' + id);
   const token = window.localStorage.getItem('token');

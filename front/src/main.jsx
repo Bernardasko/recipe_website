@@ -91,6 +91,16 @@ const router = createBrowserRouter([
           },
         ],
       },
+
+      {
+        path: "/recipe/:recipeId",
+        element: <RecipeCardBig />,
+        errorElement: <ErrorPage />,
+        loader: async ({ params }) => {
+          const { recipeId } = params;
+          return await getRecipeById(recipeId);
+        },
+      },
       {
         path: "/recipeform",
         element: <RecipeForm />,

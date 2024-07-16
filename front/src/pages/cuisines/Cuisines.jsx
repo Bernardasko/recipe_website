@@ -14,6 +14,7 @@ function Cuisines() {
           <Link key={index} to={`/cuisines/${cuisine.cuisineid}`}>
             <div className="border border-black m-2 p-2">
               <p>{cuisine.name}</p>
+              
               <AllCuisinesRecipes cuisineId={cuisine.cuisineid} />
             </div>
           </Link>

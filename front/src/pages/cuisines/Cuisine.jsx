@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import RecipeCardSmall from "../../components/recipe/RecipeCardSmall";
+import { Link } from "react-router-dom";
 
 function Cuisine() {
   const data = useLoaderData();
@@ -9,10 +10,12 @@ function Cuisine() {
       <h1>Hello I am cuisine!</h1>
       {data.map((recipe, index) => {
         return (
-          <div key={index}>
-            <RecipeCardSmall recipeData={recipe} />
-          </div>
-         
+          <Link to={`/recipe/${recipe.recipeId}`} key={index}>
+            <div>
+              <RecipeCardSmall recipeData={recipe} />
+            </div>
+            View Recipe
+          </Link>
         );
       })}
     </>

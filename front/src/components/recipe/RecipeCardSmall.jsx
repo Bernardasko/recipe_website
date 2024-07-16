@@ -35,7 +35,7 @@ console.log(recipeData);
         </CardContent>
       </CardActionArea>
       <Button>
-        <Link to={`/category/${categoryId}/recipe/${recipeData.recipeId}`}>
+        <Link to={`/recipe/${recipeData.recipeId}`}>
           View Recipe
         </Link>
       </Button>
