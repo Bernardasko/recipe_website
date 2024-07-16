@@ -5,6 +5,7 @@ import userRouter from './routes/usersRoutes.mjs';
 import recipeRouter from './routes/recipeRoutes.mjs';
 import categoryRouter from './routes/categorysRoute.mjs';
 import cuisineRouter from './routes/cuisinesRoutes.mjs';
+import socialRouter from './routes/socialRoute.mjs'
 
 const app = express();
 
@@ -15,5 +16,6 @@ app.use('/v1/users', userRouter);
 app.use('/v1/recipes', recipeRouter);
 app.use('/v1/categories', categoryRouter);
 app.use('/v1/cuisines', cuisineRouter);
+app.use('/v1/social', socialRouter);
 
 export default app;

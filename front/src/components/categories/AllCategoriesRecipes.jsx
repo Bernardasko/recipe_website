@@ -12,7 +12,6 @@ useEffect(() => {
 },[])
   return (
     <>
-      <h1>yolo</h1>
     {recipes.map((recipe, index) => {
         return (<RecipeCardNew key={index} recipeData={recipe}/>)
     })}
