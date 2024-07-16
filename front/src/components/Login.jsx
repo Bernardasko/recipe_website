@@ -40,22 +40,24 @@ function Login() {
     try {
       const { status, data } = await axios.post(login_url, formInfo);
       if (status === 200) {
-        const decoded = jwtDecode(data)
+        const decoded = jwtDecode(data);
         console.log(decoded);
         setToken(decoded);
         console.log(data);
-        window.localStorage.setItem('token', data);
-        toast.success('Login successful!');
+        window.localStorage.setItem("token", data);
+        toast.success("Login successful!");
         setTimeout(() => {
-            navigate("/");
-          }, 1000);
+          navigate("/");
+        }, 1000);
       }
     } catch (err) {
       console.log(err);
-      if (err.response && err.response.status === 401) {
-        setError('Invalid email or password');
-      } else {
-        setError('An error occurred. Please try again later.');
+      if (err.response) {
+        if (err.response.status === 400 || err.response.status === 401) {
+          setError(err.response.data.message || "Invalid email or password");
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
       }
     }
   }
@@ -92,7 +94,6 @@ function Login() {
               label='Email Address'
               name='email'
               autoComplete='email'
-              autoFocus
               {...register('email', {
                 required: 'Please enter your email',
                 pattern: {
@@ -122,10 +123,10 @@ function Login() {
                 //     value: 20,
                 //     message: 'Password must be at most 20 characters long',
                 //   },
-                //   pattern: {
-                //     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
-                //     message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
-                //   },
+                  // pattern: {
+                  //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                  //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                  // },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}

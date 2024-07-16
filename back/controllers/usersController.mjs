@@ -74,7 +74,7 @@ export const loginUser = async (req,res) => {
   console.log(password, existingUser.password);
   // if password doesnt match return
   if(!isPasswordValid){
-    return res.status(400).json({message: 'Password does not match 😭'})
+    return res.status(400).json({message: 'email or password does not match 😭'})
   }
 
   // if password and email matches create user new token
