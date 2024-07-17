@@ -1,28 +1,46 @@
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { getRecipeByCategoryId } from '../../services/get.mjs';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import RecipeCardSmall from '../../components/recipe/RecipeCardSmall.jsx';
-function AllcategoriesRecipes({ categoryId }) {
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
+import '../../components/SwiperStyles.css';
+
+export default function AllcategoriesRecipes({ categoryId }) {
   const [recipes, setRecipes] = useState([]);
+
   useEffect(() => {
     (async () => {
       setRecipes(await getRecipeByCategoryId(categoryId));
     })();
-  }, []);
+  }, [categoryId]);
+
   return (
-    <>
-      {recipes.map((recipe, index) => {
-        return (
-          <Link
-            key={index}
-            to={`/category/${categoryId}/recipe/${recipe.recipeId}`}
-          >
+    <Swiper
+      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      spaceBetween={10}
+      slidesPerView={1}
+      navigation
+      breakpoints={{
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 },
+        1440: { slidesPerView: 4 },
+      }}
+    >
+      {recipes.map((recipe, index) => (
+         <SwiperSlide key={index} className="swiper-slide-custom">
+          <Link to={`/category/${categoryId}/recipe/${recipe.recipeId}`}>
             <RecipeCardSmall key={index} recipeData={recipe} />
           </Link>
-        );
-      })}
-    </>
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 }
-
-export default AllcategoriesRecipes;
