@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 
 function Cuisines() {
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <Typography
@@ -20,7 +20,7 @@ function Cuisines() {
       >
         All Cuisines
       </Typography>
-      {data.data.map((cuisine, index) => {
+      {data.map((cuisine, index) => {
         console.log(cuisine);
         return (
           <Box

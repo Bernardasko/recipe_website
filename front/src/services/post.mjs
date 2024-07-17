@@ -26,7 +26,25 @@ export const postNewCategory = async (categoryName) => {
 
     const response = await axios.post(post_cat_url, categoryName, config);
     console.log(response, 'im from post');
-    return response
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export const postReview = async (review) => {
+  const token = window.localStorage.getItem('token');
+  const post_review_url = import.meta.env.VITE_POST_REVIEW;
+  console.log(post_review_url);
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const response = await axios.post(post_review_url, review, config);
+    console.log(response);
+    return response;
   } catch (error) {
     console.error(error);
     return error;

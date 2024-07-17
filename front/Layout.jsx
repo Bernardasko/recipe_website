@@ -29,8 +29,8 @@ function Layout() {
   const clearToken = () => {
     localStorage.clear();
     setToken(null);
-    // navigate('/', {replace: true})
-    window.location.reload('/')
+    navigate('/', {replace: true})
+    // window.location.reload('/')
   };
 
   return (

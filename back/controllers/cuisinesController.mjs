@@ -2,6 +2,7 @@ import express from 'express';
 import {
   pg_getRecipesByCuisineId,
   pg_getAllcusines,
+  pg_displayAllCusinesWithRecipes,
 } from '../models/cuisinesModels.mjs';
 
 export const getRecipesByCuisineId = async (req, res) => {
@@ -34,6 +35,16 @@ export const getAllcusines = async (req, res) => {
     }));
 
     res.status(200).json(transformedCuisines);
+  } catch (error) {
+    res.status(500).json({ message: error });
+    console.log(error);
+  }
+};
+
+export const displayAllCusinesWithRecipes = async (req, res) => {
+  try {
+    const cusinesWithRecipes = await pg_displayAllCusinesWithRecipes();
+    res.status(200).json(cusinesWithRecipes);
   } catch (error) {
     res.status(500).json({ message: error });
     console.log(error);

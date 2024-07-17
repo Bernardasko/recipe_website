@@ -127,13 +127,29 @@ export const getRecipeById = async (id) => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-
+  
   try {
     const response = await axios.get(`${recipe_url}/${id}`, config);
-
+    
     return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
+export const getCusinesWithRecipes = async () => {
+  const cuisine_with_recipes_url = import.meta.env.VITE_CUISINES_WITHRECIPES;
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(cuisine_with_recipes_url, config)
+    return response.data
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+  
+}
