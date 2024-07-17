@@ -347,7 +347,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     rat.rating AS rating_value,
     urat.name AS rater_name,
     urat.lastname AS rater_lastname,
-    rat.created_at AS rating_date
+    GREATEST(com.created_at, rat.created_at) AS review_date
   FROM recipes r
   INNER JOIN users u ON r.userid = u.id
   INNER JOIN categories c ON r.categoryid = c.categoryid
@@ -361,7 +361,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   LEFT JOIN ratings rat ON r.recipeid = rat.recipeid
   LEFT JOIN users urat ON rat.userid = urat.id
   WHERE r.recipeid = ${recipeId}
-  ORDER BY rs.stepnumber, com.created_at, rat.created_at;
+  ORDER BY rs.stepnumber, review_date;
   `;
 
   const recipe = {
@@ -374,8 +374,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     ingredients: [],
     steps: [],
     images: [],
-    comments: [],
-    ratings: [],
+    social: [],
   };
 
   flatResults.forEach((row) => {
@@ -409,28 +408,22 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
       recipe.images.push(row.image_url);
     }
 
-    // Add comments
-    if (row.comment_id) {
-      recipe.comments.push({
-        comment_id: row.comment_id,
-        comment_text: row.comment_text,
-        comment_date: row.comment_date,
-        commenter_name: row.commenter_name,
-        commenter_lastname: row.commenter_lastname,
-      });
-    }
-
-    // Add ratings
-    if (row.rating_id) {
-      recipe.ratings.push({
-        rating_id: row.rating_id,
-        rating_value: row.rating_value,
-        rating_date: row.rating_date,
-        rater_name: row.rater_name,
-        rater_lastname: row.rater_lastname,
+    // Add social entries
+    if (row.comment_id || row.rating_id) {
+      recipe.social.push({
+        rating: row.rating_value || null,
+        ratingId: row.rating_id || null,
+        comment: row.comment_text || null,
+        commentId: row.comment_id || null,
+        user: {
+          name: row.commenter_name || row.rater_name,
+          lastname: row.commenter_lastname || row.rater_lastname,
+        },
+        review_date: row.review_date,
       });
     }
   });
 
   return recipe;
 };
+
