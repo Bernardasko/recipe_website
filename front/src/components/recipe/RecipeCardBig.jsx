@@ -89,7 +89,7 @@ const RecipeCardBig = ({ recipe }) => {
       </CardContent>
     </Card>
     <CommentRaitingCards/>
-    <AddCommentRating/>
+    <AddCommentRating recipeData={data}/>
     </>
   );
 };

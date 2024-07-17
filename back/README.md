@@ -271,29 +271,36 @@ CREATE TABLE Images (
     FOREIGN KEY (RecipeID) REFERENCES Recipes(RecipeID) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Comments Table
+-- Create the comments table
 CREATE TABLE comments (
     commentid SERIAL PRIMARY KEY,
-    recipeid INTEGER REFERENCES recipes(recipeid) ON DELETE CASCADE,
-    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    recipeid INT NOT NULL,
+    userid INT NOT NULL,
     comment TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (recipeid) REFERENCES recipes(recipeid) ON DELETE CASCADE,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Ratings Table
+-- Create the ratings table with updated constraints
 CREATE TABLE ratings (
     ratingid SERIAL PRIMARY KEY,
-    recipeid INTEGER REFERENCES recipes(recipeid) ON DELETE CASCADE,
-    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 10),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    recipeid INT NOT NULL,
+    userid INT NOT NULL,
+    rating NUMERIC(2, 1) CHECK (rating IN (0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0)),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    commentid INT,
+    FOREIGN KEY (recipeid) REFERENCES recipes(recipeid) ON DELETE CASCADE,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (commentid) REFERENCES comments(commentid) ON DELETE CASCADE
 );
 
--- Followers Table
+-- Create the followers table
 CREATE TABLE followers (
-    followerid SERIAL PRIMARY KEY,
-    userid INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    followsid INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    follower_id INT NOT NULL,
+    followed_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE (userid, followsid)
+    PRIMARY KEY (follower_id, followed_id),
+    FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE
 );
