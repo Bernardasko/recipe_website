@@ -20,7 +20,7 @@ function Cuisines() {
       >
         All Cuisines
       </Typography>
-      {data.data.map((cuisine, index) => {
+      {data.map((cuisine, index) => {
         console.log(cuisine);
         return (
           <Box

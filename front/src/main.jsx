@@ -29,6 +29,7 @@ import {
   getCategoryById,
   getRecipeById,
   getCuisineById,
+  getCusinesWithRecipes,
 } from "./services/get.mjs";
 
 import RecipeProfile from "./components/recipeProfile/RecipeProfile";
@@ -78,7 +79,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Cuisines />,
-            loader: getAllCuisines,
+            loader: getCusinesWithRecipes,
             errorElement: <ErrorPage />,
           },
           {
