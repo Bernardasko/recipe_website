@@ -27,7 +27,8 @@ export default function Signup() {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
+    setError: setFormError
   } = useForm({
     defaultValues: {
       name: '',
@@ -42,7 +43,7 @@ export default function Signup() {
 
   async function onSubmit(values) {
     if (values.password !== values.repeatPassword) {
-      setError("repeatPassword", {
+      setFormError("repeatPassword", {
         type: "manual",
         message: "The passwords do not match"
       });
@@ -52,7 +53,7 @@ export default function Signup() {
     try {
       console.log(values);
       const { status, data } = await axios.post(signup_url, values);
-      if (status == 201) {
+      if (status === 201) {
         window.localStorage.setItem('token', data);
         toast.success('Signup successful!');
         setTimeout(() => {
@@ -60,7 +61,22 @@ export default function Signup() {
         }, 1000);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.status === 409 && error.response.data.message === 'Password is occupied') {
+          setFormError("password", {
+            type: "manual",
+            message: "Such a password has already been created"
+          });
+        } else if (error.response.status === 409 && error.response.data.message === 'Email is occupied') {
+          setFormError("email", {
+            type: "manual",
+            message: "Toks el. pašto adresas jau yra sukurtas"
+          });
+        } else {
+          console.log(error);
+          toast.error('Something went wrong, please try again.');
+        }
+      }
     }
   }
 
@@ -155,18 +171,18 @@ export default function Signup() {
               autoComplete='current-password'
               {...register('password', {
                 required: 'Please enter your password',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 8 characters long',
-                },
-                maxLength: {
-                  value: 100,
-                  message: 'Password must be at most 20 characters long',
-                },
-                pattern: {
-                  value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
-                  message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
-                },
+                // minLength: {
+                //   value: 8,
+                //   message: 'Password must be at least 8 characters long',
+                // },
+                // maxLength: {
+                //   value: 100,
+                //   message: 'Password must be at most 20 characters long',
+                // },
+                // pattern: {
+                //   value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/,
+                //   message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol',
+                // },
               })}
               error={!!errors.password}
               helperText={errors.password?.message}

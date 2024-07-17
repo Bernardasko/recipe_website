@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
+import { FormControl, FormHelperText } from "@mui/material";
 
 function RecipeForm({ recipeInfo, setOpen }) {
   const [error, setError] = useState("");
@@ -26,7 +27,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const [categories, setCategories] = useState(null);
   const navigate = useNavigate();
 
-  const data = useLoaderData(); 
+  const data = useLoaderData();
   const {
     handleSubmit,
     register,
@@ -44,13 +45,12 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const handleDeleteStep = (index) => {
     const newSteps = steps.filter((_, i) => i !== index);
     setSteps(newSteps);
-    
-    // Atnaujinkime ir formos reikšmes
+
     const updatedSteps = newSteps.reduce((acc, step, i) => {
       acc[`steps.${i}`] = step;
       return acc;
     }, {});
-    
+
     Object.keys(updatedSteps).forEach((key) => {
       setValue(key, updatedSteps[key]);
     });
@@ -60,24 +60,29 @@ function RecipeForm({ recipeInfo, setOpen }) {
     const newRecipe = {
       ...data,
     };
-    if (recipeInfo) {
-      newRecipe.recipeId = recipeInfo.recipeId;
-      const patched = await patchRecipeById(newRecipe);
-      setOpen(false);
-      navigate("/profile/recipes");
-
-      if (patched.status !== 200) {
-        toast.error("Error occured, recipe is not updated");
-        setOpen(false);
-        navigate("/profile/recipes");
+    try {
+      if (recipeInfo) {
+        newRecipe.recipeId = recipeInfo.recipeId;
+        const patched = await patchRecipeById(newRecipe);
+        if (patched.status === 200) {
+          toast.success("Recipe updated successfully");
+          setOpen(false);
+          navigate("/profile/recipes");
+        } else {
+          error && toast.error("Failed to update recipe");
+        }
       } else {
-        toast.success("Recipe updated");
-
-        setOpen(false);
-        navigate("/profile/recipes");
+        const posted = await postRecipe(newRecipe);
+        if (posted.status === 200 || posted.status === 201) {
+          toast.success("Recipe created successfully");
+          navigate("/profile/recipes");
+        } else {
+          error && toast.error("Failed to create recipe");
+        }
       }
-    } else {
-      const posted = await postRecipe(newRecipe);
+    } catch (error) {
+      toast.error(error.message || "An error occurred");
+      console.error("Error:", error);
     }
   }
 
@@ -101,7 +106,6 @@ function RecipeForm({ recipeInfo, setOpen }) {
     setIngredients(newIngredient);
   };
 
-
   useEffect(() => {
     if (recipeInfo) {
       setValue("title", recipeInfo.name);
@@ -115,7 +119,6 @@ function RecipeForm({ recipeInfo, setOpen }) {
       );
       setValue("category", categoryObject ? categoryObject.name : "");
       setValue("image", recipeInfo.images);
-
 
       setIngredients(
         recipeInfo.ingredients.map((ing) => ({
@@ -148,7 +151,6 @@ function RecipeForm({ recipeInfo, setOpen }) {
             maxWidth: 500,
             mx: "auto",
             mt: 3,
-            height: "90vh",
             overflowY: "auto",
           }}
         >
@@ -219,9 +221,9 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   error={!!errors.ingredients?.[index]?.ingredient}
                   helperText={errors.ingredients?.[index]?.ingredient?.message}
                 />
-                  <IconButton onClick={() => handleDeleteIngredient(index)}>
-                    <DeleteIcon />
-                  </IconButton>
+                <IconButton onClick={() => handleDeleteIngredient(index)}>
+                  <DeleteIcon />
+                </IconButton>
               </Box>
             ))}
             <Button
@@ -236,35 +238,42 @@ function RecipeForm({ recipeInfo, setOpen }) {
 
             {steps.map((step, index) => (
               <>
-              <Box sx={{ display: "flex", gap: 1, alignItems: "center", marginBottom: 2 }}> 
-              <TextField
-                key={index}
-                margin="normal"
-                required
-                fullWidth
-                name={`steps[${index}]`}
-                label={`Step ${index + 1}`}
-                type="text"
-                id={`step-${index}`}
-                onChange={(e) => handleStepChange(index, e.target.value)}
-                {...register(`steps.${index}`, {
-                  required: `Step ${index + 1} is required`,
-                })}
-                error={!!errors.steps?.[index]}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {index + 1}
-                    </InputAdornment>
-                  ),
-                }}
-                helperText={errors.steps?.[index]?.message}
-              />
-            <IconButton onClick={() => handleDeleteStep(index)}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 1,
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <TextField
+                    key={index}
+                    margin="normal"
+                    required
+                    fullWidth
+                    name={`steps[${index}]`}
+                    label={`Step ${index + 1}`}
+                    type="text"
+                    id={`step-${index}`}
+                    onChange={(e) => handleStepChange(index, e.target.value)}
+                    {...register(`steps.${index}`, {
+                      required: `Step ${index + 1} is required`,
+                    })}
+                    error={!!errors.steps?.[index]}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          {index + 1}
+                        </InputAdornment>
+                      ),
+                    }}
+                    helperText={errors.steps?.[index]?.message}
+                  />
+                  <IconButton onClick={() => handleDeleteStep(index)}>
                     <DeleteIcon />
                   </IconButton>
-                  </Box>
-                  </>
+                </Box>
+              </>
             ))}
             <Button
               type="button"
@@ -291,23 +300,21 @@ function RecipeForm({ recipeInfo, setOpen }) {
                 control={control}
                 defaultValue=""
                 rules={{ required: "Category is required" }}
-                render={({ field }) => (
-                  <Select
-                    {...field}
-                    displayEmpty
-                    fullWidth
-                    error={!!errors.category}
-                  >
-                    <MenuItem value="" disabled>
-                      Category
-                    </MenuItem>
-                    {data.categories &&
-                      data.categories.map((item, index) => (
-                        <MenuItem key={index} value={item.name}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                  </Select>
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth error={!!error}>
+                    <Select {...field} displayEmpty fullWidth>
+                      <MenuItem value="" disabled>
+                        Category
+                      </MenuItem>
+                      {data.categories &&
+                        data.categories.map((item, index) => (
+                          <MenuItem key={index} value={item.name}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText>{error?.message || " "}</FormHelperText>
+                  </FormControl>
                 )}
               />
               <Controller
@@ -315,11 +322,11 @@ function RecipeForm({ recipeInfo, setOpen }) {
                 control={control}
                 defaultValue=""
                 rules={{ required: "Cuisine is required" }}
-                render={({ field }) => (
+                render={({ field, fieldState: { error } }) => (
+                  <FormControl fullWidth error={!!error}>
                   <Select
                     {...field}
                     displayEmpty
-                    fullWidth
                     error={!!errors.cuisine}
                   >
                     <MenuItem value="" disabled>
@@ -332,6 +339,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
                         </MenuItem>
                       ))}
                   </Select>
+                  <FormHelperText>{error?.message || " "}</FormHelperText>
+                  </FormControl>
                 )}
               />
             </Box>
