@@ -19,7 +19,21 @@ function AllCuisinesRecipes({ cuisineId }) {
     (async () => {
       setRecipes(await getCuisineById(cuisineId));
     })();
-  }, []);
+  }, [cuisineId]);
+
+  if (recipes.length === 1) {
+    return (
+      <div className="swiper-container-center">
+        <div className="swiper-wrapper">
+          <div className="swiper-slide">
+            <Link to={`/recipe/${recipes[0].recipeId}`}>
+              <RecipeCardSmall recipeData={recipes[0]} />
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
     <Swiper
