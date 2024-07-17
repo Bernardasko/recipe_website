@@ -9,7 +9,6 @@ export const pg_postRecipe = async (
   image,
   userId
 ) => {
-  // console.log();
   try {
     const recipe = await sql.begin(async (sql) => {
       // Insert the recipe and get the RecipeID
@@ -248,7 +247,6 @@ export const pg_getRecipesByUserId = async (userId) => {
 };
 
 export const pg_getAllRecipes = async () => {
-  console.log('im in effect');
   const flatResults = await sql`
   SELECT 
     recipes.recipeid AS recipeId,

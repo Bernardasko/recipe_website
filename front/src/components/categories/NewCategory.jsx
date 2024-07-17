@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 function NewCategory() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -16,17 +16,18 @@ function NewCategory() {
     const newCat = {
       ...data,
     };
-
-    const newCategory = await postNewCategory(newCat);
-    console.log(newCategory);
-    if (newCategory.status === 201) {
-      navigate('/profile/categories')
-      toast.success('New category created 🔥');
-    } else {
-      
-      toast.danger('Error while creating category 🫤');
-    }
     try {
+      const newCategory = await postNewCategory(newCat);
+      if (newCategory.status === 201) {
+        navigate('/profile/categories');
+        toast.success('New category created 🔥');
+      } else if (newCategory.response.status === 406) {
+        toast.error(`Category: ${data.category} already created`);
+      } else if (newCategory.response.status === 411) {
+        toast.error(`Category cannot be empty`);
+      } else {
+        toast.error('Error while creating category 🫤');
+      }
     } catch (error) {
       console.error(error);
     }

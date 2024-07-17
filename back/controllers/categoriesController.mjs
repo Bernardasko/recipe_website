@@ -5,12 +5,6 @@ import {
   pg_addCategory, pg_deleteCategory
 } from '../models/categorysModel.mjs';
 
-// const capitalizeEveryWord = (string) => {
-//   return string
-//     .split(' ')
-//     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-//     .join(' ');
-// };
 
 export const getRecipesByCategoryId = async (req, res) => {
   try {
@@ -53,11 +47,19 @@ export const getAllCategories = async (req, res) => {
 
 export const addCategory = async (req, res) => {
   try {
-    const {category} = req.body
+    let {category} = req.body
+    if(category.length === 0){
+      return res.status(411).json({message: 'Category cannot be empty'})
+    }
+    category = category.toLowerCase()
     const newCategory = await pg_addCategory(category)
     res.status(201).json(newCategory)
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
+    if(error.message === 'duplicate key value violates unique constraint "categories_name_key"'){
+      console.error(123);
+      return res.status(406).json({message: 'Category already added'})
+    }
     res.status(500).json({ message: error });
   }
 }
