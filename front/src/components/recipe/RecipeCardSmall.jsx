@@ -6,7 +6,7 @@ import { CardActionArea } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 function RecipeCardSmall({ recipeData }) {
-console.log(recipeData);
+// console.log(recipeData);
   const exampleImgUrl = "https://www.sauletavirtuve.lt/wp-content/uploads/Biskvitinis-tortas-su-mangais-ir-braskemis_1200-1170x1753.jpg";
   const {categoryId} = useParams()
   return (
