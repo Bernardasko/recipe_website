@@ -23,16 +23,18 @@ const labels = {
     5: 'Excellent+',
   };
  
-  function AddCommentRating() {
- 
-    // const formSubmitHandler = async (data) => {
-    //   console.log(data);
-    //   try {
-    //     await (data);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
+  function AddCommentRating({recipeData}) {
+    console.log(recipeData);
+    const formSubmitHandler = async (commentData) => {
+      commentData.recipeId = recipeData.recipeId
+      console.log(commentData);
+
+      try {
+        
+      } catch (error) {
+        console.log(error);
+      }
+    };
  
     const [hover, setHover] = useState(-1);
  
@@ -51,7 +53,7 @@ const labels = {
     return (
 <Box
       component="form"
-      // onSubmit={handleSubmit(formSubmitHandler)}
+      onSubmit={handleSubmit(formSubmitHandler)}
       style={{
         display: 'flex',
         flexDirection: 'row',

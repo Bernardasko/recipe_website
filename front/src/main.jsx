@@ -34,9 +34,9 @@ import {
 import RecipeProfile from "./components/recipeProfile/RecipeProfile";
 import RecipeCardBig from "./components/recipe/RecipeCardBig";
 
-import Cuisines from "./pages/cuisines/Cuisines.jsx";
-import AllCuisinesRecipes from "./pages/cuisines/AllCuisineRecipes.jsx";
-import Cuisine from "./pages/cuisines/Cuisine.jsx";
+import Cuisines from "./pages/cuisinesPage/Cuisines.jsx";
+import AllCuisinesRecipes from "./pages/cuisinesPage/AllCuisineRecipes.jsx";
+import Cuisine from "./pages/cuisinesPage/Cuisine.jsx";
 
 const router = createBrowserRouter([
   {
@@ -62,14 +62,14 @@ const router = createBrowserRouter([
               return await getCategoryById(categoryId);
             },
           },
-          {
-            path: `/category/:categoryId/recipe/:recipeId`,
-            element: <RecipeCardBig />,
-            loader: async ({ params }) => {
-              const { recipeId } = params;
-              return await getRecipeById(recipeId);
-            },
-          },
+          // {
+          //   path: `/category/:categoryId/recipe/:recipeId`,
+          //   element: <RecipeCardBig />,
+          //   loader: async ({ params }) => {
+          //     const { recipeId } = params;
+          //     return await getRecipeById(recipeId);
+          //   },
+          // },
         ],
       },
       {
