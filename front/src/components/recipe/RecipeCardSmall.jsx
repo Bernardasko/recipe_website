@@ -19,6 +19,7 @@ console.log(recipeData);
           alt="green iguana"
           sx={{
             height: "200px",
+            width: "260px",
           }}
 
         />
