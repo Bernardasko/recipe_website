@@ -50,7 +50,7 @@ export default function AllcategoriesRecipes({ categoryId }) {
     >
       {recipes.map((recipe, index) => (
          <SwiperSlide key={index} className="swiper-slide-custom">
-          <Link to={`/category/${categoryId}/recipe/${recipe.recipeId}`}>
+          <Link to={`/recipe/${recipe.recipeId}`}>
             <RecipeCardSmall key={index} recipeData={recipe} />
           </Link>
         </SwiperSlide>
