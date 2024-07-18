@@ -6,8 +6,8 @@ import { CardActionArea } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 function RecipeCardSmall({ recipeData }) {
-// console.log(recipeData);
-  const exampleImgUrl = "https://www.sauletavirtuve.lt/wp-content/uploads/Biskvitinis-tortas-su-mangais-ir-braskemis_1200-1170x1753.jpg";
+console.log(recipeData);
+
   const {categoryId} = useParams()
   return (
     <Card   sx={{ maxWidth: 345 }}>
@@ -15,8 +15,8 @@ function RecipeCardSmall({ recipeData }) {
         <CardMedia
           component="img"
           height="140px"
-          image={exampleImgUrl}
-          alt="green iguana"
+          image={recipeData.image}
+          alt="recipe image"
           sx={{
             height: "200px",
             width: "250px",
