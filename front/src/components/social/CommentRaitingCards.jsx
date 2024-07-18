@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import { useParams } from "react-router-dom";
 
 
-const AddCommentRating = () => {
+const AddCommentRating = ({recipeData}) => {
   const { id } = useParams();
 
 
@@ -44,14 +44,17 @@ const AddCommentRating = () => {
               borderRadius: '8px',
             }}
           >
+            {/* map this bad boi */}
             <Typography variant="body1" gutterBottom>
-              Comment: {}
+              Comment: {["hello ", "du"]}
             </Typography>
+
+
             <Typography variant="h6" gutterBottom>
-              Your Rating
+            Average rating of
             </Typography>
             <Rating
-              // value={}
+              value={recipeData.average_rating}
               precision={0.5}
               readOnly
             />

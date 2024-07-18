@@ -56,17 +56,17 @@ function SearchBar({ onSearch, onSort }) {
   const [searchCriteria, setSearchCriteria] = useState('title');
   const [sortCriteria, setSortCriteria] = useState('');
 
-  useEffect(() => {
-    if (searchValue) {
-      onSearch(searchValue, searchCriteria);
-    }
-  }, [searchValue, searchCriteria, onSearch]);
+  // useEffect(() => {
+  //   if (searchValue) {
+  //     onSearch(searchValue, searchCriteria);
+  //   }
+  // }, [searchValue, searchCriteria, onSearch]);
 
-  useEffect(() => {
-    if (sortCriteria) {
-      onSort(sortCriteria);
-    }
-  }, [sortCriteria, onSort]);
+  // useEffect(() => {
+  //   if (sortCriteria) {
+  //     onSort(sortCriteria);
+  //   }
+  // }, [sortCriteria, onSort]);
 
   const handleChange = (event) => {
     const value = event.target.value;

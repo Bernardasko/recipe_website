@@ -117,6 +117,9 @@ export default function Signup() {
                 maxLength: {
                   value: 100,
                   message: 'First Name must be less than 100 characters',
+                },
+                validate: {
+                  notEmpty: (value) => value.trim() !== "" || "Title cannot be empty or just whitespace",
                 }
                })}
               error={!!errors.name}
@@ -136,6 +139,9 @@ export default function Signup() {
                 maxLength: {
                   value: 100,
                   message: 'Last Name must be less than 100 characters',
+                },
+                validate: {
+                  notEmpty: (value) => value.trim() !== "" || "Title cannot be empty or just whitespace",
                 }
               })}
               error={!!errors.lastname}
