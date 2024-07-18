@@ -349,7 +349,7 @@ export const pg_getAllRecipes = async () => {
 };
 
 export const pg_getRecipeByIdWithSocials = async (recipeId) => {
-  const flatResults = await sql`
+  const results = await sql`
   SELECT 
     r.recipeid AS recipeId,
     r.title AS name,
@@ -357,24 +357,16 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     u.lastname AS userlastname,
     c.name AS category,
     cu.name AS cuisine,
-    i.name AS ingredient,
-    ri.amount AS amount,
-    rs.stepnumber AS step_number,
-    rs.description AS step_description,
     im.imageurl AS image_url,
-    com.commentid AS comment_id,
-    com.comment AS comment_text,
-    com.created_at AS comment_date,
-    ucom.name AS commenter_name,
-    ucom.lastname AS commenter_lastname,
-    rat.ratingid AS rating_id,
-    rat.rating AS rating_value,
-    urat.name AS rater_name,
-    urat.lastname AS rater_lastname,
-    GREATEST(
-      COALESCE(com.created_at, '1970-01-01'::timestamp), 
-      COALESCE(rat.created_at, '1970-01-01'::timestamp)
-    ) AS review_date
+    -- Aggregating ingredients into a JSON array
+    ARRAY_AGG(DISTINCT jsonb_build_object('amount', ri.amount, 'ingredient', i.name)) FILTER (WHERE ri.ingredientid IS NOT NULL) AS ingredients,
+    -- Aggregating steps into a JSON array
+    ARRAY_AGG(DISTINCT jsonb_build_object('step_number', rs.stepnumber, 'description', rs.description)) FILTER (WHERE rs.stepnumber IS NOT NULL) AS steps,
+    -- Aggregating comments and ratings into a single JSON object
+    jsonb_build_object(
+      'comments', ARRAY_AGG(DISTINCT jsonb_build_object('comment_id', com.commentid, 'comment_text', com.comment, 'comment_date', com.created_at, 'commenter_name', ucom.name, 'commenter_lastname', ucom.lastname)) FILTER (WHERE com.commentid IS NOT NULL),
+      'ratings', ARRAY_AGG(DISTINCT jsonb_build_object('rating_id', rat.ratingid, 'rating_value', rat.rating, 'rater_name', urat.name, 'rater_lastname', urat.lastname, 'review_date', GREATEST(COALESCE(com.created_at, '1970-01-01'::timestamp), COALESCE(rat.created_at, '1970-01-01'::timestamp)))) FILTER (WHERE rat.ratingid IS NOT NULL)
+    ) AS social
   FROM recipes r
   INNER JOIN users u ON r.userid = u.id
   INNER JOIN categories c ON r.categoryid = c.categoryid
@@ -388,67 +380,12 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   LEFT JOIN ratings rat ON r.recipeid = rat.recipeid
   LEFT JOIN users urat ON rat.userid = urat.id
   WHERE r.recipeid = ${recipeId}
-  ORDER BY rs.stepnumber, review_date;
-  `;
+  GROUP BY r.recipeid, r.title, u.name, u.lastname, c.name, cu.name, im.imageurl
+  ORDER BY MIN(rs.stepnumber);
+`;
 
-  const recipe = {
-    recipeId: recipeId,
-    name: '',
-    username: '',
-    userlastname: '',
-    category: '',
-    cuisine: '',
-    ingredients: [],
-    steps: [],
-    images: [],
-    social: [],
-  };
-
-  flatResults.forEach((row) => {
-    // Set basic recipe info
-    if (!recipe.name) {
-      recipe.name = row.name;
-      recipe.username = row.username;
-      recipe.userlastname = row.userlastname;
-      recipe.category = row.category;
-      recipe.cuisine = row.cuisine;
-    }
-
-    // Add ingredients
-    if (row.ingredient && row.amount) {
-      recipe.ingredients.push({
-        ingredient: row.ingredient,
-        amount: row.amount,
-      });
-    }
-
-    // Add steps
-    if (row.step_number && row.step_description) {
-      recipe.steps.push(row.step_description); // Use simple array for steps
-    }
-
-    // Add images
-    if (row.image_url) {
-      recipe.images.push(row.image_url);
-    }
-
-    // Add social entries
-    if (row.comment_id || row.rating_id) {
-      recipe.social.push({
-        rating: row.rating_value || null,
-        ratingId: row.rating_id || null,
-        comment: row.comment_text || null,
-        commentId: row.comment_id || null,
-        user: {
-          name: row.commenter_name || row.rater_name,
-          lastname: row.commenter_lastname || row.rater_lastname,
-        },
-        review_date: row.review_date,
-      });
-    }
-  });
-
-  return recipe;
+  
+  return results[0];
 };
 
 export const pg_get_rating_andAboveRecipes = async (rating) => {

@@ -15,7 +15,7 @@ export const postRecipe = async (req, res) => {
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase().trim();
-        obj.amount = obj.ingredient.toLowerCase().trim();
+        obj.amount = obj.amount.toLowerCase().trim();
       }
     });
     steps.forEach((step, index) => {
@@ -118,6 +118,12 @@ export const getRecipeByIdWithSocials = async (req, res) => {
   try {
     const { id } = req.params;
     const recipe = await pg_getRecipeByIdWithSocials(id);
+
+    // console.log(recipe.social.ratings.length);
+    if(recipe.social.ratings){
+      const avgRating = recipe.social.ratings.reduce((acc, rating) => acc + rating.rating_value, 0) / recipe.social.ratings.length;
+      recipe.average_rating = avgRating
+    }
     res.status(200).json(recipe);
   } catch (error) {
     console.error(error);
