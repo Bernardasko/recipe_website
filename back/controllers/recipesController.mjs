@@ -54,6 +54,7 @@ export const patchRecipe = async (req, res) => {
   try {
     const recipeId = req.params.id;
     // console.log(recipeId);
+    console.log(1111111111111, req.body);
     let { title, ingredients, steps, category, cuisine, image } = req.body;
     console.log(
       title,
@@ -65,6 +66,7 @@ export const patchRecipe = async (req, res) => {
       'im image'
     );
     steps.forEach((step, index) => {
+      console.log(step);
       steps[index] = step.toLowerCase().trim();
     });
     ingredients.forEach((obj) => {
@@ -85,7 +87,7 @@ export const patchRecipe = async (req, res) => {
       cuisine.toLowerCase().trim(),
       image.trim()
     );
-    console.log(patchedRecipe);
+    // console.log(patchedRecipe);
 
     res.status(200).json(patchedRecipe);
   } catch (error) {
@@ -124,3 +126,7 @@ export const getRecipeByIdWithSocials = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+export const get_rating_andAboveRecipes = async (req, res) => {
+  
+}

@@ -57,11 +57,14 @@ export const pg_postRecipe = async (
       }
 
       // Insert steps
+      const stepArray = [];
       for (let i = 0; i < steps.length; i++) {
-        await sql`
+        const step = await sql`
           INSERT INTO recipe_steps (recipeid, stepnumber, description)
           VALUES (${recipeId}, ${i + 1}, ${steps[i]})
+          RETURNING stepnumber, description
         `;
+        stepArray.push(step[0]);
       }
 
       // Insert images if provided
@@ -71,7 +74,11 @@ export const pg_postRecipe = async (
             VALUES (${recipeId}, ${image})
           `;
       }
-      return recipe[0];
+
+      return {
+        ...recipe[0],
+        steps: stepArray
+      };
     });
 
     return recipe;
@@ -80,6 +87,7 @@ export const pg_postRecipe = async (
     throw error; // Re-throw the error to handle it outside
   }
 };
+
 
 export const pg_deleteRecipeById = async (recipeId) => {
   const deletedRecipe = await sql`
@@ -205,7 +213,7 @@ export const pg_getRecipesByUserId = async (userId) => {
   LEFT JOIN images ON recipes.recipeid = images.recipeid
   WHERE recipes.userid = ${userId}
   ORDER BY recipes.recipeid, recipe_steps.stepnumber;
-`;
+  `;
 
   const recipes = {};
 
@@ -220,24 +228,31 @@ export const pg_getRecipesByUserId = async (userId) => {
         cuisine: row.cuisine,
         ingredients: [],
         steps: [],
-        images: null, // Initialize as null
+        images: row.image_url || null, // Initialize as null
       };
     }
 
-    // Add ingredient
-    recipes[row.recipeid].ingredients.push({
-      ingredient: row.ingredient,
-      amount: row.amount,
-    });
+    // Add ingredient if it does not already exist
+    if (
+      !recipes[row.recipeid].ingredients.some(
+        (ing) => ing.ingredient === row.ingredient
+      )
+    ) {
+      recipes[row.recipeid].ingredients.push({
+        ingredient: row.ingredient,
+        amount: row.amount,
+      });
+    }
 
-    // Add step
-    recipes[row.recipeid].steps.push({
-      step_number: row.step_number,
-      description: row.step_description,
-    });
+    // Add step if it does not already exist
+    if (
+      !recipes[row.recipeid].steps.includes(row.step_description)
+    ) {
+      recipes[row.recipeid].steps.push(row.step_description);
+    }
 
-    // Add image if exists and not already set
-    if (row.image_url && !recipes[row.recipeid].images) {
+    // Update image if it exists
+    if (row.image_url) {
       recipes[row.recipeid].images = row.image_url;
     }
   });
@@ -245,6 +260,7 @@ export const pg_getRecipesByUserId = async (userId) => {
   // Convert recipes object to an array
   return Object.values(recipes);
 };
+
 
 export const pg_getAllRecipes = async () => {
   const flatResults = await sql`
@@ -269,7 +285,7 @@ export const pg_getAllRecipes = async () => {
   INNER JOIN cuisines ON recipes.cuisineid = cuisines.cuisineid
   LEFT JOIN images ON recipes.recipeid = images.recipeid
   ORDER BY recipes.recipeid, recipe_steps.stepnumber;
-`;
+  `;
 
   const recipes = {};
 
@@ -302,14 +318,9 @@ export const pg_getAllRecipes = async () => {
 
     // Add step if it does not already exist
     if (
-      !recipes[row.recipeid].steps.some(
-        (step) => step.step_number === row.step_number
-      )
+      !recipes[row.recipeid].steps.includes(row.step_description)
     ) {
-      recipes[row.recipeid].steps.push({
-        step_number: row.step_number,
-        description: row.step_description,
-      });
+      recipes[row.recipeid].steps.push(row.step_description);
     }
 
     // Update image if it exists
@@ -345,7 +356,10 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     rat.rating AS rating_value,
     urat.name AS rater_name,
     urat.lastname AS rater_lastname,
-    GREATEST(com.created_at, rat.created_at) AS review_date
+    GREATEST(
+      COALESCE(com.created_at, '1970-01-01'::timestamp), 
+      COALESCE(rat.created_at, '1970-01-01'::timestamp)
+    ) AS review_date
   FROM recipes r
   INNER JOIN users u ON r.userid = u.id
   INNER JOIN categories c ON r.categoryid = c.categoryid
@@ -395,10 +409,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
 
     // Add steps
     if (row.step_number && row.step_description) {
-      recipe.steps.push({
-        step_number: row.step_number,
-        description: row.step_description,
-      });
+      recipe.steps.push(row.step_description); // Use simple array for steps
     }
 
     // Add images
@@ -425,3 +436,48 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   return recipe;
 };
 
+
+export const pg_get_rating_andAboveRecipes = async (rating) => {
+  const recipes = await sql`
+  SELECT 
+  r.recipeid AS recipeId,
+  r.title AS name,
+  u.name AS username,
+  u.lastname AS userlastname,
+  c.name AS category,
+  cu.name AS cuisine,
+  i.name AS ingredient,
+  ri.amount AS amount,
+  rs.stepnumber AS step_number,
+  rs.description AS step_description,
+  im.imageurl AS image_url,
+  com.commentid AS comment_id,
+  com.comment AS comment_text,
+  com.created_at AS comment_date,
+  ucom.name AS commenter_name,
+  ucom.lastname AS commenter_lastname,
+  rat.ratingid AS rating_id,
+  rat.rating AS rating_value,
+  urat.name AS rater_name,
+  urat.lastname AS rater_lastname,
+  GREATEST(
+    COALESCE(com.created_at, '1970-01-01'::timestamp), 
+    COALESCE(rat.created_at, '1970-01-01'::timestamp)
+  ) AS review_date
+FROM recipes r
+INNER JOIN users u ON r.userid = u.id
+INNER JOIN categories c ON r.categoryid = c.categoryid
+INNER JOIN recipe_ingredients ri ON r.recipeid = ri.recipeid
+INNER JOIN ingredients i ON ri.ingredientid = i.ingredientid
+INNER JOIN recipe_steps rs ON r.recipeid = rs.recipeid
+INNER JOIN cuisines cu ON r.cuisineid = cu.cuisineid
+LEFT JOIN images im ON r.recipeid = im.recipeid
+LEFT JOIN comments com ON r.recipeid = com.recipeid
+LEFT JOIN users ucom ON com.userid = ucom.id
+LEFT JOIN ratings rat ON r.recipeid = rat.recipeid
+LEFT JOIN users urat ON rat.userid = urat.id
+WHERE rat.rating >= ${rating}
+ORDER BY rs.stepnumber, review_date;
+`;
+return recipes
+}

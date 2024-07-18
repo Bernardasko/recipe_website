@@ -7,6 +7,7 @@ export const patchRecipeById = async (recipeData) => {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
+    console.log('IAM RECIPE DATA FROM PATCH',recipeData);
     const editedRecipe = await axios.patch(
       `${patch_recipe_url}/${recipeData.recipeId}`,
       recipeData,
