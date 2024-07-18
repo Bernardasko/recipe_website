@@ -99,7 +99,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const handleAddStep = () => {
     setSteps([...steps, ""]);
   };
-
+ 
   const handleStepChange = (index, value) => {
     const newSteps = [...steps];
     newSteps[index] = value;
@@ -190,6 +190,9 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   value: 35,
                   message: "Title cannot exceed 35 characters",
                 },
+                validate: {
+                  notEmpty: (value) => value.trim() !== "" || "Title cannot be empty or just whitespace",
+                }
               })}
               error={!!errors.title}
               helperText={errors.title ? errors.title.message : ""}
