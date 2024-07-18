@@ -1,10 +1,14 @@
 import { Link, Outlet } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import ProfileCard from './ProfileCard';
+
+
 function Profile() {
   const token = jwtDecode(window.localStorage.getItem('token'));
   return (
     <>
       <h1 className='text-center my-2 text-2xl capitalize'>profile page</h1>
+     <ProfileCard/>
       <div className='flex justify-around'>
         {token.role === 'admin' && (
           <Link to={'/profile/categories'}>categories</Link>
