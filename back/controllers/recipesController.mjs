@@ -63,7 +63,6 @@ export const patchRecipe = async (req, res) => {
       category,
       cuisine,
       image,
-      'im image'
     );
     steps.forEach((step, index) => {
       console.log(step);
@@ -83,8 +82,8 @@ export const patchRecipe = async (req, res) => {
       title.trim(),
       ingredients,
       steps,
-      category.trim(),
-      cuisine.toLowerCase().trim(),
+      category.trim().toLowerCase(),
+      cuisine.toLowerCase().trim().toLowerCase(),
       image.trim()
     );
     // console.log(patchedRecipe);
@@ -99,7 +98,6 @@ export const patchRecipe = async (req, res) => {
 export const getRecipes = async (req, res) => {
   try {
     const user = req.user;
-
     if (user.role === 'user') {
       console.log(user.id, ' - is user id');
       const recipes = await pg_getRecipesByUserId(user.id);

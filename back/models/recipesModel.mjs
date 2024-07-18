@@ -77,7 +77,7 @@ export const pg_postRecipe = async (
 
       return {
         ...recipe[0],
-        steps: stepArray
+        steps: stepArray,
       };
     });
 
@@ -87,7 +87,6 @@ export const pg_postRecipe = async (
     throw error; // Re-throw the error to handle it outside
   }
 };
-
 
 export const pg_deleteRecipeById = async (recipeId) => {
   const deletedRecipe = await sql`
@@ -116,12 +115,30 @@ export const pg_patchRecipe = async (
         throw new Error(`Recipe with ID ${recipeId} does not exist.`);
       }
 
+      // Get category ID
+      const categoryResult = await sql`
+        SELECT categoryid FROM categories WHERE name = ${category}
+      `;
+      if (categoryResult.length === 0) {
+        throw new Error(`Category ${category} does not exist.`);
+      }
+      const categoryId = categoryResult[0].categoryid;
+
+      // Get cuisine ID
+      const cuisineResult = await sql`
+        SELECT cuisineid FROM cuisines WHERE name = ${cuisine}
+      `;
+      if (cuisineResult.length === 0) {
+        throw new Error(`Cuisine ${cuisine} does not exist.`);
+      }
+      const cuisineId = cuisineResult[0].cuisineid;
+
       // Update the recipe title, category, and cuisine
       await sql`
         UPDATE recipes
         SET title = ${title},
-            categoryid = (SELECT categoryid FROM categories WHERE name = ${category.toLowerCase()}),
-            cuisineid = (SELECT cuisineid FROM cuisines WHERE name = ${cuisine})
+            categoryid = ${categoryId},
+            cuisineid = ${cuisineId}
         WHERE recipeid = ${recipeId}
       `;
 
@@ -174,10 +191,13 @@ export const pg_patchRecipe = async (
         WHERE recipeid = ${recipeId}
       `;
 
-      await sql`
-        INSERT into images (recipeid, imageurl)
-        VALUES (${recipeId}, ${image})
-        `
+      // Insert new image if provided
+      if (image) {
+        await sql`
+          INSERT INTO images (recipeid, imageurl)
+          VALUES (${recipeId}, ${image})
+        `;
+      }
 
       return { message: 'Recipe updated successfully' };
     });
@@ -245,9 +265,7 @@ export const pg_getRecipesByUserId = async (userId) => {
     }
 
     // Add step if it does not already exist
-    if (
-      !recipes[row.recipeid].steps.includes(row.step_description)
-    ) {
+    if (!recipes[row.recipeid].steps.includes(row.step_description)) {
       recipes[row.recipeid].steps.push(row.step_description);
     }
 
@@ -260,7 +278,6 @@ export const pg_getRecipesByUserId = async (userId) => {
   // Convert recipes object to an array
   return Object.values(recipes);
 };
-
 
 export const pg_getAllRecipes = async () => {
   const flatResults = await sql`
@@ -317,9 +334,7 @@ export const pg_getAllRecipes = async () => {
     }
 
     // Add step if it does not already exist
-    if (
-      !recipes[row.recipeid].steps.includes(row.step_description)
-    ) {
+    if (!recipes[row.recipeid].steps.includes(row.step_description)) {
       recipes[row.recipeid].steps.push(row.step_description);
     }
 
@@ -436,7 +451,6 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   return recipe;
 };
 
-
 export const pg_get_rating_andAboveRecipes = async (rating) => {
   const recipes = await sql`
   SELECT 
@@ -479,5 +493,5 @@ LEFT JOIN users urat ON rat.userid = urat.id
 WHERE rat.rating >= ${rating}
 ORDER BY rs.stepnumber, review_date;
 `;
-return recipes
-}
+  return recipes;
+};
