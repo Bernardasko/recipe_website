@@ -22,7 +22,6 @@ const AddCommentRating = ({ recipeData }) => {
     4.5: 'Excellent',
     5: 'Excellent+',
   };
-
   // need to finish like functionllity
   const handleLike = () => {};
 
@@ -43,7 +42,7 @@ const AddCommentRating = ({ recipeData }) => {
     >
       <div className='w-full border shadow-md flex rounded-lg'>
         <div className='w-full flex flex-col justify-start py-2 px-5 divide-y-2 space-y-2'>
-          {recipeData.social.comments.map((comment, index) => {
+          {recipeData.social.comments ? recipeData.social.comments.map((comment, index) => {
             return (
               <div className='flex' key={index}>
                 <div key={index} className='w-full flex flex-col ml-3'>
@@ -70,8 +69,12 @@ const AddCommentRating = ({ recipeData }) => {
                 </div>
               </div>
             );
-          })}
+          })
+          : <p>No Comments</p>
+          
+          }
         </div>
+
       </div>
     </Box>
   );
