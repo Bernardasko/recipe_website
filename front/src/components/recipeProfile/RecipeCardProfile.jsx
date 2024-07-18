@@ -4,11 +4,11 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveModal from './MuiModal.jsx';
 import { useState } from 'react';
-
+ 
 function RecipeCardProfile({ data }) {
   const navigate = useNavigate();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-
+ 
   const deleteRecipe = async (recipeId) => {
     const result = await deleteRecipyById(recipeId);
     if (result === 200) {
@@ -18,20 +18,20 @@ function RecipeCardProfile({ data }) {
       toast.error(`Error while deleting ${data.name}`);
     }
   };
-
+ 
   const handleDeleteClick = () => {
     setShowConfirmDialog(true);
   };
-
+ 
   const handleConfirmDelete = () => {
     deleteRecipe(data.recipeId);
     setShowConfirmDialog(false);
   };
-
+ 
   const handleCancelDelete = () => {
     setShowConfirmDialog(false);
   };
-
+ 
   return (
     <>
       <div className='card min-w-56 max-w-sm shadow-xl rounded-lg'>
@@ -40,6 +40,7 @@ function RecipeCardProfile({ data }) {
             className='rounded-tl-lg rounded-tr-lg'
             src={data.images}
             alt={data.images}
+           style={{height: '250px', objectFit: 'cover', width: '280px', marginBottom: '10px'}}
           />
         </figure>
         <div className='card-body'>
@@ -57,22 +58,22 @@ function RecipeCardProfile({ data }) {
           </div>
         </div>
       </div>
-
+ 
       {showConfirmDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-4 rounded-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded-lg w-1/3 text-center">
             <p>Are you sure you want to delete {data.name}?</p>
-            <div className="mt-4 flex justify-end space-x-2">
+            <div className="mt-4 flex justify-center space-x-2">
               <button className="btn btn-outline" onClick={handleCancelDelete}>Cancel</button>
               <button className="btn btn-error" onClick={handleConfirmDelete}>Delete</button>
             </div>
           </div>
         </div>
       )}
-
+ 
       <Toaster />
     </>
   );
 }
-
+ 
 export default RecipeCardProfile;

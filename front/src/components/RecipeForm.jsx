@@ -35,24 +35,34 @@ function RecipeForm({ recipeInfo, setOpen }) {
     reset,
     setValue,
     control,
+    unregister,
   } = useForm();
 
   const handleDeleteIngredient = (index) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
+
+    // Unregister the removed fields
+    unregister(`ingredients.${index}.amount`);
+    unregister(`ingredients.${index}.ingredient`);
+
+    // Update the remaining fields
+    newIngredients.forEach((ingredient, i) => {
+      setValue(`ingredients.${i}.amount`, ingredient.amount);
+      setValue(`ingredients.${i}.ingredient`, ingredient.ingredient);
+    });
   };
 
   const handleDeleteStep = (index) => {
     const newSteps = steps.filter((_, i) => i !== index);
     setSteps(newSteps);
 
-    const updatedSteps = newSteps.reduce((acc, step, i) => {
-      acc[`steps.${i}`] = step;
-      return acc;
-    }, {});
+    // Unregister the removed field
+    unregister(`steps.${index}`);
 
-    Object.keys(updatedSteps).forEach((key) => {
-      setValue(key, updatedSteps[key]);
+    // Update the remaining fields
+    newSteps.forEach((step, i) => {
+      setValue(`steps.${i}`, step);
     });
   };
 
@@ -75,7 +85,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
         const posted = await postRecipe(newRecipe);
         if (posted.status === 200 || posted.status === 201) {
           toast.success("Recipe created successfully");
-          // navigate("/profile/recipes");
+          navigate("/profile/recipes");
         } else {
           error && toast.error("Failed to create recipe");
         }
@@ -94,6 +104,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
     const newSteps = [...steps];
     newSteps[index] = value;
     setSteps(newSteps);
+    setValue(`steps.${index}`, value);
   };
 
   const handleAddIngredient = () => {
@@ -133,9 +144,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
         setValue(`ingredients.${index}.ingredient`, ingredient.ingredient);
       });
 
-      setSteps(recipeInfo.steps.map((step) => step.description));
+      // Set steps
+      setSteps(recipeInfo.steps);
       recipeInfo.steps.forEach((step, index) => {
-        setValue(`steps.${index}`, step.description);
+        setValue(`steps.${index}`, step);
       });
     }
   }, []);
@@ -173,7 +185,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
               label="Title"
               name="title"
               {...register("title", {
-                required: "Title field is required", maxLength: {
+                required: "Title field is required",
+                maxLength: {
                   value: 35,
                   message: "Title cannot exceed 35 characters",
                 },
@@ -203,7 +216,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
                     handleIngredientChange(index, "amount", e.target.value)
                   }
                   {...register(`ingredients.${index}.amount`, {
-                    required: `Amount ${index + 1} is required`, maxLength: {
+                    required: `Amount ${index + 1} is required`,
+                    maxLength: {
                       value: 100,
                       message: "Amount cannot exceed 100 characters",
                     },
@@ -223,9 +237,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
                     handleIngredientChange(index, "ingredient", e.target.value)
                   }
                   {...register(`ingredients.${index}.ingredient`, {
-                    required: `Ingredient ${index + 1} is required`, maxLength: {
+                    required: `Ingredient ${index + 1} is required`,
+                    maxLength: {
                       value: 100,
-                      message: "Ingridient cannot exceed 100 characters",
+                      message: "Ingredient cannot exceed 100 characters",
                     },
                   })}
                   error={!!errors.ingredients?.[index]?.ingredient}
@@ -247,43 +262,41 @@ function RecipeForm({ recipeInfo, setOpen }) {
             </Button>
 
             {steps.map((step, index) => (
-              <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 1,
-                    alignItems: "center",
-                    marginBottom: 2,
+              <Box
+                key={index}
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  marginBottom: 2,
+                }}
+              >
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name={`steps[${index}]`}
+                  label={`Step ${index + 1}`}
+                  type="text"
+                  id={`step-${index}`}
+                  onChange={(e) => handleStepChange(index, e.target.value)}
+                  {...register(`steps.${index}`, {
+                    required: `Step ${index + 1} is required`,
+                  })}
+                  error={!!errors.steps?.[index]}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        {index + 1}
+                      </InputAdornment>
+                    ),
                   }}
-                >
-                  <TextField
-                    key={index}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name={`steps[${index}]`}
-                    label={`Step ${index + 1}`}
-                    type="text"
-                    id={`step-${index}`}
-                    onChange={(e) => handleStepChange(index, e.target.value)}
-                    {...register(`steps.${index}`, {
-                      required: `Step ${index + 1} is required`,
-                    })}
-                    error={!!errors.steps?.[index]}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          {index + 1}
-                        </InputAdornment>
-                      ),
-                    }}
-                    helperText={errors.steps?.[index]?.message}
-                  />
-                  <IconButton onClick={() => handleDeleteStep(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </>
+                  helperText={errors.steps?.[index]?.message}
+                />
+                <IconButton onClick={() => handleDeleteStep(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </Box>
             ))}
             <Button
               type="button"
@@ -334,22 +347,18 @@ function RecipeForm({ recipeInfo, setOpen }) {
                 rules={{ required: "Cuisine is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth error={!!error}>
-                  <Select
-                    {...field}
-                    displayEmpty
-                    error={!!errors.cuisine}
-                  >
-                    <MenuItem value="" disabled>
-                      Cuisine
-                    </MenuItem>
-                    {data.cuisines.data &&
-                      data.cuisines.data.map((item, index) => (
-                        <MenuItem key={index} value={item.name}>
-                          {item.name}
-                        </MenuItem>
-                      ))}
-                  </Select>
-                  <FormHelperText>{error?.message || " "}</FormHelperText>
+                    <Select {...field} displayEmpty error={!!errors.cuisine}>
+                      <MenuItem value="" disabled>
+                        Cuisine
+                      </MenuItem>
+                      {data.cuisines.data &&
+                        data.cuisines.data.map((item, index) => (
+                          <MenuItem key={index} value={item.name}>
+                            {item.name}
+                          </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText>{error?.message || " "}</FormHelperText>
                   </FormControl>
                 )}
               />

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useNavigationType } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useNavigate, useNavigationType } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -15,29 +15,29 @@ import {
   Grid,
   useMediaQuery,
   CircularProgress,
-} from '@mui/material';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import PublicIcon from '@mui/icons-material/Public';
-import { getAllRecipes } from '../services/get.mjs';
+} from "@mui/material";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import PublicIcon from "@mui/icons-material/Public";
+import { getAllRecipes } from "../services/get.mjs";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#1976d2',
+      main: "#1976d2",
     },
     secondary: {
-      main: '#dc004e',
+      main: "#dc004e",
     },
   },
 });
 
 const RecipeCardInfo = () => {
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const openRecipe = (recipe) => {
-    navigate(`/${recipe.recipeId}`)
+    navigate(`/${recipe.recipeId}`);
   };
 
   useEffect(() => {
@@ -61,18 +61,18 @@ const RecipeCardInfo = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         {recipes.map((recipe, recipeIndex) => (
           <Box
             key={recipe.recipeId}
-            sx={{ mb: 6, border: '1px solid black' }}
+            sx={{ mb: 6, border: "1px solid black" }}
             onClick={() => openRecipe(recipe)}
           >
             <Typography
-              variant={isSmallScreen ? 'h3' : 'h2'}
-              component='h1'
+              variant={isSmallScreen ? "h3" : "h2"}
+              component="h1"
               gutterBottom
-              color='primary'
+              color="primary"
             >
               {recipe.name}
             </Typography>
@@ -81,26 +81,26 @@ const RecipeCardInfo = () => {
               <Chip
                 icon={<RestaurantIcon />}
                 label={recipe.category}
-                color='primary'
+                color="primary"
                 sx={{ mr: 1, mb: 1 }}
               />
               <Chip
                 icon={<PublicIcon />}
                 label={recipe.cuisine}
-                color='secondary'
+                color="secondary"
                 sx={{ mb: 1 }}
               />
             </Box>
 
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: "100%" }}>
                   <CardContent>
                     <Typography
-                      variant='h5'
-                      component='h2'
+                      variant="h5"
+                      component="h2"
                       gutterBottom
-                      color='primary'
+                      color="primary"
                     >
                       Ingredients
                     </Typography>
@@ -109,8 +109,8 @@ const RecipeCardInfo = () => {
                         recipe.ingredients.map((item, index) => (
                           <ListItem key={index}>
                             <ListItemText
-                              primary={`${item.ingredient || ''} - ${
-                                item.amount || ''
+                              primary={`${item.ingredient || ""} - ${
+                                item.amount || ""
                               }`}
                             />
                           </ListItem>
@@ -121,24 +121,22 @@ const RecipeCardInfo = () => {
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Card sx={{ height: '100%' }}>
+                <Card sx={{ height: "100%" }}>
                   <CardContent>
                     <Typography
-                      variant='h5'
-                      component='h2'
+                      variant="h5"
+                      component="h2"
                       gutterBottom
-                      color='primary'
+                      color="primary"
                     >
                       Products Steps
                     </Typography>
                     <List>
                       {recipe.steps &&
-                        recipe.steps.map((step, index) => (
+                        recipe.steps.map((steps, index) => (
                           <ListItem key={index}>
                             <ListItemText
-                              primary={`${step.step_number || ''} - ${
-                                step.description || ''
-                              }`}
+                              primary={`${index + 1} - ${steps || ""}`}
                             />
                           </ListItem>
                         ))}
