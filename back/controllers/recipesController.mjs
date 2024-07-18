@@ -71,7 +71,7 @@ export const patchRecipe = async (req, res) => {
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase().trim();
-        obj.amount = obj.ingredient.toLowerCase().trim();
+        obj.amount = obj.amount.toLowerCase().trim();
       }
     });
     // cuisine = cuisine.toLowerCase().trim();

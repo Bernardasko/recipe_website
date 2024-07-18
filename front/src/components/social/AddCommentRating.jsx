@@ -61,17 +61,28 @@ function AddCommentRating({ recipeData }) {
     <Box
       component='form'
       onSubmit={handleSubmit(formSubmitHandler)}
+      // style={{
+      //   display: 'flex',
+      //   flexDirection: 'row',
+      //   alignItems: 'center',
+      //   gap: '16px',
+      //   flexWrap: 'wrap',
+      //   // backgroundColor: '#f5f5f5',
+      //   paddingLeft: '50px',
+      //   paddingRight: '50px',
+      //   borderRadius: '8px',
+      //   width: '50rem',
+      // }}
       style={{
+        maxWidth: '700px',
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '16px',
-        flexWrap: 'wrap',
-        // backgroundColor: '#f5f5f5',
-        paddingLeft: '50px',
-        paddingRight: '50px',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        padding: '20px',
+        margin: 'auto',
+        //   backgroundColor: '#f5f5f5',
         borderRadius: '8px',
-        width: '50rem',
       }}
     >
       <Controller

@@ -84,7 +84,7 @@ const RecipeCardBig = ({ recipe }) => {
           <List>
             {data.steps.map((step, index) => (
               <ListItem key={index}>
-                <ListItemText primary={` ${step.step_number} - ${step.description}`} />
+                <ListItemText primary={` ${index + 1} - ${step}`} />
               </ListItem>
             ))}
           </List>
