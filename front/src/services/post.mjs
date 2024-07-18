@@ -33,7 +33,7 @@ export const postNewCategory = async (categoryName) => {
 
 export const postReview = async (review) => {
   const token = window.localStorage.getItem('token');
-  const post_review_url = import.meta.env.VITE_POST_REVIEW;
+  const post_review_url = import.meta.env.VITE_SOCIAL;
   console.log(post_review_url);
   try {
     const config = {

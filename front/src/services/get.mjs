@@ -7,9 +7,9 @@ export const getCategoryById = async (id) => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  
+
   const category = await axios.get(`${get_app_category}/${id}`, config);
-  
+
   return category.data;
 };
 
@@ -20,10 +20,8 @@ export const getCuisineById = async (id) => {
     headers: { Authorization: `Bearer ${token}` },
   };
   try {
-
-  const cuisine = await axios.get(`${get_app_cuisine}/${id}`, config);
-  return cuisine.data
-    
+    const cuisine = await axios.get(`${get_app_cuisine}/${id}`, config);
+    return cuisine.data;
   } catch (error) {
     console.error(error);
     return error;
@@ -118,19 +116,17 @@ export const getRecipeByCategoryId = async (id) => {
   }
 };
 
-
 export const getRecipeById = async (id) => {
-
   const recipe_url = import.meta.env.VITE_GET_RECIPE;
   console.log(recipe_url + '/' + id);
   const token = window.localStorage.getItem('token');
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  
+
   try {
     const response = await axios.get(`${recipe_url}/${id}`, config);
-    
+
     return response.data;
   } catch (error) {
     console.error(error);
@@ -144,12 +140,27 @@ export const getCusinesWithRecipes = async () => {
     headers: { Authorization: `Bearer ${token}` },
   };
   try {
-    const response = await axios.get(cuisine_with_recipes_url, config)
-    return response.data
+    const response = await axios.get(cuisine_with_recipes_url, config);
+    return response.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
+};
 
-  
-}
+export const getRecipeComments = async (recipeId, queryString) => {
+  try {
+    const social_url = import.meta.env.VITE_SOCIAL
+    const token = window.localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.get(`${social_url}/${recipeId}?${queryString}`, config)
+    if(response.status ===200){
+      return response.data
+    } 
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

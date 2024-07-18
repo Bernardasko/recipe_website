@@ -350,6 +350,29 @@ export const pg_getAllRecipes = async () => {
 
 export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   const results = await sql`
+  WITH distinct_ingredients AS (
+    SELECT ri.recipeid, ri.amount, i.name AS ingredient
+    FROM recipe_ingredients ri
+    INNER JOIN ingredients i ON ri.ingredientid = i.ingredientid
+    WHERE ri.recipeid = ${recipeId}
+  ),
+  distinct_steps AS (
+    SELECT rs.recipeid, rs.stepnumber, rs.description
+    FROM recipe_steps rs
+    WHERE rs.recipeid = ${recipeId}
+  ),
+  distinct_comments AS (
+    SELECT com.recipeid, com.commentid, com.comment, com.created_at, ucom.name AS commenter_name, ucom.lastname AS commenter_lastname
+    FROM comments com
+    LEFT JOIN users ucom ON com.userid = ucom.id
+    WHERE com.recipeid = ${recipeId}
+  ),
+  distinct_ratings AS (
+    SELECT rat.recipeid, rat.ratingid, rat.rating, rat.created_at, urat.name AS rater_name, urat.lastname AS rater_lastname
+    FROM ratings rat
+    LEFT JOIN users urat ON rat.userid = urat.id
+    WHERE rat.recipeid = ${recipeId}
+  )
   SELECT 
     r.recipeid AS recipeId,
     r.title AS name,
@@ -359,30 +382,26 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     cu.name AS cuisine,
     im.imageurl AS image_url,
     -- Aggregating ingredients into a JSON array
-    ARRAY_AGG(DISTINCT jsonb_build_object('amount', ri.amount, 'ingredient', i.name)) FILTER (WHERE ri.ingredientid IS NOT NULL) AS ingredients,
+    ARRAY_AGG(jsonb_build_object('amount', di.amount, 'ingredient', di.ingredient)) AS ingredients,
     -- Aggregating steps into a JSON array
-    ARRAY_AGG(DISTINCT rs.description) FILTER (WHERE rs.stepnumber IS NOT NULL) AS steps,
+    ARRAY_AGG(ds.description ORDER BY ds.stepnumber) AS steps,
     -- Aggregating comments and ratings into a single JSON object
     jsonb_build_object(
-      'comments', ARRAY_AGG(DISTINCT jsonb_build_object('comment_id', com.commentid, 'comment_text', com.comment, 'comment_date', com.created_at, 'commenter_name', ucom.name, 'commenter_lastname', ucom.lastname)) FILTER (WHERE com.commentid IS NOT NULL),
-      'ratings', ARRAY_AGG(DISTINCT jsonb_build_object('rating_id', rat.ratingid, 'rating_value', rat.rating, 'rater_name', urat.name, 'rater_lastname', urat.lastname, 'review_date', GREATEST(COALESCE(com.created_at, '1970-01-01'::timestamp), COALESCE(rat.created_at, '1970-01-01'::timestamp)))) FILTER (WHERE rat.ratingid IS NOT NULL)
+      'comments', (SELECT JSONB_AGG(jsonb_build_object('comment_id', dc.commentid, 'comment_text', dc.comment, 'comment_date', dc.created_at, 'commenter_name', dc.commenter_name, 'commenter_lastname', dc.commenter_lastname)) FROM distinct_comments dc),
+      'ratings', (SELECT JSONB_AGG(jsonb_build_object('rating_id', dr.ratingid, 'rating_value', dr.rating, 'rater_name', dr.rater_name, 'rater_lastname', dr.rater_lastname, 'review_date', GREATEST(COALESCE(dr.created_at, '1970-01-01'::timestamp), COALESCE(dr.created_at, '1970-01-01'::timestamp)))) FROM distinct_ratings dr)
     ) AS social
   FROM recipes r
   INNER JOIN users u ON r.userid = u.id
   INNER JOIN categories c ON r.categoryid = c.categoryid
-  INNER JOIN recipe_ingredients ri ON r.recipeid = ri.recipeid
-  INNER JOIN ingredients i ON ri.ingredientid = i.ingredientid
-  INNER JOIN recipe_steps rs ON r.recipeid = rs.recipeid
+  INNER JOIN distinct_ingredients di ON r.recipeid = di.recipeid
+  INNER JOIN distinct_steps ds ON r.recipeid = ds.recipeid
   INNER JOIN cuisines cu ON r.cuisineid = cu.cuisineid
   LEFT JOIN images im ON r.recipeid = im.recipeid
-  LEFT JOIN comments com ON r.recipeid = com.recipeid
-  LEFT JOIN users ucom ON com.userid = ucom.id
-  LEFT JOIN ratings rat ON r.recipeid = rat.recipeid
-  LEFT JOIN users urat ON rat.userid = urat.id
   WHERE r.recipeid = ${recipeId}
   GROUP BY r.recipeid, r.title, u.name, u.lastname, c.name, cu.name, im.imageurl
-  ORDER BY MIN(rs.stepnumber);
+  ORDER BY MIN(ds.stepnumber);
 `;
+
 
   
   return results[0];

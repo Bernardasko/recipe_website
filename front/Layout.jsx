@@ -83,7 +83,7 @@ function Layout() {
               )}
             </Typography>
             <Box sx={{ flexGrow: 1, display: { md: "flex" } }}>
-              {/* <SearchBar /> */}
+              <SearchBar />
             </Box>
             {token && (
               <>

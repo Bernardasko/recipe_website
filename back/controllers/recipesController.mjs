@@ -127,9 +127,7 @@ export const getRecipeByIdWithSocials = async (req, res) => {
     }
     if(recipe.social.comments){
       recipe.social.comments.map((comment, index) => {
-        console.log(comment.comment_date.split('T')[0]);
         comment.comment_date =  comment.comment_date.split('T')[0] + " " + comment.comment_date.split('T')[1].split('.')[0]
-
       })
     }
     res.status(200).json(recipe);
