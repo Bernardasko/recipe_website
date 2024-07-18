@@ -15,7 +15,7 @@ console.log(recipeData);
         <CardMedia
           component="img"
           height="140px"
-          image={recipeData}
+          image={recipeData.image}
           alt="recipe image"
           sx={{
             height: "200px",

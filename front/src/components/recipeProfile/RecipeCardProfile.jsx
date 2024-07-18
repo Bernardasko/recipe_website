@@ -34,17 +34,17 @@ function RecipeCardProfile({ data }) {
  
   return (
     <>
-      <div className='card min-w-56 max-w-sm shadow-xl rounded-lg'>
+      <div className='card w-96 max-w-sm shadow-xl rounded-lg'>
         <figure>
           <img
             className='rounded-tl-lg rounded-tr-lg'
             src={data.images}
             alt={data.images}
-           style={{height: '250px', objectFit: 'cover', width: '280px', marginBottom: '10px'}}
+           style={{height: '320px', width: '390px', marginBottom: '10px'}}
           />
         </figure>
         <div className='card-body'>
-          <h2 className='card-title'>Name: {data.name}</h2>
+        <h2 className='card-title truncate'>Name: {data.name}</h2>
           <h2 className='card-title'>Cusine: {data.cuisine}</h2>
           <p>Category: {data.category}</p>
           <div className='flex justify-around my-2'>

@@ -41,12 +41,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const handleDeleteIngredient = (index) => {
     const newIngredients = ingredients.filter((_, i) => i !== index);
     setIngredients(newIngredients);
-
-    // Unregister the removed fields
     unregister(`ingredients.${index}.amount`);
     unregister(`ingredients.${index}.ingredient`);
-
-    // Update the remaining fields
     newIngredients.forEach((ingredient, i) => {
       setValue(`ingredients.${i}.amount`, ingredient.amount);
       setValue(`ingredients.${i}.ingredient`, ingredient.ingredient);
@@ -56,11 +52,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const handleDeleteStep = (index) => {
     const newSteps = steps.filter((_, i) => i !== index);
     setSteps(newSteps);
-
-    // Unregister the removed field
     unregister(`steps.${index}`);
-
-    // Update the remaining fields
     newSteps.forEach((step, i) => {
       setValue(`steps.${i}`, step);
     });
@@ -99,7 +91,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
   const handleAddStep = () => {
     setSteps([...steps, ""]);
   };
- 
+
   const handleStepChange = (index, value) => {
     const newSteps = [...steps];
     newSteps[index] = value;
@@ -191,8 +183,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   message: "Title cannot exceed 35 characters",
                 },
                 validate: {
-                  notEmpty: (value) => value.trim() !== "" || "Title cannot be empty or just whitespace",
-                }
+                  notEmpty: (value) =>
+                    value.trim() !== "" ||
+                    "Title cannot be empty or just whitespace",
+                },
               })}
               error={!!errors.title}
               helperText={errors.title ? errors.title.message : ""}
@@ -214,20 +208,24 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   name={`ingredients[${index}].amount`}
                   label={`Amount ${index + 1}`}
                   type="text"
+                  value={ingredient.amount}
                   id={`ingredients-amount-${index}`}
                   onChange={(e) =>
                     handleIngredientChange(index, "amount", e.target.value)
                   }
-                  {...register(`ingredients.${index}.amount`, {
-                    required: `Amount ${index + 1} is required`,
-                    maxLength: {
-                      value: 100,
-                      message: "Amount cannot exceed 100 characters",
-                    },
-                  })}
+                  inputProps={{
+                    ...register(`ingredients.${index}.amount`, {
+                      required: `Amount ${index + 1} is required`,
+                      maxLength: {
+                        value: 100,
+                        message: "Amount cannot exceed 100 characters",
+                      },
+                    }),
+                  }}
                   error={!!errors.ingredients?.[index]?.amount}
                   helperText={errors.ingredients?.[index]?.amount?.message}
                 />
+
                 <TextField
                   margin="normal"
                   required
@@ -235,17 +233,20 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   name={`ingredients[${index}].ingredient`}
                   label={`Ingredient ${index + 1}`}
                   type="text"
+                  value={ingredient.ingredient}
                   id={`ingredients-name-${index}`}
                   onChange={(e) =>
                     handleIngredientChange(index, "ingredient", e.target.value)
                   }
-                  {...register(`ingredients.${index}.ingredient`, {
-                    required: `Ingredient ${index + 1} is required`,
-                    maxLength: {
-                      value: 100,
-                      message: "Ingredient cannot exceed 100 characters",
-                    },
-                  })}
+                  inputProps={{
+                    ...register(`ingredients.${index}.ingredient`, {
+                      required: `Ingredient ${index + 1} is required`,
+                      maxLength: {
+                        value: 100,
+                        message: "Ingredient cannot exceed 100 characters",
+                      },
+                    }),
+                  }}
                   error={!!errors.ingredients?.[index]?.ingredient}
                   helperText={errors.ingredients?.[index]?.ingredient?.message}
                 />
@@ -281,11 +282,9 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   name={`steps[${index}]`}
                   label={`Step ${index + 1}`}
                   type="text"
+                  value={step}
                   id={`step-${index}`}
                   onChange={(e) => handleStepChange(index, e.target.value)}
-                  {...register(`steps.${index}`, {
-                    required: `Step ${index + 1} is required`,
-                  })}
                   error={!!errors.steps?.[index]}
                   InputProps={{
                     startAdornment: (
