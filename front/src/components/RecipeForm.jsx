@@ -173,7 +173,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
               label="Title"
               name="title"
               {...register("title", {
-                required: "Title field is required",
+                required: "Title field is required", maxLength: {
+                  value: 35,
+                  message: "Title cannot exceed 35 characters",
+                },
               })}
               error={!!errors.title}
               helperText={errors.title ? errors.title.message : ""}
@@ -200,7 +203,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
                     handleIngredientChange(index, "amount", e.target.value)
                   }
                   {...register(`ingredients.${index}.amount`, {
-                    required: `Amount ${index + 1} is required`,
+                    required: `Amount ${index + 1} is required`, maxLength: {
+                      value: 100,
+                      message: "Amount cannot exceed 100 characters",
+                    },
                   })}
                   error={!!errors.ingredients?.[index]?.amount}
                   helperText={errors.ingredients?.[index]?.amount?.message}
@@ -217,7 +223,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
                     handleIngredientChange(index, "ingredient", e.target.value)
                   }
                   {...register(`ingredients.${index}.ingredient`, {
-                    required: `Ingredient ${index + 1} is required`,
+                    required: `Ingredient ${index + 1} is required`, maxLength: {
+                      value: 100,
+                      message: "Ingridient cannot exceed 100 characters",
+                    },
                   })}
                   error={!!errors.ingredients?.[index]?.ingredient}
                   helperText={errors.ingredients?.[index]?.ingredient?.message}

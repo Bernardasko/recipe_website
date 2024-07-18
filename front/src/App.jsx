@@ -5,7 +5,7 @@ function App() {
     <>
       <div className=" bg-amber-50">
         <div className="mx-auto max-w-screen-md p-4">
-          <h1 className="text-3xl font-bold underline mb-10 mt-10 text-center">
+          <h1 className="text-3xl font-bold underline mb-10 mt-10 text-center"> 
             Welcome To Our Recipes World!
           </h1>
           <img
@@ -14,7 +14,7 @@ function App() {
             className="mx-auto mb-10"
           />
           <h3 className="text-1xl font-bold mb-4 text-center">About Us </h3>
-          <p>
+          <p className="indent-7">
             We believe that cooking is not just a necessity, but a joyful
             experience that brings people together. Our team is a diverse group
             of culinary enthusiasts, home cooks, and professional chefs who
@@ -22,25 +22,26 @@ function App() {
             platform where everyone, regardless of their cooking skill level,
             can find inspiration and guidance.
           </p>
-          <h3 className="text-1xl font-bold mb-4 mt-10 text-center">
+          <ul className="text-1xl font-bold mb-4 mt-10 text-center">
             What Can You Find In Our Website
-          </h3>
-          <p className="list-disc">
+          </ul>
+          <li className="list-disc">
             On our website, you will find a wide selection of various recipes –
             from traditional to modern, from easy to complex.
-          </p>
-          <p>
+          </li>
+          <li>
             Explore our extensive collection of recipes by selecting your
             preferred country or category!
-          </p>
-          <p>
+          </li>
+          <li>
             Join our culinary community, share your experiences, and get
             feedback from other members.
-          </p>
+          </li>
 
           <h1 className="text-3xl font-bold mb-10 mt-10 text-center">
             Top rated recipes
           </h1>
+        
         </div>
       </div>
     </>
