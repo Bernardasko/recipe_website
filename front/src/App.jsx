@@ -3,13 +3,13 @@ function App() {
 
   return (
     <>
-      <div className=" bg-amber-50">
+      <div className=" bg-stone-100">
         <div className="mx-auto max-w-screen-md p-4">
           <h1 className="text-3xl font-bold underline mb-10 mt-10 text-center"> 
             Welcome To Our Recipes World!
           </h1>
           <img
-            src="https://images.freeimages.com/images/large-previews/e7c/recipe-1538714.jpg?fmt=webp&h=350"
+            src="https://media.istockphoto.com/id/891322060/photo/pumpkin-soup.jpg?s=612x612&w=0&k=20&c=V-02vtPIazIEGmZaEYKVJg0a2l5rli9tWO3qfcQGAuw="
             alt="Delicious food"
             className="mx-auto mb-10"
           />
