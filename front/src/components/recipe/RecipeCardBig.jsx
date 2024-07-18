@@ -77,11 +77,10 @@ const RecipeCardBig = ({ recipe }) => {
           Steps:
         </Typography>
         <List>
-          {data.steps.map((step) => (
-            <ListItem key={step.step_number}>
-              <ListItemText 
-                primary={`Step - ${step.step_number}`}
-                secondary={step.description}
+          {data.steps.map((step, index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={`Step - ${step}`}
               />
             </ListItem>
           ))}

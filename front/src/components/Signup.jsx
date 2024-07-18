@@ -70,7 +70,7 @@ export default function Signup() {
         } else if (error.response.status === 409 && error.response.data.message === 'Email is occupied') {
           setFormError("email", {
             type: "manual",
-            message: "Toks el. pašto adresas jau yra sukurtas"
+            message: "Such email The email address has already been created"
           });
         } else {
           console.log(error);
