@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import { Controller, useForm } from 'react-hook-form';
 import { postReview } from '../../services/post.mjs';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate, useParams } from 'react-router-dom';
+
 
 const labels = {
   0.5: 'Useless',
@@ -23,9 +25,11 @@ const labels = {
 };
 
 function AddCommentRating({ recipeData }) {
-  // console.log(recipeData);
+const navigate = useNavigate()
+const {recipeId: id} = useParams()
 
   const formSubmitHandler = async (commentData) => {
+
     try {
       const newData = {
         ...commentData,
@@ -34,7 +38,8 @@ function AddCommentRating({ recipeData }) {
       const isPosted = await postReview(newData);
       console.log(isPosted);
       if(isPosted.status = 201){
-        toast.success('Comment is posted')
+        reset()
+        navigate(`/recipe/${id}`)
       } else {
         toast.error('Error is not posted')
       }
@@ -61,18 +66,6 @@ function AddCommentRating({ recipeData }) {
     <Box
       component='form'
       onSubmit={handleSubmit(formSubmitHandler)}
-      // style={{
-      //   display: 'flex',
-      //   flexDirection: 'row',
-      //   alignItems: 'center',
-      //   gap: '16px',
-      //   flexWrap: 'wrap',
-      //   // backgroundColor: '#f5f5f5',
-      //   paddingLeft: '50px',
-      //   paddingRight: '50px',
-      //   borderRadius: '8px',
-      //   width: '50rem',
-      // }}
       style={{
         maxWidth: '700px',
         display: 'flex',

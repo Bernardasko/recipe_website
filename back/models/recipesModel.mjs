@@ -361,7 +361,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     -- Aggregating ingredients into a JSON array
     ARRAY_AGG(DISTINCT jsonb_build_object('amount', ri.amount, 'ingredient', i.name)) FILTER (WHERE ri.ingredientid IS NOT NULL) AS ingredients,
     -- Aggregating steps into a JSON array
-    ARRAY_AGG(rs.description) FILTER (WHERE rs.stepnumber IS NOT NULL) AS steps,
+    ARRAY_AGG(DISTINCT rs.description) FILTER (WHERE rs.stepnumber IS NOT NULL) AS steps,
     -- Aggregating comments and ratings into a single JSON object
     jsonb_build_object(
       'comments', ARRAY_AGG(DISTINCT jsonb_build_object('comment_id', com.commentid, 'comment_text', com.comment, 'comment_date', com.created_at, 'commenter_name', ucom.name, 'commenter_lastname', ucom.lastname)) FILTER (WHERE com.commentid IS NOT NULL),
