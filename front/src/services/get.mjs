@@ -1,6 +1,6 @@
 import axios from 'axios';
-const get_app_category = import.meta.env.VITE_CATEGORY_BY_ID;
-const get_app_cuisine = import.meta.env.VITE_CUISINE_BY_ID;
+const get_app_category = import.meta.env.VITE_CATEGORY
+const get_app_cuisine = import.meta.env.VITE_CUISINE;
 
 export const getCategoryById = async (id) => {
   const token = window.localStorage.getItem('token');
@@ -14,7 +14,7 @@ export const getCategoryById = async (id) => {
 };
 
 export const getCuisineById = async (id) => {
-  const get_app_cuisine = import.meta.env.VITE_CUISINE_BY_ID;
+  const get_app_cuisine = import.meta.env.VITE_CUISINES;
   const token = window.localStorage.getItem('token');
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -164,3 +164,44 @@ export const getRecipeComments = async (recipeId, queryString) => {
     throw error;
   }
 };
+
+export const cuisineSearch = async (cuisine, queryString) => {
+  try {
+    const cusines_url = import.meta.env.VITE_CUISINES
+    console.log(`${cusines_url}/searchCuisine/${cuisine}?${queryString}`);
+    // console.log(cuisine );
+    const token = window.localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.get(`${cusines_url}/search/${cuisine}?${queryString}`, config)
+    if(response.status === 200){
+      return response.data
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export const categorySearch = async (category, queryString) => {
+  try {
+    const category_url = import.meta.env.VITE_CATEGORY
+    console.log(`${category_url}/searchCategory/${category}?${queryString}`);
+    // console.log(cuisine );
+    const token = window.localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.get(`${category_url}/searchCategory/${category}?${queryString}`, config)
+    // http://localhost:3001/v1/categories/searchCategory/drinks?sort=recipes.title&page=1&limit=5&order=ASC
+    // const response = await axios.get(`${category_url}/search/${category}?${queryString}`, config)
+    console.log(response);
+    if(response.status === 200){
+      return response.data
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

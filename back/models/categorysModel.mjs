@@ -88,3 +88,57 @@ export const pg_deleteCategory = async (categoryId) => {
   RETURNING *`
   return result
 }
+
+export const pg_searchCategory = async (categoryName, reqQuery) => {
+  let { search, sort, page, limit, order } = reqQuery;
+
+  console.log('cuisines.name');
+  page = parseInt(page);
+  limit = parseInt(limit);
+
+  const orderByClause = `ORDER BY ${sort} ${order}`;
+  const offset = (page - 1) * limit;
+  const searchPattern = `%${search}%`;
+  console.log(search);
+
+  console.log(orderByClause);
+  const results = await sql`
+  SELECT recipes.recipeid,
+    recipes.title AS recipe, 
+    cuisines.name AS cuisine_name,
+    categories.name AS category,
+    users.name AS username,
+    users.lastname AS userlastname,
+    users.id AS userid,
+    images.imageurl AS image_url,
+    ARRAY_AGG(DISTINCT jsonb_build_object('amount', recipe_ingredients.amount, 'ingredient', ingredients.name )) AS ingredients,
+    ARRAY_AGG(recipe_steps.description ORDER BY recipe_steps.stepnumber) AS steps
+  FROM cuisines
+  INNER JOIN recipes ON recipes.cuisineid = cuisines.cuisineid
+  INNER JOIN recipe_ingredients ON recipes.recipeid = recipe_ingredients.recipeid
+  INNER JOIN ingredients ON recipe_ingredients.ingredientid = ingredients.ingredientid
+  INNER JOIN recipe_steps ON recipes.recipeid = recipe_steps.recipeid
+  INNER JOIN users ON recipes.userid = users.id
+  INNER JOIN categories ON recipes.categoryid = categories.categoryid
+  INNER JOIN images ON images.recipeid = recipes.recipeid
+  WHERE categories.name = ${categoryName}
+    ${
+      search
+        ? sql`AND (
+      recipes.title ILIKE ${searchPattern}
+      OR categories.name ILIKE ${searchPattern}
+      OR users.name ILIKE ${searchPattern}
+      OR users.lastname ILIKE ${searchPattern}
+      OR ingredients.name ILIKE ${searchPattern}
+      OR recipe_steps.description ILIKE ${searchPattern}
+    )`
+        : sql``
+    }  
+  
+  GROUP BY recipes.recipeid, users.id, cuisines.name, users.name, categories.name, images.imageurl, users.lastname
+  ${sql.unsafe(orderByClause)}
+  LIMIT ${limit}
+  OFFSET ${offset};
+  `;
+    return results;
+}

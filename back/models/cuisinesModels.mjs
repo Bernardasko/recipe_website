@@ -34,7 +34,7 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
         cuisine: row.cuisine,
         ingredients: [],
         steps: [],
-        ratings: []
+        ratings: [],
       };
     }
 
@@ -74,16 +74,80 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
 
 export const pg_getAllcusines = async () => {
   const results = await sql`
-  SELECT * FROM cuisines`
-  return results
-}
+  SELECT * FROM cuisines`;
+  return results;
+};
 
 export const pg_displayAllCusinesWithRecipes = async () => {
-    const results = await sql`
+  const results = await sql`
     SELECT cuisines.cuisineid AS cuisineid, cuisines.name AS name, ARRAY_AGG(jsonb_build_object('recipeid', recipeid)) as recipeid
     FROM cuisines
     INNER JOIN recipes ON cuisines.cuisineid = recipes.cuisineid
     GROUP BY cuisines.cuisineid
-    `
-    return results
-  }
+    `;
+  return results;
+};
+
+export const pg_searchCuisine = async (cuisineName, reqQuery) => {
+  let { search, sort, page, limit, order } = reqQuery;
+  console.log(order);
+
+  console.log('categories.name');
+  page = parseInt(page);
+  limit = parseInt(limit);
+
+  const orderByClause = `ORDER BY ${sort} ${order}`;
+  const offset = (page - 1) * limit;
+  const searchPattern = `%${search}%`;
+  console.log(search);
+  console.log(orderByClause);
+  const results = await sql`
+SELECT recipes.recipeid,
+  recipes.title AS recipe, 
+  cuisines.name AS cuisine_name,
+  categories.name AS category,
+  users.name AS username,
+  users.lastname AS userlastname,
+  users.id AS userid,
+  images.imageurl AS image_url,
+  ARRAY_AGG(DISTINCT jsonb_build_object('amount', recipe_ingredients.amount, 'ingredient', ingredients.name )) AS ingredients,
+  ARRAY_AGG(recipe_steps.description ORDER BY recipe_steps.stepnumber) AS steps
+FROM cuisines
+INNER JOIN recipes ON recipes.cuisineid = cuisines.cuisineid
+INNER JOIN recipe_ingredients ON recipes.recipeid = recipe_ingredients.recipeid
+INNER JOIN ingredients ON recipe_ingredients.ingredientid = ingredients.ingredientid
+INNER JOIN recipe_steps ON recipes.recipeid = recipe_steps.recipeid
+INNER JOIN users ON recipes.userid = users.id
+INNER JOIN categories ON recipes.categoryid = categories.categoryid
+INNER JOIN images ON images.recipeid = recipes.recipeid
+WHERE cuisines.name = ${cuisineName}
+  ${
+    search
+      ? sql`AND (
+    recipes.title ILIKE ${searchPattern}
+    OR categories.name ILIKE ${searchPattern}
+    OR users.name ILIKE ${searchPattern}
+    OR users.lastname ILIKE ${searchPattern}
+    OR ingredients.name ILIKE ${searchPattern}
+    OR recipe_steps.description ILIKE ${searchPattern}
+  )`
+      : sql``
+  }  
+
+GROUP BY recipes.recipeid, users.id, cuisines.name, users.name, categories.name, images.imageurl, users.lastname
+${sql.unsafe(orderByClause)}
+LIMIT ${limit}
+OFFSET ${offset};
+`;
+  return results;
+};
+
+// -- Aggregating ingredients into a JSON array
+// ARRAY_AGG(jsonb_build_object('amount', di.amount, 'ingredient', di.ingredient)) AS ingredients,
+// -- Aggregating steps into a JSON array
+// ARRAY_AGG(ds.description ORDER BY ds.stepnumber) AS steps,
+// -- Aggregating comments and ratings into a single JSON object
+// jsonb_build_object(
+//   'comments', (SELECT JSONB_AGG(jsonb_build_object('comment_id', dc.commentid, 'comment_text', dc.comment, 'comment_date', dc.created_at, 'commenter_name', dc.commenter_name, 'commenter_lastname', dc.commenter_lastname)) FROM distinct_comments dc),
+//   'ratings', (SELECT JSONB_AGG(jsonb_build_object('rating_id', dr.ratingid, 'rating_value', dr.rating, 'rater_name', dr.rater_name, 'rater_lastname', dr.rater_lastname, 'review_date', GREATEST(COALESCE(dr.created_at, '1970-01-01'::timestamp), COALESCE(dr.created_at, '1970-01-01'::timestamp)))) FROM distinct_ratings dr)
+// ) AS social

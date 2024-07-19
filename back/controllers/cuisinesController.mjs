@@ -3,6 +3,7 @@ import {
   pg_getRecipesByCuisineId,
   pg_getAllcusines,
   pg_displayAllCusinesWithRecipes,
+  pg_searchCuisine
 } from '../models/cuisinesModels.mjs';
 
 export const getRecipesByCuisineId = async (req, res) => {
@@ -54,3 +55,20 @@ export const displayAllCusinesWithRecipes = async (req, res) => {
     console.log(error);
   }
 };
+
+export const searchCuisine = async (req, res) => {
+  try {
+const {cuisineName} = req.params
+// console.log(req.query);
+
+const searchResults = await pg_searchCuisine(cuisineName, req.query)
+console.log(searchResults.length);
+    res.status(200).json(searchResults)
+  } catch (error) {
+    res.status(500).json({ message: error });
+    console.log(error);
+  }
+}
+ 
+
+// http://localhost:3001/v1/cuisines/brazilian?search=ff&sort=date&page=1&limit=5

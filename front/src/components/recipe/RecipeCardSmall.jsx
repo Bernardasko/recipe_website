@@ -6,7 +6,7 @@ import { CardActionArea } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 function RecipeCardSmall({ recipeData }) {
-// console.log(recipeData);
+console.log(recipeData);
 
   const {categoryId} = useParams()
   return (
@@ -25,10 +25,10 @@ function RecipeCardSmall({ recipeData }) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-          recipe name: {recipeData.name}
+          recipe name: {recipeData.recipe}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-          Cuisine: {recipeData.cuisine}
+          Cuisine: {recipeData.cuisine_name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
           Category: {recipeData.category}
@@ -36,7 +36,7 @@ function RecipeCardSmall({ recipeData }) {
         </CardContent>
       </CardActionArea>
       <Button>
-        <Link to={`/recipe/${recipeData.recipeId}`}>
+        <Link to={`/recipe/${recipeData.recipeid}`}>
           View Recipe
         </Link>
       </Button>

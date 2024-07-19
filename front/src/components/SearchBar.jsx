@@ -37,7 +37,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     paddingLeft: `calc(0.5em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
-    marginLeft: "px",
+    marginLeft: 'px',
   },
 }));
 
@@ -51,36 +51,32 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   },
 }));
 
-function SearchBar({ onSearch, onSort, setLimit }) {
-  const [searchValue, setSearchValue] = useState('');
+function SearchBar({
+  setLimit,
+  setSearch,
+  search,
+  setOrder,
+  setSortCategory,
+  setSortCusine
+}) {
   const [searchCriteria, setSearchCriteria] = useState('title');
-  const [sortCriteria, setSortCriteria] = useState('');
-
 
   const handleChange = (event) => {
-    const value = event.target.value;
-    if (value.startsWith('search:')) {
-      setSearchCriteria(value.replace('search:', ''));
-    } else {
-      setSortCriteria(value.replace('sort:', ''));
-    }
-  };
-let queryParams = new URLSearchParams()
 
-  
+  };
 
   return (
-    <Search sx={{margin: 'auto'}}>
+    <Search sx={{ margin: 'auto' }}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
-        placeholder="Search…"
+        placeholder='Search…'
         inputProps={{ 'aria-label': 'search' }}
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      <Box sx={{ display: 'flex', alignItems: 'center'}}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <StyledSelect
           value={`search:${searchCriteria}` || `sort:${sortCriteria}`}
           onChange={handleChange}
@@ -89,11 +85,37 @@ let queryParams = new URLSearchParams()
           IconComponent={ArrowDropDownIcon}
         >
           <MenuItem disabled>
-            <em>Search By</em>
+            <em>Order By</em>
           </MenuItem>
-          <MenuItem value="search:title">Title</MenuItem>
-          <MenuItem value="search:ingredients">Ingredients</MenuItem>
-          <MenuItem value="search:category">Category</MenuItem>
+          <MenuItem onClick={() => setSort('recipes.title')}>Title</MenuItem>
+          {/* <MenuItem onClick={() => setSort('ingredients')}>Ingredients</MenuItem> */}
+          {setSortCusine && (
+            <MenuItem onClick={() => setSortCusine('categories.name')}>
+              Category
+            </MenuItem>
+          )}
+          {setSortCategory &&
+            <MenuItem onClick={() => setSortCategory('categories.name')}>
+              Cuisine
+            </MenuItem>
+          }
+          <MenuItem disabled>
+            <em>Order</em>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setOrder('ASC');
+            }}
+          >
+            Asending
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setOrder('DESC');
+            }}
+          >
+            Descending
+          </MenuItem>
           {/* <MenuItem disabled>
             <em>Sort By</em>
           </MenuItem>
@@ -103,7 +125,6 @@ let queryParams = new URLSearchParams()
           <MenuItem onClick={() => setLimit(10)}>10</MenuItem>
           <MenuItem onClick={() => setLimit(20)}>20</MenuItem>
           <MenuItem onClick={() => setLimit(30)}>30</MenuItem>
-
         </StyledSelect>
       </Box>
     </Search>
