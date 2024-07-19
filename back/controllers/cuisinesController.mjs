@@ -10,6 +10,10 @@ export const getRecipesByCuisineId = async (req, res) => {
     const { cuisineId } = req.params;
     console.log(cuisineId);
     const results = await pg_getRecipesByCuisineId(cuisineId);
+    console.log(results);
+    if(results.length < 1){
+      return res.status(404).json({message: 'No recipes dound by cuisine id'})
+    }
     res.status(200).json(results);
   } catch (error) {
     res.status(500).json({ message: error });

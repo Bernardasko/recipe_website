@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const postRecipe = async (formInfo) => {
+  console.log(formInfo);
   const post_recipe_url = import.meta.env.VITE_POST_RECIPE;
   const token = window.localStorage.getItem('token');
   try {
@@ -8,6 +9,7 @@ export const postRecipe = async (formInfo) => {
       headers: { Authorization: `Bearer ${token}` },
     };
     const response = await axios.post(post_recipe_url, formInfo, config);
+    console.log(response);
     return response;
   } catch (error) {
     console.error(error);

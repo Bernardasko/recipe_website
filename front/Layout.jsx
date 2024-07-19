@@ -1,20 +1,28 @@
-import { AppBar, Box, Toolbar, Typography, Button, IconButton, CssBaseline, Drawer,
-} from "@mui/material";
-import { Home as HomeIcon, Menu as MenuIcon } from "@mui/icons-material";
-import { NavLink, Outlet } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { useContext, useState } from "react";
-import { AppContext } from "./src/context/AppContext";
-import SearchBar from "./src/components/SearchBar";
-import AppDrawer from "./src/components/AppDrawer";
-import { useNavigate } from "react-router-dom";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  CssBaseline,
+  Drawer,
+} from '@mui/material';
+import { Home as HomeIcon, Menu as MenuIcon } from '@mui/icons-material';
+import { NavLink, Outlet } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { useContext, useState } from 'react';
+import { AppContext } from './src/context/AppContext';
+import SearchBar from './src/components/SearchBar';
+import AppDrawer from './src/components/AppDrawer';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
 function Layout() {
   const { setToken } = useContext(AppContext);
-  const navigate = useNavigate()
-  const token = window.localStorage.getItem("token");
+  const navigate = useNavigate();
+  const token = window.localStorage.getItem('token');
   let decoded;
   if (token) {
     decoded = jwtDecode(token);
@@ -29,7 +37,7 @@ function Layout() {
   const clearToken = () => {
     localStorage.clear();
     setToken(null);
-    navigate('/', {replace: true})
+    navigate('/', { replace: true });
     // window.location.reload('/')
   };
 
@@ -37,108 +45,113 @@ function Layout() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <CssBaseline />
-        <AppBar position="static">
+        <AppBar position='static'>
           <Toolbar>
             <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
             <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              variant='h6'
+              component='div'
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              <Button color="inherit">
+              <Button id='about' color='inherit'>
                 <NavLink
-                  to="/"
-                  style={{ textDecoration: "none", color: "white" }}
+                  to='/'
+                  style={{ textDecoration: 'none', color: 'white' }}
                 >
                   <HomeIcon sx={{ pb: 0.5 }} /> About
                 </NavLink>
               </Button>
               {token && (
-                <Button color="inherit">
+                <Button color='inherit'>
                   <NavLink
-                    to="/category"
-                    style={{ textDecoration: "none", color: "white" }}
+                    to='/category'
+                    style={{ textDecoration: 'none', color: 'white' }}
                   >
                     Category
                   </NavLink>
                 </Button>
               )}
               {token && (
-                <Button color="inherit">
+                <Button id='cuisines' color='inherit'>
                   <NavLink
-                    to="/cuisines"
-                    style={{ textDecoration: "none", color: "white" }}
+                    to='/cuisines'
+                    style={{ textDecoration: 'none', color: 'white' }}
                   >
                     Cuisines
                   </NavLink>
                 </Button>
               )}
             </Typography>
-            <Box sx={{ flexGrow: 1, display: { md: "flex" } }}>
+            <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
               <SearchBar />
             </Box>
             {token && (
               <>
                 <Button
-                  color="inherit"
-                  sx={{ display: { xs: "none", sm: "block" } }}
+                  id='profile'
+                  color='inherit'
+                  sx={{ display: { xs: 'none', sm: 'block' } }}
                 >
                   <NavLink
-                    to="/profile"
-                    style={{ textDecoration: "none", color: "white" }}
+                    to='/profile'
+                    style={{ textDecoration: 'none', color: 'white' }}
                   >
                     Profile ({decoded.name})
                   </NavLink>
                 </Button>
                 <Button
-                  color="inherit"
+                  color='inherit'
                   onClick={clearToken}
-                  sx={{ display: { xs: "none", sm: "block" } }}
+                  sx={{ display: { xs: 'none', sm: 'block' } }}
                 >
                   Logout
                 </Button>
               </>
             )}
-            {!token && ( <>
-              <Button color="inherit">
-                <NavLink
-                  to="/signup"
-                  style={{ textDecoration: "none", color: "inherit" }}
+            {!token && (
+              <>
+                <Button id='signup' color='inherit'>
+                  <NavLink
+                    to='/signup'
+                    style={{ textDecoration: 'none', color: 'inherit' }}
                   >
-                  SignUp
-                </NavLink>
-              </Button>
-              <Button color="inherit">
-                <NavLink
-                  to="/login"
-                  style={{ textDecoration: "none", color: "inherit" }}
+                    SignUp
+                  </NavLink>
+                </Button>
+                <Button id='login' color='inherit'>
+                  <NavLink
+                    to='/login'
+                    style={{ textDecoration: 'none', color: 'inherit' }}
                   >
-                  Login
-                </NavLink>
-              </Button>
-                  </>
+                    Login
+                  </NavLink>
+                </Button>
+              </>
             )}
           </Toolbar>
         </AppBar>
-        <Box component="nav">
+        <Box component='nav'>
           <Drawer
-            variant="temporary"
+            variant='temporary'
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
               keepMounted: true,
             }}
             sx={{
-              display: { xs: "block", sm: "none" },
-              "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+              },
             }}
           >
             <AppDrawer handleDrawerToggle={handleDrawerToggle} />

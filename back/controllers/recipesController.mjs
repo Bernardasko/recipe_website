@@ -29,9 +29,10 @@ export const postRecipe = async (req, res) => {
       steps,
       category.toLowerCase().trim(),
       cuisine,
-      image.trim(),
+      image,
       id
     );
+
     res.status(201).json(newRecipe);
   } catch (error) {
     console.error(error);
@@ -86,9 +87,9 @@ export const patchRecipe = async (req, res) => {
       cuisine.toLowerCase().trim().toLowerCase(),
       image.trim()
     );
-    // console.log(patchedRecipe);
+    console.log(patchedRecipe, 123,123,123);
 
-    res.status(200).json(patchedRecipe);
+    // res.status(200).json(patchedRecipe);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });
@@ -120,6 +121,10 @@ export const getRecipeByIdWithSocials = async (req, res) => {
     const recipe = await pg_getRecipeByIdWithSocials(id);
 
     // console.log(recipe.social.ratings.length);
+    console.log(recipe, 1234567);
+    if(!recipe){
+      return res.status(404).json({message: 'Recipe by id not found'})
+    }
 
     if(recipe.social.ratings){
       const avgRating = recipe.social.ratings.reduce((acc, rating) => acc + rating.rating_value, 0) / recipe.social.ratings.length;

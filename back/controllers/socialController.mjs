@@ -1,3 +1,4 @@
+import { json } from 'express';
 import {
   pg_addReview,
   pg_getReviewByRecipeId,
@@ -10,6 +11,9 @@ export const addReview = async (req, res) => {
     console.log(req.user);
     const { comment, recipeId, rating } = req.body;
     const review = await pg_addReview(recipeId, userId, comment, rating);
+    if (!review.recipeid) {
+      res.status(404).json({ message: 'Could not leave a review' });
+    }
     console.log(review);
     res.status(201).json(review);
   } catch (error) {

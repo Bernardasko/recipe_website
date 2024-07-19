@@ -81,105 +81,104 @@ const AddCommentRating = ({ recipeData }) => {
       // console.log(recipeData.social.comments.length % limit + 1);
       console.log(recipeData.social);
       setComments(response);
+      console.log(comments);
     })();
   }, [sort, page, limit]);
   return (
     <Box
-      style={{
-        maxWidth: '700px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        padding: '20px',
-        margin: 'auto',
-        //   backgroundColor: '#f5f5f5',
-        borderRadius: '8px',
-      }}
-    >
-      <div className='w-full flex justify-between px-2'>
-        <Box sx={{ display: 'flex' }}>
-          <MenuItem disabled>
-            <em>Sort By:</em>
-          </MenuItem>
-          <MenuItem onClick={() => handleSort('date')}>Date</MenuItem>
-          <MenuItem onClick={() => handleSort('popularity')}>
-            Popularity
-          </MenuItem>
-        </Box>
-        <Box sx={{ display: 'flex' }}>
-          <MenuItem disabled>
-            <em>Show:</em>
-          </MenuItem>
-          <MenuItem onClick={() => setLimit(5)}>5</MenuItem>
-          <MenuItem onClick={() => setLimit(10)}>10</MenuItem>
-        </Box>
+    style={{
+      maxWidth: '700px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      padding: '20px',
+      margin: 'auto',
+      borderRadius: '8px',
+    }}
+  >
+    {comments.length >= 1 ? (
+      <>
+        <div className='w-full flex justify-between px-2'>
+          <Box sx={{ display: 'flex' }}>
+            <MenuItem disabled>
+              <em>Sort By:</em>
+            </MenuItem>
+            <MenuItem onClick={() => handleSort('date')}>Date</MenuItem>
+            <MenuItem onClick={() => handleSort('popularity')}>Popularity</MenuItem>
+          </Box>
+          <Box sx={{ display: 'flex' }}>
+            <MenuItem disabled>
+              <em>Show:</em>
+            </MenuItem>
+            <MenuItem onClick={() => setLimit(5)}>5</MenuItem>
+            <MenuItem onClick={() => setLimit(10)}>10</MenuItem>
+          </Box>
 
-        <FormControl fullWidth>
-          <InputLabel></InputLabel>
-          <InputLabel id='demo-simple-select-label'>per page</InputLabel>
-          <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            // value={perPage}
-            // label='perPage'
-            // onChange={handleChange}
-          >
-            <MenuItem value={3}>Three</MenuItem>
-            <MenuItem value={5}>Five</MenuItem>
-            <MenuItem value={7}>Seven</MenuItem>
-          </Select>
-        </FormControl>
-      </div>
+          <FormControl fullWidth>
+            <InputLabel id='demo-simple-select-label'>per page</InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              // value={perPage}
+              // label='perPage'
+              // onChange={handleChange}
+            >
+              <MenuItem value={3}>Three</MenuItem>
+              <MenuItem value={5}>Five</MenuItem>
+              <MenuItem value={7}>Seven</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
 
-      <div className='w-full border shadow-md flex rounded-lg'>
-        <div className='w-full flex flex-col justify-start py-2 px-5 divide-y-2 space-y-2'>
-          {comments ? (
-            comments.map((comment, index) => {
-              return (
-                <div className='flex' key={index}>
-                  <div key={index} className='w-full flex flex-col ml-3'>
-                    <div className='w-full flex flex-col  justify-between mt-2'>
-                      <p className='capitalize'>
-                        {comment.commenter_lastname} {comment.commentername},
-                      </p>
-                    </div>
-                    <p className=' mt-2'>Commented: {comment.commenttext}</p>
+        <div className='w-full border shadow-md flex rounded-lg'>
+          <div className='w-full flex flex-col justify-start py-2 px-5 divide-y-2 space-y-2'>
+            {comments.map((comment, index) => (
+              <div className='flex' key={index}>
+                <div className='w-full flex flex-col ml-3'>
+                  <div className='w-full flex flex-col justify-between mt-2'>
+                    <p className='capitalize'>
+                      {comment.commenter_lastname} {comment.commentername},
+                    </p>
                   </div>
+                  <p className='mt-2'>Commented: {comment.commenttext}</p>
+                </div>
 
-                  <div className='flex flex-col mr-3'>
-                    <p className=' text-sm text-right'>{comment.commentdate}</p>
-                    <div className='text-right mt-2'>
-                      <Button
-                        sx={{ width: '' }}
-                        color='danger'
-                        variant='outlined'
-                        onClick={handleLike}
-                      >
-                        <FavoriteBorderIcon color='' />
-                      </Button>
-                    </div>
+                <div className='flex flex-col mr-3'>
+                  <p className='text-sm text-right'>{comment.commentdate}</p>
+                  <div className='text-right mt-2'>
+                    <Button
+                      sx={{ width: '' }}
+                      color='danger'
+                      variant='outlined'
+                      onClick={handleLike}
+                    >
+                      <FavoriteBorderIcon />
+                    </Button>
                   </div>
                 </div>
-              );
-            })
-          ) : (
-            <p>No Comments</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='mx-auto buttonrow'>
+          {recipeData.social.comments && (
+            <Pagination
+              count={
+                recipeData.social.comments.length % limit
+                  ? Math.floor(recipeData.social.comments.length / limit) + 1
+                  : Math.floor(recipeData.social.comments.length / limit)
+              }
+              color='primary'
+              onChange={(e, value) => setPage(value)}
+            />
           )}
         </div>
-      </div>
-      <div className='mx-auto buttonrow'>
-        <Pagination
-          count={
-            recipeData.social.comments.length % limit
-              ? Math.floor(recipeData.social.comments.length / limit) + 1
-              : Math.floor(recipeData.social.comments.length / limit)
-          }
-          color='primary'
-          onChange={(e, value) => setPage(value)}
-        />
-      </div>
-    </Box>
+      </>
+    ) : (
+      <p>No Comments</p>
+    )}
+  </Box>
   );
 };
 

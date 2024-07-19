@@ -74,17 +74,13 @@ export const pg_postRecipe = async (
             VALUES (${recipeId}, ${image})
           `;
       }
-
-      return {
-        ...recipe[0],
-        steps: stepArray,
-      };
+      return recipe[0];
     });
 
     return recipe;
   } catch (error) {
     console.error('Error adding recipe:', error);
-    throw error; // Re-throw the error to handle it outside
+    throw error;
   }
 };
 
@@ -402,8 +398,6 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   ORDER BY MIN(ds.stepnumber);
 `;
 
-
-  
   return results[0];
 };
 

@@ -36,7 +36,7 @@ function Category() {
             <Link
               key={index}
               // to={`/category/${categoryId}/recipe/${recipe.recipeId}`}
-              to={`/category/${categoryId}/recipe/${recipe.recipeId}`}
+              to={`/recipe/${recipe.recipeId}`}
             >
             <RecipeCardSmall recipeData={recipe} categoryId={categoryId} />
             </Link>
