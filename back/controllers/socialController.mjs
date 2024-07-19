@@ -37,10 +37,12 @@ export const getReviewByRecipeId = async (req, res) => {
 export const paginateCommentByRecipeId = async (req, res) => {
   try {
     const { recipeId } = req.params;
-    const { page, limit } = req.query;
+    const { page, limit, sort } = req.query;
+    console.log(sort);
     const paginatedComments = await pg_paginateCommentByRecipeId(
       page,
       limit,
+      sort,
       recipeId
     );
     for (const comment of paginatedComments) {

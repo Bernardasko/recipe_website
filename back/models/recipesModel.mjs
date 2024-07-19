@@ -374,6 +374,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
     r.title AS name,
     u.name AS username,
     u.lastname AS userlastname,
+    u.id AS creatorId,
     c.name AS category,
     cu.name AS cuisine,
     im.imageurl AS image_url,
@@ -394,7 +395,7 @@ export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   INNER JOIN cuisines cu ON r.cuisineid = cu.cuisineid
   LEFT JOIN images im ON r.recipeid = im.recipeid
   WHERE r.recipeid = ${recipeId}
-  GROUP BY r.recipeid, r.title, u.name, u.lastname, c.name, cu.name, im.imageurl
+  GROUP BY r.recipeid, r.title, u.name, u.lastname, u.id, c.name, cu.name, im.imageurl
   ORDER BY MIN(ds.stepnumber);
 `;
 

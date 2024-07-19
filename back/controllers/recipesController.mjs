@@ -57,14 +57,7 @@ export const patchRecipe = async (req, res) => {
     // console.log(recipeId);
     console.log(1111111111111, req.body);
     let { title, ingredients, steps, category, cuisine, image } = req.body;
-    console.log(
-      title,
-      ingredients,
-      steps,
-      category,
-      cuisine,
-      image,
-    );
+    console.log(title, ingredients, steps, category, cuisine, image);
     steps.forEach((step, index) => {
       console.log(step);
       steps[index] = step.toLowerCase().trim();
@@ -87,7 +80,7 @@ export const patchRecipe = async (req, res) => {
       cuisine.toLowerCase().trim().toLowerCase(),
       image.trim()
     );
-    console.log(patchedRecipe, 123,123,123);
+    console.log(patchedRecipe, 123, 123, 123);
 
     // res.status(200).json(patchedRecipe);
   } catch (error) {
@@ -115,6 +108,21 @@ export const getRecipes = async (req, res) => {
   }
 };
 
+export const getRecipesByUserId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userRecipes = await pg_getRecipesByUserId(id);
+
+    if (userRecipes.length < 1) {
+      return res.status(404).json({ message: 'No recipes found' });
+    }
+    res.status(200).json(userRecipes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error });
+  }
+};
+
 export const getRecipeByIdWithSocials = async (req, res) => {
   try {
     const { id } = req.params;
@@ -122,18 +130,25 @@ export const getRecipeByIdWithSocials = async (req, res) => {
 
     // console.log(recipe.social.ratings.length);
     console.log(recipe, 1234567);
-    if(!recipe){
-      return res.status(404).json({message: 'Recipe by id not found'})
+    if (!recipe) {
+      return res.status(404).json({ message: 'Recipe by id not found' });
     }
 
-    if(recipe.social.ratings){
-      const avgRating = recipe.social.ratings.reduce((acc, rating) => acc + rating.rating_value, 0) / recipe.social.ratings.length;
-      recipe.average_rating = avgRating
+    if (recipe.social.ratings) {
+      const avgRating =
+        recipe.social.ratings.reduce(
+          (acc, rating) => acc + rating.rating_value,
+          0
+        ) / recipe.social.ratings.length;
+      recipe.average_rating = avgRating;
     }
-    if(recipe.social.comments){
+    if (recipe.social.comments) {
       recipe.social.comments.map((comment, index) => {
-        comment.comment_date =  comment.comment_date.split('T')[0] + " " + comment.comment_date.split('T')[1].split('.')[0]
-      })
+        comment.comment_date =
+          comment.comment_date.split('T')[0] +
+          ' ' +
+          comment.comment_date.split('T')[1].split('.')[0];
+      });
     }
     res.status(200).json(recipe);
   } catch (error) {
@@ -142,6 +157,4 @@ export const getRecipeByIdWithSocials = async (req, res) => {
   }
 };
 
-export const get_rating_andAboveRecipes = async (req, res) => {
-  
-}
+export const get_rating_andAboveRecipes = async (req, res) => {};

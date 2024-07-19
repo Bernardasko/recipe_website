@@ -61,8 +61,9 @@ export const pg_addFollower = async (userId, followsId) => {
     throw error;
   }
 };
-  export const pg_paginateCommentByRecipeId = async (page, limit, recipeId) => {
+  export const pg_paginateCommentByRecipeId = async (page, limit, sort, recipeId) => {
     try {
+      console.log(sort);
       const offset = (page - 1) * limit;
       const comments = await sql`
       SELECT 

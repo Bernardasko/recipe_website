@@ -65,7 +65,7 @@ const AddCommentRating = ({ recipeData }) => {
   if (page) queryParams.append('page', page);
   if (limit) queryParams.append('limit', limit);
   const queryString = queryParams.toString();
-
+console.log(queryString);
   useEffect(() => {
     (async () => {
       const response = await getRecipeComments(
@@ -104,7 +104,7 @@ const AddCommentRating = ({ recipeData }) => {
             <MenuItem disabled>
               <em>Sort By:</em>
             </MenuItem>
-            <MenuItem onClick={() => handleSort('date')}>Date</MenuItem>
+            <MenuItem onClick={() => handleSort('created_at')}>Date</MenuItem>
             <MenuItem onClick={() => handleSort('popularity')}>Popularity</MenuItem>
           </Box>
           <Box sx={{ display: 'flex' }}>

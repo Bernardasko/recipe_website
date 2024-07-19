@@ -31,7 +31,7 @@ const theme = createTheme({
 
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
-  // console.log(data);
+
   return (
     <>
       <Card sx={{ maxWidth: 600, margin: 'auto', marginTop: 4 }}>
