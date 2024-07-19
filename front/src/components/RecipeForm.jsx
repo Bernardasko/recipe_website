@@ -256,6 +256,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               </Box>
             ))}
             <Button
+            id="buttoningr"
               type="button"
               fullWidth
               variant="outlined"
@@ -301,6 +302,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               </Box>
             ))}
             <Button
+            id="buttonstep"
               type="button"
               fullWidth
               variant="outlined"
@@ -379,6 +381,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
 
             {error && <div style={{ color: "red" }}>{error}</div>}
             <Button
+            id="buttonrecipe"
               type="submit"
               fullWidth
               variant="contained"
