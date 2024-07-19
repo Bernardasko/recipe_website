@@ -164,3 +164,20 @@ export const getRecipeComments = async (recipeId, queryString) => {
     throw error;
   }
 };
+
+export const getUserAllById = async (id) => {
+  const getRecipes_url = import.meta.env.VITE_GET_USER_RECIPE;
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(`${getRecipes_url}/${id}`, config);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
