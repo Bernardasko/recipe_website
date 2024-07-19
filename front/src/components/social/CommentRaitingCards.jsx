@@ -13,9 +13,9 @@ import {
 } from '@mui/material';
 import { getRecipeComments } from '../../services/get.mjs';
 
-const AddCommentRating = ({ recipeData }) => {
+const AddCommentRating = ({ recipeData, refresh }) => {
   const { id } = useParams();
-  console.log(recipeData);
+  // console.log(recipeData);
   const [sort, setSort] = useState('date');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -65,7 +65,7 @@ const AddCommentRating = ({ recipeData }) => {
   if (page) queryParams.append('page', page);
   if (limit) queryParams.append('limit', limit);
   const queryString = queryParams.toString();
-console.log(queryString);
+// console.log(queryString);
 
 
   useEffect(() => {
@@ -77,7 +77,7 @@ console.log(queryString);
       setComments(response);
 
     })();
-  }, [sort, page, limit]);
+  }, [sort, page, limit, refresh]);
   return (
     <Box
     style={{
@@ -109,7 +109,7 @@ console.log(queryString);
             <MenuItem onClick={() => setLimit(10)}>10</MenuItem>
           </Box>
 
-          <FormControl fullWidth>
+          {/* <FormControl fullWidth>
             <InputLabel id='demo-simple-select-label'>per page</InputLabel>
             <Select
               labelId='demo-simple-select-label'
@@ -122,7 +122,7 @@ console.log(queryString);
               <MenuItem value={5}>Five</MenuItem>
               <MenuItem value={7}>Seven</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
 
         <div className='w-full border shadow-md flex rounded-lg'>

@@ -44,6 +44,7 @@ function AppDrawer({ handleDrawerToggle }) {
             </ListItem>
             <ListItem>
               <NavLink
+              id="buttonprof"
                 to="/profile"
                 style={{ textDecoration: "none", color: "black" }}
               >

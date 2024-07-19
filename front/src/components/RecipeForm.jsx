@@ -77,7 +77,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
         const posted = await postRecipe(newRecipe);
         if (posted.status === 200 || posted.status === 201) {
           toast.success("Recipe created successfully");
-          // navigate("/profile/recipes");
+          navigate("/profile/recipes");
         } else {
           error && toast.error("Failed to create recipe");
         }
@@ -256,6 +256,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               </Box>
             ))}
             <Button
+            id="buttoningr"
               type="button"
               fullWidth
               variant="outlined"
@@ -301,6 +302,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               </Box>
             ))}
             <Button
+            id="buttonstep"
               type="button"
               fullWidth
               variant="outlined"
@@ -367,21 +369,19 @@ function RecipeForm({ recipeInfo, setOpen }) {
             </Box>
             <TextField
               margin="normal"
-              required
               fullWidth
               type="url"
               id="image"
               label="Image URL"
               name="image"
-              {...register("image", {
-                required: "Image URL field is required",
-              })}
+              {...register("image", {})}
               error={!!errors.image}
               helperText={errors.image ? errors.image.message : ""}
             />
 
             {error && <div style={{ color: "red" }}>{error}</div>}
             <Button
+            id="buttonrecipe"
               type="submit"
               fullWidth
               variant="contained"

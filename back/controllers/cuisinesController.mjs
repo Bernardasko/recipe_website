@@ -59,7 +59,7 @@ export const displayAllCusinesWithRecipes = async (req, res) => {
 export const searchCuisine = async (req, res) => {
   try {
 const {cuisineName} = req.params
-// console.log(req.query);
+console.log(cuisineName);
 
 const searchResults = await pg_searchCuisine(cuisineName, req.query)
 console.log(searchResults.length);

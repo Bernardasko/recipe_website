@@ -11,13 +11,13 @@ function Profile() {
      <ProfileCard/>
       <div className='flex justify-around'>
         {token.role === 'admin' && (
-          <Link to={'/profile/categories'}>categories</Link>
+          <Link id='link' to={'/profile/categories'}>categories</Link>
         )}
         <Link to={'/profile/recipes'}>
-          <button>Recipes</button>
+          <button id='buttonprof'>Recipes</button>
         </Link>
         <Link to={'/profile/add_recipe'}>
-          <button>Add Recipe</button>
+          <button id='buttonprofrec'>Add Recipe</button>
         </Link>
       </div>
       <Outlet />

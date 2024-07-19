@@ -65,6 +65,7 @@ function NewCategory() {
               helperText={errors.category ? errors.category.message : ''}
             />
             <Button
+            id='buttonnewcat'
               type='submit'
               fullWidth
               variant='contained'

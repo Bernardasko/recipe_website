@@ -30,14 +30,15 @@ import {
   getRecipeById,
   getCuisineById,
   getCusinesWithRecipes,
+  getUserAllById
 } from "./services/get.mjs";
 
 import RecipeProfile from "./components/recipeProfile/RecipeProfile";
 import RecipeCardBig from "./components/recipe/RecipeCardBig";
-
 import Cuisines from "./pages/cuisinesPage/Cuisines.jsx";
 import AllCuisinesRecipes from "./pages/cuisinesPage/AllCuisineRecipes.jsx";
 import Cuisine from "./pages/cuisinesPage/Cuisine.jsx";
+import RecipeUsersAllCards from "./components/recipeProfile/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,16 @@ const router = createBrowserRouter([
         loader: async ({ params }) => {
           const { recipeId } = params;
           return await getRecipeById(recipeId);
+        },
+      },
+      {
+        path: "/profile/:userId",
+        //cia turi buti user profile componentas
+        element: <RecipeUsersAllCards />,
+        errorElement: <ErrorPage />,
+        loader: async ({ params }) => {
+          const { userId } = params;
+          return await getUserAllById(userId);
         },
       },
       {

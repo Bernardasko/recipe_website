@@ -10,13 +10,15 @@ import {
   Box,
   Chip,
   createTheme,
+  Button,
 } from '@mui/material';
 import Rating from '@mui/material/Rating';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PublicIcon from '@mui/icons-material/Public';
 import AddCommentRating from '../social/AddCommentRating';
 import CommentRaitingCards from '../social/CommentRaitingCards';
+import { useState } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -31,7 +33,9 @@ const theme = createTheme({
 
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
+  // console.log(data);
 
+  const [refresh, setRefresh] = useState(false)
   return (
     <>
       <Card sx={{ maxWidth: 600, margin: 'auto', marginTop: 4 }}>
@@ -45,7 +49,9 @@ const RecipeCardBig = ({ recipe }) => {
           <Typography variant='h4' gutterBottom>
             {data.name}
           </Typography>
-          
+          <Button size='small' component={Link} to={`/profile/${data.creatorid}`}> 
+              Creator
+          </Button>
           <div className='mt-2 mr-3'>
           <Typography variant='h6' gutterBottom textAlign={'left'}>
             Average
@@ -90,8 +96,8 @@ const RecipeCardBig = ({ recipe }) => {
           </List>
         </CardContent>
       </Card>
-      <CommentRaitingCards recipeData={data} />
-      <AddCommentRating recipeData={data} />
+      <CommentRaitingCards recipeData={data} refresh={refresh}/>
+      <AddCommentRating recipeData={data} setRefresh={setRefresh}/>
     </>
   );
 };

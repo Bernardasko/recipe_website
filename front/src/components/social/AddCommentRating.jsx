@@ -24,7 +24,7 @@ const labels = {
   5: 'Excellent+',
 };
 
-function AddCommentRating({ recipeData }) {
+function AddCommentRating({ recipeData, setRefresh }) {
 const navigate = useNavigate()
 const {recipeId: id} = useParams()
 
@@ -39,7 +39,8 @@ const {recipeId: id} = useParams()
       console.log(isPosted);
       if(isPosted.status = 201){
         reset()
-        navigate(`/recipe/${id}`)
+        setRefresh(p=>!p)
+        // navigate(`/recipe/${id}`)
       } else {
         toast.error('Error is not posted')
       }
