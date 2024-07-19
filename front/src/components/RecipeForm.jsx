@@ -367,15 +367,12 @@ function RecipeForm({ recipeInfo, setOpen }) {
             </Box>
             <TextField
               margin="normal"
-              required
               fullWidth
               type="url"
               id="image"
               label="Image URL"
               name="image"
-              {...register("image", {
-                required: "Image URL field is required",
-              })}
+              {...register("image", {})}
               error={!!errors.image}
               helperText={errors.image ? errors.image.message : ""}
             />
