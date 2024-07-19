@@ -11,6 +11,7 @@ import {
   Chip,
   createTheme,
 } from '@mui/material';
+import Rating from '@mui/material/Rating';
 import { useLoaderData } from 'react-router-dom';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import PublicIcon from '@mui/icons-material/Public';
@@ -44,6 +45,14 @@ const RecipeCardBig = ({ recipe }) => {
           <Typography variant='h4' gutterBottom>
             {data.name}
           </Typography>
+          
+          <div className='mt-2 mr-3'>
+          <Typography variant='h6' gutterBottom textAlign={'left'}>
+            Average
+          </Typography>
+          <Rating value={data.average_rating} precision={0.5} readOnly />
+        </div>
+          
           <Box sx={{ mb: 2 }}>
             <Chip
               icon={<RestaurantIcon />}
@@ -75,7 +84,7 @@ const RecipeCardBig = ({ recipe }) => {
           <List>
             {data.steps.map((step, index) => (
               <ListItem key={index}>
-                <ListItemText primary={` ${step.step_number} - ${step.description}`} />
+                <ListItemText primary={` ${index + 1} - ${step}`} />
               </ListItem>
             ))}
           </List>

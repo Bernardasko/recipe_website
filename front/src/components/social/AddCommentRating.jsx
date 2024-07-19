@@ -1,4 +1,3 @@
-
 import { useState, useContext } from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
@@ -7,76 +6,88 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Controller, useForm } from 'react-hook-form';
- 
- 
- 
-const labels = {
-    0.5: 'Useless',
-    1: 'Useless+',
-    1.5: 'Poor',
-    2: 'Poor+',
-    2.5: 'Ok',
-    3: 'Ok+',
-    3.5: 'Good',
-    4: 'Good+',
-    4.5: 'Excellent',
-    5: 'Excellent+',
-  };
- 
-  function AddCommentRating({recipeData}) {
-    console.log(recipeData);
-    const formSubmitHandler = async (commentData) => {
-      commentData.recipeId = recipeData.recipeId
-      console.log(commentData);
+import { postReview } from '../../services/post.mjs';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate, useParams } from 'react-router-dom';
 
-      try {
-        
-      } catch (error) {
-        console.log(error);
+
+const labels = {
+  0.5: 'Useless',
+  1: 'Useless+',
+  1.5: 'Poor',
+  2: 'Poor+',
+  2.5: 'Ok',
+  3: 'Ok+',
+  3.5: 'Good',
+  4: 'Good+',
+  4.5: 'Excellent',
+  5: 'Excellent+',
+};
+
+function AddCommentRating({ recipeData }) {
+const navigate = useNavigate()
+const {recipeId: id} = useParams()
+
+  const formSubmitHandler = async (commentData) => {
+
+    try {
+      const newData = {
+        ...commentData,
+        recipeId: recipeData.recipeid,
+      };
+      const isPosted = await postReview(newData);
+      console.log(isPosted);
+      if(isPosted.status = 201){
+        reset()
+        navigate(`/recipe/${id}`)
+      } else {
+        toast.error('Error is not posted')
       }
-    };
- 
-    const [hover, setHover] = useState(-1);
- 
-    const {
-        control,
-        handleSubmit,
-        reset,
-        formState: { errors },
-      } = useForm({
-        defaultValues: {
-          comment: "",
-          rating: 2.5,
-        },
-      });
- 
-    return (
-<Box
-      component="form"
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [hover, setHover] = useState(-1);
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      comment: '',
+      rating: 2.5,
+    },
+  });
+
+  return (
+    <Box
+      component='form'
       onSubmit={handleSubmit(formSubmitHandler)}
       style={{
+        maxWidth: '700px',
         display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: '16px',
-        flexWrap: 'wrap',
-        // backgroundColor: '#f5f5f5',
-        paddingLeft: '50px',
-        paddingRight: '50px',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        padding: '20px',
+        margin: 'auto',
+        //   backgroundColor: '#f5f5f5',
         borderRadius: '8px',
-        width: '50rem',
       }}
     >
       <Controller
-        name="comment"
+        name='comment'
         control={control}
         render={({ field }) => (
           <TextField
             {...field}
-            label="Write your comment"
+            label='Write your comment'
             multiline
             rows={3}
-            variant="outlined"
+            variant='outlined'
             fullWidth
             error={!!errors.comment}
             helperText={errors.comment ? 'Comment is required' : ''}
@@ -84,12 +95,20 @@ const labels = {
         )}
         rules={{ required: true }}
       />
+
       <Controller
-        name="rating"
+        name='rating'
         control={control}
         render={({ field }) => (
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-            <Typography variant="h6" gutterBottom>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '16px',
+            }}
+          >
+            <Typography variant='h6' gutterBottom>
               Rate your excursion below
             </Typography>
             <Box
@@ -109,23 +128,26 @@ const labels = {
                 onChangeActive={(event, newHover) => {
                   setHover(newHover);
                 }}
-                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                emptyIcon={
+                  <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+                }
               />
               {field.value !== null && (
-                <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : field.value]}</Box>
+                <Box sx={{ ml: 2 }}>
+                  {labels[hover !== -1 ? hover : field.value]}
+                </Box>
               )}
             </Box>
           </Box>
         )}
         rules={{ required: true }}
       />
-      <Button type="submit" variant="contained" color="primary">
+      <Button type='submit' variant='contained' color='primary'>
         Add comment
       </Button>
+      <Toaster/>
     </Box>
- 
-     );
-  }
- 
-  export default AddCommentRating;
- 
+  );
+}
+
+export default AddCommentRating;

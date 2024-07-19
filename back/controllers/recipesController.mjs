@@ -71,7 +71,7 @@ export const patchRecipe = async (req, res) => {
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase().trim();
-        obj.amount = obj.ingredient.toLowerCase().trim();
+        obj.amount = obj.amount.toLowerCase().trim();
       }
     });
     // cuisine = cuisine.toLowerCase().trim();
@@ -120,9 +120,17 @@ export const getRecipeByIdWithSocials = async (req, res) => {
     const recipe = await pg_getRecipeByIdWithSocials(id);
 
     // console.log(recipe.social.ratings.length);
+
     if(recipe.social.ratings){
       const avgRating = recipe.social.ratings.reduce((acc, rating) => acc + rating.rating_value, 0) / recipe.social.ratings.length;
       recipe.average_rating = avgRating
+    }
+    if(recipe.social.comments){
+      recipe.social.comments.map((comment, index) => {
+        console.log(comment.comment_date.split('T')[0]);
+        comment.comment_date =  comment.comment_date.split('T')[0] + " " + comment.comment_date.split('T')[1].split('.')[0]
+
+      })
     }
     res.status(200).json(recipe);
   } catch (error) {
