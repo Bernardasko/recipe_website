@@ -77,7 +77,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
         const posted = await postRecipe(newRecipe);
         if (posted.status === 200 || posted.status === 201) {
           toast.success("Recipe created successfully");
-          navigate("/profile/recipes");
+          // navigate("/profile/recipes");
         } else {
           error && toast.error("Failed to create recipe");
         }

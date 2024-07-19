@@ -61,3 +61,27 @@ export const pg_addFollower = async (userId, followsId) => {
     throw error;
   }
 };
+  export const pg_paginateCommentByRecipeId = async (page, limit, sort, recipeId) => {
+    try {
+      console.log(sort);
+      const offset = (page - 1) * limit;
+      const comments = await sql`
+      SELECT 
+        com.commentid AS commentId,
+        com.comment AS commentText,
+        com.created_at AS commentDate,
+        u.name AS commenterName,
+        u.lastname AS commenterLastname,
+        rat.rating AS rating
+      FROM comments com
+      INNER JOIN users u ON com.userid = u.id
+      LEFT JOIN ratings rat ON com.commentid = rat.commentid
+      WHERE com.recipeid = ${recipeId}
+      GROUP BY com.commentid, com.comment, com.created_at, u.name, u.lastname, rat.rating
+      ORDER BY com.created_at ASC LIMIT ${limit} OFFSET ${offset}`;
+      return comments;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };

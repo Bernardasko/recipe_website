@@ -1,10 +1,9 @@
-import { useParams, useLoaderData, Link } from "react-router-dom";
-import RecipeCardSmall from "../../components/recipe/RecipeCardSmall";
-import { Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { useLoaderData } from 'react-router-dom';
+import RecipeCardSmall from '../recipe/RecipeCardSmall';
+import { Typography, Box, Link } from '@mui/material';
 
-function Category() {
-  const { categoryId } = useParams();
+
+function RecipeUsersAllCards() {
   const data = useLoaderData();
   console.log(data);
 
@@ -17,7 +16,7 @@ function Category() {
         gutterBottom
         color="primary"
       >
-        {data[0].category}
+       CREATOR: {data[0].username} {data[0].userlastname}
       </Typography>
       <Box
         sx={{
@@ -33,13 +32,9 @@ function Category() {
       >
         {data.map((recipe, index) => {
           return (
-            <Link
-              key={index}
-              // to={`/category/${categoryId}/recipe/${recipe.recipeId}`}
-              to={`/recipe/${recipe.recipeId}`}
-            >
-            <RecipeCardSmall recipeData={recipe} categoryId={categoryId} />
-            </Link>
+            
+            <RecipeCardSmall recipeData={recipe} key={index} />
+            
           );
         })}
       </Box>
@@ -47,4 +42,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default RecipeUsersAllCards;
