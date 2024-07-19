@@ -51,22 +51,11 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   },
 }));
 
-function SearchBar({ onSearch, onSort }) {
+function SearchBar({ onSearch, onSort, setLimit }) {
   const [searchValue, setSearchValue] = useState('');
   const [searchCriteria, setSearchCriteria] = useState('title');
   const [sortCriteria, setSortCriteria] = useState('');
 
-  // useEffect(() => {
-  //   if (searchValue) {
-  //     onSearch(searchValue, searchCriteria);
-  //   }
-  // }, [searchValue, searchCriteria, onSearch]);
-
-  // useEffect(() => {
-  //   if (sortCriteria) {
-  //     onSort(sortCriteria);
-  //   }
-  // }, [sortCriteria, onSort]);
 
   const handleChange = (event) => {
     const value = event.target.value;
@@ -76,9 +65,12 @@ function SearchBar({ onSearch, onSort }) {
       setSortCriteria(value.replace('sort:', ''));
     }
   };
+let queryParams = new URLSearchParams()
+
+  
 
   return (
-    <Search>
+    <Search sx={{margin: 'auto'}}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
@@ -102,11 +94,16 @@ function SearchBar({ onSearch, onSort }) {
           <MenuItem value="search:title">Title</MenuItem>
           <MenuItem value="search:ingredients">Ingredients</MenuItem>
           <MenuItem value="search:category">Category</MenuItem>
-          <MenuItem disabled>
+          {/* <MenuItem disabled>
             <em>Sort By</em>
           </MenuItem>
           <MenuItem value="sort:cuisine">Cuisine (Country)</MenuItem>
-          <MenuItem value="sort:category">Category</MenuItem>
+          <MenuItem value="sort:category">Category</MenuItem> */}
+          <MenuItem disabled>Show:</MenuItem>
+          <MenuItem onClick={() => setLimit(10)}>10</MenuItem>
+          <MenuItem onClick={() => setLimit(20)}>20</MenuItem>
+          <MenuItem onClick={() => setLimit(30)}>30</MenuItem>
+
         </StyledSelect>
       </Box>
     </Search>

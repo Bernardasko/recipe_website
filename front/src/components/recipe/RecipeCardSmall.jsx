@@ -6,7 +6,7 @@ import { CardActionArea } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 function RecipeCardSmall({ recipeData }) {
-console.log(recipeData);
+// console.log(recipeData);
 
   const {categoryId} = useParams()
   return (

@@ -66,22 +66,16 @@ const AddCommentRating = ({ recipeData }) => {
   if (limit) queryParams.append('limit', limit);
   const queryString = queryParams.toString();
 console.log(queryString);
+
+
   useEffect(() => {
     (async () => {
       const response = await getRecipeComments(
         recipeData.recipeid,
         queryString
       );
-
-      //   comments.length % limit
-      //     ? Math.floor(comments.length / limit) + 1
-      //     : Math.floor(comments.length / limit)
-      console.log(limit.length);
-      // console.log(response);
-      // console.log(recipeData.social.comments.length % limit + 1);
-      console.log(recipeData.social);
       setComments(response);
-      console.log(comments);
+
     })();
   }, [sort, page, limit]);
   return (
