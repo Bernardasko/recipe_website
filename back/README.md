@@ -80,6 +80,7 @@ INSERT INTO Categories (Name) VALUES ('drinks'), ('dessert'), ('appetiser'), ('m
 -- Insert the optional cuisines
 INSERT INTO Cuisines (Name)
 VALUES 
+('other'),
 ('italian'),
 ('chinese'),
 ('indian'),

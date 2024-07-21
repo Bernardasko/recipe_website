@@ -93,8 +93,8 @@ const AddCommentRating = ({ recipeData, refresh }) => {
   >
     {comments.length >= 1 ? (
       <>
-        <div className='w-full flex justify-between px-2'>
-          <Box sx={{ display: 'flex' }}>
+        <div className='w-full flex flex-col sm:flex-row justify-between px-2'>
+        <Box sx={{ display: 'flex', mb: 2, sm: { mb: 0 } }}>
             <MenuItem disabled>
               <em>Sort By:</em>
             </MenuItem>
@@ -160,7 +160,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
             <Pagination
               count={
                 recipeData.social.comments.length % limit
-                  ? Math.floor(recipeData.social.comments.length / limit) + 1
+                  ? Math.floor(recipeData.social.comments.length / limit) + 3
                   : Math.floor(recipeData.social.comments.length / limit)
               }
               color='primary'

@@ -37,7 +37,7 @@ const {recipeId: id} = useParams()
       };
       const isPosted = await postReview(newData);
       console.log(isPosted);
-      if(isPosted.status = 201){
+      if(isPosted.status === 201){
         reset()
         setRefresh(p=>!p)
         // navigate(`/recipe/${id}`)
@@ -91,10 +91,17 @@ const {recipeId: id} = useParams()
             variant='outlined'
             fullWidth
             error={!!errors.comment}
-            helperText={errors.comment ? 'Comment is required' : ''}
+            helperText={errors.comment ? errors.comment.message : ''}
           />
         )}
-        rules={{ required: true }}
+        rules={{ required: 'Comment is required',
+          validate: (value) =>
+            value.trim() !== '' || 'Comment cannot be empty or just whitespace',
+          maxLength: {
+            value: 500,
+            message: 'Comment cannot exceed 500 characters',
+          }
+         }}
       />
 
       <Controller
