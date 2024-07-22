@@ -21,7 +21,6 @@ import CommentRaitingCards from '../social/CommentRaitingCards';
 
 
 const RecipeCardBig = ({ recipe }) => {
-  const { id } = recipe;
   const data = useLoaderData();
   const uniqueIngredients = Array.from(new Set(data.ingredients.map(ing => JSON.stringify(ing))))
     .map(ing => JSON.parse(ing));
