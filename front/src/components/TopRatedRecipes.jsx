@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 // import RecipeCardBig from "./recipe/RecipeCardBig"
 import { getAllRecipesData } from "../services/get.mjs"; //
 import RecipeCardSmall from "./recipe/RecipeCardSmall";
-import { Typography, Box, Grid} from "@mui/material";
+import { Typography, Box,} from "@mui/material";
 
 
 function TopRatedRecipes() {
@@ -26,11 +26,12 @@ function TopRatedRecipes() {
   return (
     <>
       <Typography variant="h4" align="center" gutterBottom sx={{ 
-          fontSize: '2rem', // atitinka text-3xl
-          fontWeight: 'bold', // atitinka font-bold
-          marginBottom: '2.5rem', // atitinka mb-10
-          marginTop: '2.5rem', // atitinka mt-10
-          textAlign: 'center' // atitinka text-center
+          fontSize: '2rem', 
+          fontWeight: 'bold', 
+          marginBottom: '2.5rem', 
+          marginTop: '2.5rem', 
+          textAlign: 'center',
+          color: 'red' 
         }}>
         Top Rated Recipes
       </Typography>

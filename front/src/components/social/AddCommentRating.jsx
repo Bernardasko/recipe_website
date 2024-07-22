@@ -42,7 +42,8 @@ const {recipeId: id} = useParams()
         setRefresh((update) => update + 1);
         // navigate(`/recipe/${id}`)
       } else {
-        toast.error('Error is not posted')
+        // toast.error('Error is not posted')
+        toast.error('Please create an account to be able to post comments')
       }
     } catch (error) {
       console.log(error);
