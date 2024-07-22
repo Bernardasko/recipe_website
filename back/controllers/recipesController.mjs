@@ -5,6 +5,7 @@ import {
   pg_getAllRecipes,
   pg_getRecipesByUserId,
   pg_getRecipeByIdWithSocials,
+  pg_getAllRecipesData
 } from '../models/recipesModel.mjs';
 
 export const postRecipe = async (req, res) => {
@@ -107,6 +108,18 @@ export const getRecipes = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+export const getRecipesData = async (req, res) =>{
+  try {
+    const getData = await pg_getAllRecipesData();
+    res.status(200).json({
+      // results: searchData.length,
+      data: getData,
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+}
 
 export const getRecipesByUserId = async (req, res) => {
   try {

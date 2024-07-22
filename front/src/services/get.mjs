@@ -99,6 +99,20 @@ export const getAllRecipes = async () => {
   }
 };
 
+export const getAllRecipesData = async () => {
+  const getRecipes_url = import.meta.env.VITE_GET_ALLRECIPE;
+  console.log(getRecipes_url);
+  try {
+    const response = await axios.get(getRecipes_url);
+    if (response.status === 200) {
+      return response.data.data;
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const getRecipeByCategoryId = async (id) => {
   const getRecipes_url = import.meta.env.VITE_CATEGORIES;
   // console.log(getRecipes_url+'/'+id);

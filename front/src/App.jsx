@@ -3,14 +3,11 @@ import TopRatedRecipes from "./components/TopRatedRecipes";
 function App() {
   // const token = window.localStorage.getItem('token');
 
-
-
-
   return (
     <>
       <div className=" bg-stone-100">
         <div className="mx-auto max-w-screen-md p-4">
-          <h1 className="text-3xl font-bold underline mb-10 mt-10 text-center"> 
+          <h1 className="text-3xl font-bold underline mb-10 mt-10 text-center">
             Welcome To Our Recipes World!
           </h1>
           <img
@@ -43,10 +40,7 @@ function App() {
             feedback from other members.
           </li>
 
-          <h1 className="text-3xl font-bold mb-10 mt-10 text-center">
-            Top rated recipes
-          </h1>
-        <TopRatedRecipes />
+          <TopRatedRecipes />
         </div>
       </div>
     </>
