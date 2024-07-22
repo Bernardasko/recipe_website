@@ -250,7 +250,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   error={!!errors.ingredients?.[index]?.ingredient}
                   helperText={errors.ingredients?.[index]?.ingredient?.message}
                 />
-                <IconButton onClick={() => handleDeleteIngredient(index)}>
+                <IconButton id="btndelingr" onClick={() => handleDeleteIngredient(index)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>
@@ -296,7 +296,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   }}
                   helperText={errors.steps?.[index]?.message}
                 />
-                <IconButton onClick={() => handleDeleteStep(index)}>
+                <IconButton id="btndelstep" onClick={() => handleDeleteStep(index)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>
