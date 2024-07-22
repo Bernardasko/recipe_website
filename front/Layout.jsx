@@ -108,6 +108,7 @@ function Layout() {
                   </NavLink>
                 </Button>
                 <Button
+                id='logout'
                   color='inherit'
                   onClick={clearToken}
                   sx={{ display: { xs: 'none', sm: 'block' } }}
