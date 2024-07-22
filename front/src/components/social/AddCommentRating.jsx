@@ -39,7 +39,7 @@ const {recipeId: id} = useParams()
       console.log(isPosted);
       if(isPosted.status === 201){
         reset()
-        setRefresh(p=>!p)
+        setRefresh((update) => update + 1);
         // navigate(`/recipe/${id}`)
       } else {
         toast.error('Error is not posted')

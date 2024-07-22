@@ -19,7 +19,9 @@ import { useState } from 'react';
 import AddCommentRating from '../social/AddCommentRating';
 import CommentRaitingCards from '../social/CommentRaitingCards';
 
+
 const RecipeCardBig = ({ recipe }) => {
+  const { id } = recipe;
   const data = useLoaderData();
   const uniqueIngredients = Array.from(new Set(data.ingredients.map(ing => JSON.stringify(ing))))
     .map(ing => JSON.parse(ing));
@@ -85,7 +87,7 @@ const RecipeCardBig = ({ recipe }) => {
           </List>
         </CardContent>
       </Card>
-      <CommentRaitingCards recipeData={data} refresh={refresh} />
+      <CommentRaitingCards recipeData={data} refresh={refresh} setRefresh={setRefresh} />
       <AddCommentRating recipeData={data} setRefresh={setRefresh} />
     </>
   );

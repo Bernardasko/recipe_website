@@ -3,7 +3,7 @@ import postgres from 'postgres';
 const sql = postgres({
   host: 'localhost', // Postgres server
   port: 5432, // Postgres server port
-  database: 'recipe', // Database name
+  database: 'recipes', // Database name
   username: 'postgres', // Database username
   password: 'admin', // Database password
 });
