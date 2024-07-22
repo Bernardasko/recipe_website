@@ -5,15 +5,17 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
 function RecipeCardSmall({ recipeData }) {
-console.log(recipeData);
+  console.log(recipeData);
 
   const { categoryId } = useParams();
 
+  const id = recipeData.recipeId || recipeData.recipeid;
+
   const getDefaultImage = (category) => {
     switch (category) {
-      // default:
-      //   return recipeData.image;
       case "appetiser":
         return "/appetizer.jpg";
       case "dessert":
@@ -22,41 +24,46 @@ console.log(recipeData);
         return "/drinks.jpg";
       case "main dish":
         return "/main_dish.jpg";
-      
+      default:
+        return recipeData.image;
     }
   };
+
   const defaultImage = recipeData.image ? recipeData.image : getDefaultImage(recipeData.category);
-  
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ width: 350, height: 480, margin: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <CardActionArea>
         <CardMedia
           component="img"
-          height="140px"
           image={defaultImage}
           alt="recipe image"
           sx={{
-            height: "200px",
-            width: "250px",
+            height: 300,
+            width: "100%",
           }}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-          recipe name: {recipeData.recipe}
+          <Typography sx={{ textAlign: "center", height: "100%", }} gutterBottom variant="h5" component="div">
+            recipe name: {recipeData.recipe} {recipeData.name}
           </Typography>
+        </CardContent>
+      </CardActionArea>
+          <Box  sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100%", width: "100%" }}>
           <Typography variant="body2" color="text.secondary">
-          Cuisine: {recipeData.cuisine_name}
+            Cuisine: {recipeData.cuisine_name} {recipeData.cuisine}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Category: {recipeData.category}
           </Typography>
-        </CardContent>
-      </CardActionArea>
-      <Button>
-        <Link to={`/recipe/${recipeData.recipeid}`}>
-          View Recipe
-        </Link>
-      </Button>
+          </Box>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "flex-end", height: "100%" }}>
+        <Button>
+          <Link to={`/recipe/${id}`}>
+            View Recipe
+          </Link>
+        </Button>
+      </Box>
     </Card>
   );
 }
