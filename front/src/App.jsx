@@ -1,5 +1,10 @@
+import TopRatedRecipes from "./components/TopRatedRecipes";
+
 function App() {
   // const token = window.localStorage.getItem('token');
+
+
+
 
   return (
     <>
@@ -41,7 +46,7 @@ function App() {
           <h1 className="text-3xl font-bold mb-10 mt-10 text-center">
             Top rated recipes
           </h1>
-        
+        <TopRatedRecipes />
         </div>
       </div>
     </>
