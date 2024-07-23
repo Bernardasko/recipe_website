@@ -151,7 +151,7 @@ const {recipeId: id} = useParams()
         )}
         rules={{ required: true }}
       />
-      <Button type='submit' variant='contained' color='primary'>
+      <Button id='addcomment' type='submit' variant='contained' color='primary'>
         Add comment
       </Button>
       <Toaster/>

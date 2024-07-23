@@ -142,6 +142,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
                   <p className='text-sm text-right'>{comment.commentdate}</p>
                   <div className='text-right mt-2'>
                     <Button
+                    id='btnlike'
                       sx={{ width: '' }}
                       color='danger'
                       variant='outlined'
@@ -158,6 +159,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
         <div className='mx-auto buttonrow'>
           {recipeData.social.comments && (
             <Pagination
+            id='pagination'
               count={
                 recipeData.social.comments.length % limit
                   ? Math.floor(recipeData.social.comments.length / limit) + 3

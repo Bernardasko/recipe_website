@@ -48,7 +48,7 @@ function Cuisines() {
               <AllCuisinesRecipes cuisineId={cuisine.cuisineid} />
             </Box>
             <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
-              <Button variant="contained" color="primary">
+              <Button id="btncuisineview" variant="contained" color="primary">
                 <Link to={`/cuisines/${cuisine.cuisineid}`} style={{ color: 'white', textDecoration: 'none' }}>
                   View all
                 </Link>

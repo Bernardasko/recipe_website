@@ -46,6 +46,7 @@ export default function ResponsiveModal({recipeInfo}) {
             }}
           >
             <Button
+            id='danger'
               variant="outlined"
               color="danger"
               onClick={() => setOpen(false)}

@@ -6,13 +6,14 @@ import { CardActionArea } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-
+import Rating from "@mui/material/Rating";
 function RecipeCardSmall({ recipeData }) {
-  console.log(recipeData);
+  console.log(`testas`,recipeData);
 
   const { categoryId } = useParams();
 
   const id = recipeData.recipeId || recipeData.recipeid;
+  
 
   const getDefaultImage = (category) => {
     switch (category) {
@@ -24,12 +25,12 @@ function RecipeCardSmall({ recipeData }) {
         return "/drinks.jpg";
       case "main dish":
         return "/main_dish.jpg";
-      default:
-        return recipeData.image;
+      // default:
+      //   return recipeData.images;
     }
   };
 
-  const defaultImage = recipeData.image ? recipeData.image : getDefaultImage(recipeData.category);
+  const defaultImage = recipeData.images ? recipeData.images : getDefaultImage(recipeData.category);
 
   return (
     <Card sx={{ width: 350, height: 480, margin: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -47,6 +48,11 @@ function RecipeCardSmall({ recipeData }) {
           <Typography sx={{ textAlign: "center", height: "100%", }} gutterBottom variant="h5" component="div">
             recipe name: {recipeData.recipe} {recipeData.name}
           </Typography>
+          <Box>
+
+            <Rating  sx={{textAlign: "center", marginLeft: "90px"}} value={recipeData.average_rating}/>
+          </Box>
+          
         </CardContent>
       </CardActionArea>
           <Box  sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: "100%", width: "100%" }}>
@@ -58,7 +64,7 @@ function RecipeCardSmall({ recipeData }) {
           </Typography>
           </Box>
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "flex-end", height: "100%" }}>
-        <Button>
+        <Button id="btnlinkrecipe">
           <Link to={`/recipe/${id}`}>
             View Recipe
           </Link>

@@ -41,6 +41,7 @@ function CategoryListProfile({ data }) {
                 {item.name}
               </p>
               <button
+              id='btndelete'
                 className='border bg-slate-500 p-2 rounded-lg'
                 onClick={() => openDeleteConfirmation(item)}
               >
@@ -56,8 +57,8 @@ function CategoryListProfile({ data }) {
           <div className="bg-white p-4 rounded-lg">
             <p>Are you sure you want to delete the category {categoryToDelete.name}?</p>
             <div className="mt-4 flex justify-center space-x-2">
-              <button className="bg-gray-300 px-4 py-2 rounded" onClick={closeDeleteConfirmation}>Cancel</button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={deleteCat}>Delete</button>
+              <button id='btncancel' className="bg-gray-300 px-4 py-2 rounded" onClick={closeDeleteConfirmation}>Cancel</button>
+              <button id='btndelete' className="bg-red-500 text-white px-4 py-2 rounded" onClick={deleteCat}>Delete</button>
             </div>
           </div>
         </div>

@@ -48,7 +48,7 @@ const RecipeCardBig = ({ recipe }) => {
           </Button>
           <div className='mt-2 mr-3'>
             <Typography variant='h6' gutterBottom textAlign={'left'}>
-              Average
+            
             </Typography>
             <Rating value={data.average_rating} precision={0.5} readOnly />
           </div>

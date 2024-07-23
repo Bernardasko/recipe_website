@@ -70,7 +70,7 @@ function Layout() {
                 </NavLink>
               </Button>
               {token && (
-                <Button color='inherit'>
+                <Button id='btncategorylayout' color='inherit'>
                   <NavLink
                     to='/category'
                     style={{ textDecoration: 'none', color: 'white' }}
