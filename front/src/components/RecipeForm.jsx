@@ -349,7 +349,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                 name="cuisine"
                 control={control}
                 defaultValue=""
-                // rules={{ required: "Cuisine is required" }}
+                rules={{ required: "Cuisine is required" }}
                 render={({ field, fieldState: { error } }) => (
                   <FormControl fullWidth error={!!error}>
                     <Select {...field} displayEmpty error={!!errors.cuisine}>
