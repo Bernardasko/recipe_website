@@ -162,7 +162,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
             id='pagination'
               count={
                 recipeData.social.comments.length % limit
-                  ? Math.floor(recipeData.social.comments.length / limit) + 3
+                  ? Math.floor(recipeData.social.comments.length / limit) + 1
                   : Math.floor(recipeData.social.comments.length / limit)
               }
               color='primary'
