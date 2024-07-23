@@ -71,7 +71,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
           setOpen(false);
           navigate("/profile/recipes");
         } else {
-          error && toast.error("Failed to update recipe");
+          setError("Failed to update recipe");
+          toast.error("Failed to update recipe");
         }
       } else {
         const posted = await postRecipe(newRecipe);
