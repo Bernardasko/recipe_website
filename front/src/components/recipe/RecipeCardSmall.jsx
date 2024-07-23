@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
-function RecipeCardSmall({ recipeData }) {
+function RecipeCardSmall({ recipeData, showRating }) {
   console.log(`testas`,recipeData);
 
   const { categoryId } = useParams();
@@ -48,10 +48,11 @@ function RecipeCardSmall({ recipeData }) {
           <Typography sx={{ textAlign: "center", height: "100%", }} gutterBottom variant="h5" component="div">
             recipe name: {recipeData.recipe} {recipeData.name}
           </Typography>
-          <Box>
-
-            <Rating  sx={{textAlign: "center", marginLeft: "90px"}} value={recipeData.average_rating}/>
-          </Box>
+          {showRating && recipeData.average_rating && (
+            <Box sx={{ textAlign: "center"  }}>
+              <Rating value={recipeData.average_rating} readOnly />
+            </Box>
+          )}
           
         </CardContent>
       </CardActionArea>

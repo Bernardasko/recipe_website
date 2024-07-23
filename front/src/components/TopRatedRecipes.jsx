@@ -38,7 +38,7 @@ function TopRatedRecipes() {
       <Box sx={{ overflowX: 'scroll', whiteSpace: 'nowrap', padding: '10px' }}>
         {topRatedRecipes.map((recipe, index) => (
           <Box key={index} component="span" sx={{ display: 'inline-block', marginRight: '10px' }}>
-            <RecipeCardSmall recipeData={recipe} />
+            <RecipeCardSmall recipeData={recipe} showRating={true} />
           </Box>
         ))}
       </Box>
