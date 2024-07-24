@@ -82,7 +82,7 @@ export const patchRecipe = async (req, res) => {
     );
     console.log(patchedRecipe, 123, 123, 123);
 
-    // res.status(200).json(patchedRecipe);
+    res.status(200).json(patchedRecipe);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });

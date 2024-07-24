@@ -50,3 +50,35 @@ export const postReview = async (review) => {
     return error;
   }
 };
+
+export const followUser = async (followerId) => {
+  const token = window.localStorage.getItem('token');
+  const users_url = import.meta.env.VITE_USERS;
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.post(`${users_url}/addFollower`, {followerId: followerId}, config);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+ 
+export const unfollowUser = async (followerId) => {
+  const token = window.localStorage.getItem('token');
+  const users_url = import.meta.env.VITE_USERS;
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const response = await axios.post(`${users_url}/removeFollower`, {followerId: followerId}, config);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+}

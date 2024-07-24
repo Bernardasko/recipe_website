@@ -104,13 +104,13 @@ const router = createBrowserRouter([
         },
       },
       {
-        path: "/profile/:userId",
+        path: "/profile/:profileId",
         //cia turi buti user profile componentas
         element: <RecipeUsersAllCards />,
         errorElement: <ErrorPage />,
         loader: async ({ params }) => {
-          const { userId } = params;
-          return await getUserAllById(userId);
+          const { profileId } = params;
+          return await getUserAllById(profileId);
         },
       },
       {
