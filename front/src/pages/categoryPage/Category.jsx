@@ -40,6 +40,11 @@ function Category() {
       
     }
   },[search, sort, page, limit])
+
+
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return <Typography variant="h6" color="error">No recipes found</Typography>;
+  }
   return (
     <>
       <SearchBar
