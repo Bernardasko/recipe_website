@@ -14,7 +14,7 @@ function Cuisines() {
       <Typography
         variant="h3"
         component="h1"
-        sx={{ textAlign: "center", textTransform: "uppercase" }}
+        sx={{ textAlign: "center", textTransform: "uppercase", marginTop: "68px" }}
         gutterBottom
         color="primary"
       >
