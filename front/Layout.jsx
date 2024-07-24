@@ -45,7 +45,7 @@ function Layout() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <CssBaseline />
-        <AppBar position='static'>
+        <AppBar position='fixed'>
           <Toolbar>
             <IconButton
               color='inherit'
