@@ -8,7 +8,7 @@ function RecipeProfile() {
       {token.role === 'user' ? (
         <h1>Welcome to my recipes</h1>
       ) : (
-        <h1>All recipes</h1>
+        <h1 className='text-center text-2xl font-bold my-4'>All recipes</h1>
       )}
       <RecipeListProfile />
     </>

@@ -32,16 +32,16 @@ function CategoryListProfile({ data }) {
 
   return (
     <>
-      <h1>Category list</h1>
-      <ul>
+      <h1 className='text-center text-2xl font-bold my-4'>Category list</h1>
+      <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
         {data.map((item, index) => (
-          <li key={index}>
-            <div>
-              <p className='bg-lime-600 py-2 max-w-max mx-auto'>
+          <li key={index} className='flex flex-col items-center bg-gray-100 p-6 ml-4 mr-8 rounded-lg shadow'>
+            <div className='mb-4'>
+              <p className='bg-yellow-400 py-2 px-4 text-white rounded-md text-center'>
                 {item.name}
-              </p>
-              <button
-              id='btndelete'
+              </p >
+              <button 
+              id='btndelete' 
                 className='border bg-slate-500 p-2 rounded-lg'
                 onClick={() => openDeleteConfirmation(item)}
               >
