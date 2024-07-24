@@ -87,7 +87,7 @@ function SearchBar({
           <MenuItem disabled>
             <em>Order By</em>
           </MenuItem>
-          <MenuItem onClick={() => setSort('recipes.title')}>Title</MenuItem>
+          {/* <MenuItem onClick={() => setSort('recipes.title')}>Title</MenuItem> */}
           {/* <MenuItem onClick={() => setSort('ingredients')}>Ingredients</MenuItem> */}
           {setSortCusine && (
             <MenuItem onClick={() => setSortCusine('categories.name')}>
@@ -99,10 +99,10 @@ function SearchBar({
               Cuisine
             </MenuItem>
           }
-          <MenuItem disabled>
+          {/* <MenuItem disabled>
             <em>Order</em>
-          </MenuItem>
-          <MenuItem
+          </MenuItem> */}
+          {/* <MenuItem
             onClick={() => {
               setOrder('ASC');
             }}
@@ -115,7 +115,7 @@ function SearchBar({
             }}
           >
             Descending
-          </MenuItem>
+          </MenuItem> */}
           {/* <MenuItem disabled>
             <em>Sort By</em>
           </MenuItem>
