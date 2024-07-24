@@ -43,11 +43,12 @@ function Category() {
 
 
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return <Typography variant="h6" color="error">No recipes found</Typography>;
+    return <Typography sx={{marginTop: '68px'}} variant="h6" color="error">No recipes found</Typography>;
   }
   return (
     <>
-      <SearchBar
+    <Box sx={{marginTop: '68px'}}>
+    <SearchBar
         setLimit={setLimit}
         setSearch={setSearch}
         search={search}
@@ -97,6 +98,7 @@ function Category() {
         color='primary'
         onChange={(e, value) => setPage(value)}
       />
+    </Box>
     </>
   );
 }
