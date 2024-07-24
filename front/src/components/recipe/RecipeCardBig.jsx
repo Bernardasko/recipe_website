@@ -10,62 +10,78 @@ import {
   Box,
   Chip,
   Button,
-} from '@mui/material';
-import Rating from '@mui/material/Rating';
-import { useLoaderData, Link } from 'react-router-dom';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import PublicIcon from '@mui/icons-material/Public';
-import { useState } from 'react';
-import AddCommentRating from '../social/AddCommentRating';
-import CommentRaitingCards from '../social/CommentRaitingCards';
-
+} from "@mui/material";
+import Rating from "@mui/material/Rating";
+import { useLoaderData, Link } from "react-router-dom";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import PublicIcon from "@mui/icons-material/Public";
+import { useState } from "react";
+import AddCommentRating from "../social/AddCommentRating";
+import CommentRaitingCards from "../social/CommentRaitingCards";
+import { jwtDecode } from "jwt-decode";
 
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
-  const uniqueIngredients = Array.from(new Set(data.ingredients.map(ing => JSON.stringify(ing))))
-    .map(ing => JSON.parse(ing));
+  const token = window.localStorage.getItem("token");
+  // let decoded;
+  // if (token) {
+  //   decoded = jwtDecode(token);
+  // }
+  const uniqueIngredients = Array.from(
+    new Set(data.ingredients.map((ing) => JSON.stringify(ing)))
+  ).map((ing) => JSON.parse(ing));
 
-  const uniqueSteps = Array.from(new Set(data.steps.map(step => JSON.stringify(step))))
-    .map(step => JSON.parse(step));
-  
+  const uniqueSteps = Array.from(
+    new Set(data.steps.map((step) => JSON.stringify(step)))
+  ).map((step) => JSON.parse(step));
+
   const [refresh, setRefresh] = useState(false);
 
   return (
     <>
-      <Card sx={{ maxWidth: 600, margin: 'auto', marginTop: 4 }}>
+      <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 4 }}>
         <CardMedia
-          component='img'
-          height='200'
+          component="img"
+          height="200"
           image={data.image_url}
           alt={data.name}
         />
         <CardContent>
-          <Typography variant='h4' gutterBottom>
+          <Typography variant="h4" gutterBottom>
             {data.name}
           </Typography>
-          <Button size='small' component={Link} to={`/profile/${data.creatorid}`}>
-            Creator
-          </Button>
-          <div className='mt-2 mr-3'>
-            <Typography variant='h6' gutterBottom textAlign={'left'}>
-            
-            </Typography>
+          {token && (
+            <Button
+              size="small"
+              component={Link}
+              to={`/profile/${data.creatorid}`}
+            >
+              Creator
+            </Button>
+          )}
+
+          <div className="mt-2 mr-3">
+            <Typography
+              variant="h6"
+              gutterBottom
+              textAlign={"left"}
+            ></Typography>
             <Rating value={data.average_rating} precision={0.5} readOnly />
           </div>
           <Box sx={{ mb: 2 }}>
             <Chip
               icon={<RestaurantIcon />}
               label={data.category}
-              color='primary'
+              color="primary"
               sx={{ mr: 1 }}
             />
             <Chip
               icon={<PublicIcon />}
               label={data.cuisine}
-              color='secondary'
+              color="secondary"
             />
           </Box>
-          <Typography variant='h6' sx={{ mt: 2 }}>
+          <Typography variant="h6" sx={{ mt: 2 }}>
             Ingredients:
           </Typography>
           <List>
@@ -76,7 +92,7 @@ const RecipeCardBig = ({ recipe }) => {
             ))}
           </List>
           <Divider sx={{ my: 2 }} />
-          <Typography variant='h6'>Steps:</Typography>
+          <Typography variant="h6">Steps:</Typography>
           <List>
             {uniqueSteps.map((step, index) => (
               <ListItem key={index}>
@@ -86,7 +102,11 @@ const RecipeCardBig = ({ recipe }) => {
           </List>
         </CardContent>
       </Card>
-      <CommentRaitingCards recipeData={data} refresh={refresh} setRefresh={setRefresh} />
+      <CommentRaitingCards
+        recipeData={data}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
       <AddCommentRating recipeData={data} setRefresh={setRefresh} />
     </>
   );
