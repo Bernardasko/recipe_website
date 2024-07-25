@@ -13,6 +13,9 @@ function Profile() {
         {token.role === 'admin' && (
           <Link id='link' to={'/profile/categories'}>categories</Link>
         )}
+        <Link to={'/profile/followers'}>
+          <button id='buttonprof'>Followers</button>
+        </Link>
         <Link to={'/profile/recipes'}>
           <button id='buttonprof'>Recipes</button>
         </Link>

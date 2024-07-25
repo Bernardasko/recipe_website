@@ -32,6 +32,7 @@ import {
   getCusinesWithRecipes,
   getUserAllById,
   isFollowing,
+  getAllUserFollowers,
 } from './services/get.mjs';
 
 import RecipeProfile from './components/recipeProfile/RecipeProfile';
@@ -40,6 +41,7 @@ import Cuisines from './pages/cuisinesPage/Cuisines.jsx';
 import AllCuisinesRecipes from './pages/cuisinesPage/AllCuisineRecipes.jsx';
 import Cuisine from './pages/cuisinesPage/Cuisine.jsx';
 import RecipeUsersAllCards from './components/recipeProfile/UserProfile.jsx';
+import UserFollowers from './components/recipeProfile/UserFollowers';
 
 const router = createBrowserRouter([
   {
@@ -156,6 +158,12 @@ const router = createBrowserRouter([
             },
             errorElement: <ErrorPage />,
           },
+          {
+            path: '/profile/followers',
+            element: <UserFollowers/>,
+            errorElement: <ErrorPage/>,
+            loader: getAllUserFollowers
+          }
         ],
       },
     ],

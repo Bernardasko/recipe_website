@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 const get_app_category = import.meta.env.VITE_CATEGORY;
 const get_app_cuisine = import.meta.env.VITE_CUISINE;
 
@@ -242,6 +243,24 @@ export const isFollowing = async (profileId) => {
     console.log(`${users_url}/isFollowing/${profileId}`);
     // console.log(response);
     return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllUserFollowers = async (userId) => {
+  const users_url = import.meta.env.VITE_USERS;
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(`${users_url}/getFollowers`, config);
+    console.log(response);
+    if (response.status === 200) {
+      return response.data;
+    }
   } catch (error) {
     console.error(error);
     throw error;
