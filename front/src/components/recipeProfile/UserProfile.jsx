@@ -44,7 +44,7 @@ function RecipeUsersAllCards() {
   return (
     <>
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 10 }}
       >
         <Typography
           variant='h3'
