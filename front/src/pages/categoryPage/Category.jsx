@@ -37,13 +37,13 @@ function Category() {
         setRecipes(searchResult)
       })();
     } catch (error) {
-      
+      console.error('Error fetching recipes:', error);
     }
   },[search, sort, page, limit])
 
 
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return <Typography variant="h6" color="error">No recipes found</Typography>;
+    return <Typography variant="h6" color="error" style={{ marginTop: '100px', textAlign: 'center' }}>No recipes found</Typography>;
   }
   return (
     <>
@@ -55,7 +55,7 @@ function Category() {
         setOrder={setOrder}
       />
       <Typography
-        variant='h3'
+       variant='h3'
         component='h1'
         sx={{ textAlign: 'center', textTransform: 'uppercase' }}
         gutterBottom

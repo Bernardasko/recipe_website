@@ -16,6 +16,7 @@ import { AppContext } from './src/context/AppContext';
 import SearchBar from './src/components/SearchBar';
 import AppDrawer from './src/components/AppDrawer';
 import { useNavigate } from 'react-router-dom';
+import logo from "./public/logo2.png"
 
 const drawerWidth = 240;
 
@@ -43,6 +44,8 @@ function Layout() {
 
   return (
     <>
+
+    
       <Box sx={{ flexGrow: 1 }}>
         <CssBaseline />
         <AppBar position='fixed'>
@@ -56,6 +59,15 @@ function Layout() {
             >
               <MenuIcon />
             </IconButton>
+            <Box
+              component="img"
+              sx={{
+                height: 70,
+                marginRight: 2,
+              }}
+              alt="Logotipas"
+              src={logo}
+            />
             <Typography
               variant='h6'
               component='div'
