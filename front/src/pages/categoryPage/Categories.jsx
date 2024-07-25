@@ -13,7 +13,7 @@ function Categories() {
       <Typography
         variant="h3"
         component="h1"
-        sx={{ textAlign: "center", textTransform: "uppercase" }}
+        sx={{ textAlign: "center", textTransform: "uppercase", marginTop: "68px" }}
         gutterBottom
         color="primary"
       >
@@ -46,7 +46,7 @@ function Categories() {
               <AllcategoriesRecipes categoryId={category.categoryid} />
             </Box>
             <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
-              <Button variant="contained" color="primary">
+              <Button id="btnview" variant="contained" color="primary">
                 <Link to={`/category/${category.categoryid}`} style={{ color: 'white', textDecoration: 'none' }}>
                   View all
                 </Link>

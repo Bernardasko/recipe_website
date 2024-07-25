@@ -67,14 +67,14 @@ const router = createBrowserRouter([
               return await getCategoryById(categoryId);
             },
           },
-          // {
-          //   path: `/category/:categoryId/recipe/:recipeId`,
-          //   element: <RecipeCardBig />,
-          //   loader: async ({ params }) => {
-          //     const { recipeId } = params;
-          //     return await getRecipeById(recipeId);
-          //   },
-          // },
+          {
+            path: `/category/:categoryId/recipe/:recipeId`,
+            element: <RecipeCardBig />,
+            loader: async ({ params }) => {
+              const { recipeId } = params;
+              return await getRecipeById(recipeId);
+            },
+          },
         ],
       },
       {

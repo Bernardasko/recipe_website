@@ -71,7 +71,8 @@ function RecipeForm({ recipeInfo, setOpen }) {
           setOpen(false);
           navigate("/profile/recipes");
         } else {
-          error && toast.error("Failed to update recipe");
+          setError("Failed to update recipe");
+          toast.error("Failed to update recipe");
         }
       } else {
         const posted = await postRecipe(newRecipe);
@@ -250,7 +251,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   error={!!errors.ingredients?.[index]?.ingredient}
                   helperText={errors.ingredients?.[index]?.ingredient?.message}
                 />
-                <IconButton onClick={() => handleDeleteIngredient(index)}>
+                <IconButton id="btndelingr" onClick={() => handleDeleteIngredient(index)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>
@@ -296,7 +297,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   }}
                   helperText={errors.steps?.[index]?.message}
                 />
-                <IconButton onClick={() => handleDeleteStep(index)}>
+                <IconButton id="btndelstep" onClick={() => handleDeleteStep(index)}>
                   <DeleteIcon />
                 </IconButton>
               </Box>

@@ -16,6 +16,7 @@ import { AppContext } from './src/context/AppContext';
 import SearchBar from './src/components/SearchBar';
 import AppDrawer from './src/components/AppDrawer';
 import { useNavigate } from 'react-router-dom';
+import logo from "./public/logo2.png"
 
 const drawerWidth = 240;
 
@@ -43,9 +44,11 @@ function Layout() {
 
   return (
     <>
+
+    
       <Box sx={{ flexGrow: 1 }}>
         <CssBaseline />
-        <AppBar position='static'>
+        <AppBar position='fixed'>
           <Toolbar>
             <IconButton
               color='inherit'
@@ -56,6 +59,15 @@ function Layout() {
             >
               <MenuIcon />
             </IconButton>
+            <Box
+              component="img"
+              sx={{
+                height: 70,
+                marginRight: 2,
+              }}
+              alt="Logotipas"
+              src={logo}
+            />
             <Typography
               variant='h6'
               component='div'
@@ -70,7 +82,7 @@ function Layout() {
                 </NavLink>
               </Button>
               {token && (
-                <Button color='inherit'>
+                <Button id='btncategorylayout' color='inherit'>
                   <NavLink
                     to='/category'
                     style={{ textDecoration: 'none', color: 'white' }}
@@ -91,7 +103,7 @@ function Layout() {
               )}
             </Typography>
             <Box sx={{ flexGrow: 1, display: { md: 'flex' } }}>
-              <SearchBar />
+              {/* <SearchBar /> */}
             </Box>
             {token && (
               <>
@@ -108,6 +120,7 @@ function Layout() {
                   </NavLink>
                 </Button>
                 <Button
+                id='logout'
                   color='inherit'
                   onClick={clearToken}
                   sx={{ display: { xs: 'none', sm: 'block' } }}

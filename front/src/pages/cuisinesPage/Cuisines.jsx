@@ -14,7 +14,7 @@ function Cuisines() {
       <Typography
         variant="h3"
         component="h1"
-        sx={{ textAlign: "center", textTransform: "uppercase" }}
+        sx={{ textAlign: "center", textTransform: "uppercase", marginTop: "68px" }}
         gutterBottom
         color="primary"
       >
@@ -48,7 +48,7 @@ function Cuisines() {
               <AllCuisinesRecipes cuisineId={cuisine.cuisineid} />
             </Box>
             <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
-              <Button variant="contained" color="primary">
+              <Button id="btncuisineview" variant="contained" color="primary">
                 <Link to={`/cuisines/${cuisine.cuisineid}`} style={{ color: 'white', textDecoration: 'none' }}>
                   View all
                 </Link>

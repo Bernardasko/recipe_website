@@ -198,4 +198,6 @@ export const isFollowing = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+  // if password and email matches create user new token
+  // const token = getToken(existingUser.id, existingUser.name, existingUser.lastname,  existingUser.email, existingUser.role)
 

@@ -34,42 +34,43 @@ function RecipeCardProfile({ data }) {
  
   return (
     <>
-      <div className='card w-96 max-w-sm shadow-xl rounded-lg'>
-        <figure>
-          <img
-            className='rounded-tl-lg rounded-tr-lg'
-            src={data.images}
-            alt={data.images}
-           style={{height: '320px', width: '390px', marginBottom: '10px'}}
-          />
-        </figure>
-        <div className='card-body'>
-        <h2 className='card-title truncate'>Name: {data.name}</h2>
-          <h2 className='card-title'>Cusine: {data.cuisine}</h2>
-          <p>Category: {data.category}</p>
-          <div className='flex justify-around my-2'>
-            <ResponsiveModal recipeInfo={data} />
-            <button
-              className='btn btn-outline btn-error'
-              onClick={handleDeleteClick}
-            >
-              Delete
-            </button>
-          </div>
+      <div className='max-w-sm rounded overflow-hidden shadow-lg mb-4' style={{ width: '350px', height: '480px' }}>
+  <img
+    className='rounded w-full'
+    src={data.images}
+    alt={data.images}
+    style={{ height: '230px', objectFit: 'cover', objectPosition: 'center', width: '100%',  }} 
+  />
+  <div className='card-body' style={{ height: '250px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <div>
+      <h2 className='card-title break-all'>Name: {data.name}</h2>
+      <h2 className='card-title'>Cusine: {data.cuisine}</h2>
+      <p>Category: {data.category}</p>
+    </div>
+    <div className='flex justify-around my-2'>
+      <ResponsiveModal recipeInfo={data} />
+      <button
+        className='btn btn-outline btn-error'
+        onClick={handleDeleteClick}
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+
+  {showConfirmDialog && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-4 rounded-lg w-1/3 text-center">
+        <p>Are you sure you want to delete {data.name}?</p>
+        <div className="mt-4 flex justify-center space-x-2">
+          <button className="btn btn-outline" onClick={handleCancelDelete}>Cancel</button>
+          <button className="btn btn-error" onClick={handleConfirmDelete}>Delete</button>
         </div>
       </div>
- 
-      {showConfirmDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-4 rounded-lg w-1/3 text-center">
-            <p>Are you sure you want to delete {data.name}?</p>
-            <div className="mt-4 flex justify-center space-x-2">
-              <button className="btn btn-outline" onClick={handleCancelDelete}>Cancel</button>
-              <button className="btn btn-error" onClick={handleConfirmDelete}>Delete</button>
-            </div>
-          </div>
-        </div>
-      )}
+    </div>
+  )}
+</div>
+
  
       <Toaster />
     </>

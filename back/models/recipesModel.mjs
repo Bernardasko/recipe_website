@@ -344,6 +344,79 @@ export const pg_getAllRecipes = async () => {
   return Object.values(recipes);
 };
 
+
+export const pg_getAllRecipesData = async () => {
+  const flatResults = await sql`
+  SELECT 
+    recipes.recipeid AS recipeid,
+    recipes.title AS name,
+    users.name AS username,
+    users.lastname AS userlastname,
+    categories.name AS category,
+    cuisines.name AS cuisine,
+    ingredients.name AS ingredient,
+    recipe_ingredients.amount AS amount,
+    recipe_steps.stepnumber AS step_number,
+    recipe_steps.description AS step_description,
+    images.imageurl AS image_url,
+    AVG(ratings.rating) OVER (PARTITION BY recipes.recipeid) AS average_rating
+  FROM recipes
+  INNER JOIN users ON recipes.userid = users.id
+  INNER JOIN categories ON recipes.categoryid = categories.categoryid
+  INNER JOIN recipe_ingredients ON recipes.recipeid = recipe_ingredients.recipeid
+  INNER JOIN ingredients ON recipe_ingredients.ingredientid = ingredients.ingredientid
+  INNER JOIN recipe_steps ON recipes.recipeid = recipe_steps.recipeid
+  INNER JOIN cuisines ON recipes.cuisineid = cuisines.cuisineid
+  LEFT JOIN images ON recipes.recipeid = images.recipeid
+  LEFT JOIN ratings ON recipes.recipeid = ratings.recipeid
+  ORDER BY recipes.recipeid, recipe_steps.stepnumber;
+  `;
+
+  const recipes = {};
+
+  flatResults.forEach((row) => {
+    if (!recipes[row.recipeid]) {
+      recipes[row.recipeid] = {
+        recipeId: row.recipeid,
+        name: row.name,
+        username: row.username,
+        userlastname: row.userlastname,
+        category: row.category,
+        cuisine: row.cuisine,
+        ingredients: [],
+        steps: [],
+        images: row.image_url || null, // Use a single string for the image URL
+        average_rating: parseFloat(row.average_rating), // Convert average rating to a number
+      };
+    }
+
+    // Add ingredient if it does not already exist
+    if (
+      !recipes[row.recipeid].ingredients.some(
+        (ing) => ing.ingredient === row.ingredient
+      )
+    ) {
+      recipes[row.recipeid].ingredients.push({
+        ingredient: row.ingredient,
+        amount: row.amount,
+      });
+    }
+
+    // Add step if it does not already exist
+    if (!recipes[row.recipeid].steps.includes(row.step_description)) {
+      recipes[row.recipeid].steps.push(row.step_description);
+    }
+
+    // Update image if it exists
+    if (row.image_url) {
+      recipes[row.recipeid].images = row.image_url;
+    }
+  });
+
+  // Convert recipes object to an array
+  return Object.values(recipes);
+};
+
 export const pg_getRecipeByIdWithSocials = async (recipeId) => {
   const results = await sql`
   WITH distinct_ingredients AS (

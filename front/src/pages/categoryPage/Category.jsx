@@ -37,20 +37,28 @@ function Category() {
         setRecipes(searchResult)
       })();
     } catch (error) {
-      
+      console.error('Error fetching recipes:', error);
     }
   },[search, sort, page, limit])
+
+
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return <Typography variant="h6" color="error" style={{ marginTop: '100px', textAlign: 'center' }}>No recipes found</Typography>;
+  }
   return (
     <>
-      <SearchBar
+    <Box sx={{marginTop: '68px'}}>
+    <div className='border'>
+    <SearchBar
         setLimit={setLimit}
         setSearch={setSearch}
         search={search}
         setSortCategory={setSortCategory}
         setOrder={setOrder}
       />
+    </div>
       <Typography
-        variant='h3'
+       variant='h3'
         component='h1'
         sx={{ textAlign: 'center', textTransform: 'uppercase' }}
         gutterBottom
@@ -92,6 +100,7 @@ function Category() {
         color='primary'
         onChange={(e, value) => setPage(value)}
       />
+    </Box>
     </>
   );
 }
