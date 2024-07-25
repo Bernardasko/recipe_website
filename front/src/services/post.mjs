@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const postRecipe = async (formInfo) => {
   console.log(formInfo);
   const post_recipe_url = import.meta.env.VITE_POST_RECIPE;
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   try {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
@@ -18,7 +18,7 @@ export const postRecipe = async (formInfo) => {
 };
 
 export const postNewCategory = async (categoryName) => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   const post_cat_url = import.meta.env.VITE_POST_CAT;
   try {
     const config = {
@@ -34,7 +34,7 @@ export const postNewCategory = async (categoryName) => {
 };
 
 export const postReview = async (review) => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   const post_review_url = import.meta.env.VITE_SOCIAL;
   console.log(post_review_url);
   try {
@@ -52,19 +52,23 @@ export const postReview = async (review) => {
 };
 
 export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
-  const token = window.localStorage.getItem('token');
-  const post_like_url = import.meta.env.VITE_LIKE;
-  
+  const token = window.localStorage.getItem("token");
+  const post_like_url = import.meta.env.VITE_LIKES;
+
   try {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
 
-    const response = await axios.post(`${post_like_url}/${recipeid}/${userid}`, config);
-    console.log(response);
+    const response = await axios.post(
+      `${post_like_url}/${recipeid}/${userid}`,
+      {},
+      config
+    );
+    console.log("Post like response:", response.data);
     return response;
   } catch (error) {
-    console.error(error);
+    console.error("Error posting like:", error);
     return error;
   }
 };

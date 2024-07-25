@@ -84,7 +84,7 @@ const RecipeCardBig = ({ recipe }) => {
               color="secondary"
             />
           </Box>
-          <LikeButton recipeid={data.recipeid} userid={data.creatorid} />
+          <LikeButton recipeid={data.recipeid} />
           <Typography variant="h6" sx={{ mt: 2 }}>
             Ingredients:
           </Typography>
