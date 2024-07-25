@@ -6,7 +6,8 @@ import {
   test,
   addFollower,
   removeFollower,
-  getFollowers
+  getFollowers,
+  isFollowing
 } from '../controllers/usersController.mjs';
 import { isAdmin, isUser } from '../middlewares/authorizationMiddleware.mjs';
 
@@ -18,6 +19,7 @@ router.route('/test').get(isUser, test);
 router.route('/addFollower').post(isUser, addFollower);
 router.route('/removeFollower').post(isUser, removeFollower);
 router.route('/getFollowers').get(isUser, getFollowers);
+router.route('/isFollowing/:profileId').get(isUser, isFollowing)
 
 
 export default router;

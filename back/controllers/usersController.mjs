@@ -166,26 +166,36 @@ export const removeFollower = async (req, res) => {
 export const getFollowers = async (req, res) => {
   try {
     const { id: userId } = req.user;
-    const followers = await pg_getFollowers(userId)
+    const followers = await pg_getFollowers(userId);
     console.log(followers);
-    res.status(200).json(followers)
+    res.status(200).json(followers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: error });
   }
-}
-
+};
 
 // sita funkcija reikia iskelti i main prie element: <RecipeUsersAllCards />. kad zinociau kai uzkrauna user profile ar jis jau yra followinamas
 export const isFollowing = async (req, res) => {
   try {
     const { id: userId } = req.user;
-    const {profileId} = req.params
-    const followers = await pg_isFollowing(userId, profileId)
-    console.log(followers);
-    res.status(200).json(followers)
+    const { profileId } = req.params;
+    if (userId == profileId) {
+      // Return 200 OK with a message if user is checking their own profile
+      return res.status(200).json({ isFollowing: 'This_is_your_own_profile' });
+    }
+    const isFollowing = await pg_isFollowing(userId, profileId);
+    
+    if (isFollowing) {
+      // Return 200 OK with a message indicating the user is following the profile
+      return res.status(200).json({ isFollowing: true });
+    } 
+    
+    // Return 200 OK with a message indicating the user is not following the profile
+    return res.status(200).json({ isFollowing: false });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: error });
+    return res.status(500).json({ message: error.message });
   }
-}
+};
+
