@@ -48,6 +48,7 @@ function Category() {
   return (
     <>
     <Box sx={{marginTop: '68px'}}>
+    <div className='border'>
     <SearchBar
         setLimit={setLimit}
         setSearch={setSearch}
@@ -55,6 +56,7 @@ function Category() {
         setSortCategory={setSortCategory}
         setOrder={setOrder}
       />
+    </div>
       <Typography
        variant='h3'
         component='h1'
