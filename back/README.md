@@ -305,3 +305,26 @@ CREATE TABLE followers (
     FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+-- Create Likes Table
+CREATE TABLE likes (
+    likeid SERIAL PRIMARY KEY,
+    recipeid INT NOT NULL,
+    userid INT NOT NULL,
+    FOREIGN KEY (recipeid) REFERENCES recipes(recipeid) ON DELETE CASCADE,
+    FOREIGN KEY (userid) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE (recipeid, userid) -- Ensure a user can like a recipe only once
+);
+
+-- Sukurti likes_count_view
+CREATE VIEW likes_count_view AS
+SELECT 
+    r.recipeid,
+    r.title,
+    COUNT(l.likeid) AS like_count
+FROM 
+    recipes r
+LEFT JOIN 
+    likes l on r.recipeid = l.recipeid
+GROUP BY 
+    r.recipeid, r.title;

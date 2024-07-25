@@ -230,3 +230,39 @@ export const getUserAllById = async (id) => {
       console.error(error);
     throw error;
     }}
+
+    export const getLikesByRecipeId = async (id)=>{
+      const getLikes_url = import.meta.env.VITE_GET_LIKES;
+      const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(`${getLikes_url}/count/${id}`, config);
+    // console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getIsUserLiked = async (recipeid, userid)=>{
+  const getLikes_url = import.meta.env.VITE_GET_LIKES;
+  const token = window.localStorage.getItem('token');
+const config = {
+headers: { Authorization: `Bearer ${token}` },
+};
+try {
+const response = await axios.get(`${getLikes_url}/check/${recipeid}/${userid}`, config);
+// console.log(response);
+return response.data;
+} catch (error) {
+console.error(error);
+throw error;
+}
+};
+
+
+
+    

@@ -19,10 +19,13 @@ import { useState } from "react";
 import AddCommentRating from "../social/AddCommentRating";
 import CommentRaitingCards from "../social/CommentRaitingCards";
 import { jwtDecode } from "jwt-decode";
+import LikeButton from "../LikeButton";
 
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
+  console.log(`recipe`, data);
   const token = window.localStorage.getItem("token");
+
   // let decoded;
   // if (token) {
   //   decoded = jwtDecode(token);
@@ -81,6 +84,7 @@ const RecipeCardBig = ({ recipe }) => {
               color="secondary"
             />
           </Box>
+          <LikeButton recipeid={data.recipeid} userid={data.creatorid} />
           <Typography variant="h6" sx={{ mt: 2 }}>
             Ingredients:
           </Typography>

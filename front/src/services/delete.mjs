@@ -35,3 +35,21 @@ export const deleteRecipyById = async (recipeId) => {
     return error;
   }
 };
+
+export const deleteLikeByRecipeIdUserId = async (recipeid, userid) => {
+  const delete_like_url = import.meta.env.VITE_DELETE_LIKE;
+  const token = window.localStorage.getItem('token');
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const deletedLike = await axios.delete(
+      `${delete_like_url}/${recipeid}/${userid}`,
+      config
+    );
+    return deletedLike.status;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};

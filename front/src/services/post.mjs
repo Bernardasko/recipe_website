@@ -50,3 +50,21 @@ export const postReview = async (review) => {
     return error;
   }
 };
+
+export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
+  const token = window.localStorage.getItem('token');
+  const post_like_url = import.meta.env.VITE_LIKE;
+  
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const response = await axios.post(`${post_like_url}/${recipeid}/${userid}`, config);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
