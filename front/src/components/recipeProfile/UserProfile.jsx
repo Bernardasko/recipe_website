@@ -1,22 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import RecipeCardSmall from '../recipe/RecipeCardSmall';
 import { Typography, Box, Link } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { followUser, unfollowUser } from '../../services/post.mjs';
+import { useNavigate } from 'react-router-dom';
 
 function RecipeUsersAllCards() {
   const [following, setFollowing] = useState(false);
   const data = useLoaderData();
-  console.log(data);
+
+  const navigate = useNavigate()
   const { profileId } = useParams();
-  console.log(profileId);
+  // console.log(profileId);
   const handleFollow = async () => {
     const response = await followUser(profileId);
     console.log(response.status);
     if (response.status === 200) {
-      return setFollowing((p) => !p);
+      setFollowing((p) => !p);
+      navigate(`/profile/${profileId}`)
     }
     if (response.response.status === 409) {
       return alert('already following');
@@ -25,9 +28,19 @@ function RecipeUsersAllCards() {
   const handleUnfollow = async () => {
     const response = await unfollowUser(profileId);
     console.log(response);
+    navigate(`/profile/${profileId}`)
 
-    // setFollowing(p=>!p)
   };
+  const isOwnProfile = data.isFollow.isFollowing === 'This_is_your_own_profile';
+
+  useEffect(() => {
+    console.log(data.isFollow.isFollowing);
+    if (data.isFollow.isFollowing === true) {
+      setFollowing(true);
+    } else {
+      setFollowing(false);
+    }
+  }, [following, handleUnfollow, handleFollow]);
   return (
     <>
       <Box
@@ -40,17 +53,18 @@ function RecipeUsersAllCards() {
           gutterBottom
           color='primary'
         >
-          {data[0].username} {data[0].userlastname}
+          {data.getAll[0].username} {data.getAll[0].userlastname}
         </Typography>
-        {following ? (
-          <Button onClick={handleUnfollow} variant='outlined'>
-            Unfollow
-          </Button>
-        ) : (
-          <Button onClick={handleFollow} variant='contained'>
-            Follow
-          </Button>
-        )}
+        {!isOwnProfile &&
+          (following ? (
+            <Button onClick={handleUnfollow} variant='outlined'>
+              Unfollow
+            </Button>
+          ) : (
+            <Button onClick={handleFollow} variant='contained'>
+              Follow
+            </Button>
+          ))}
       </Box>
       <Box
         sx={{
@@ -64,7 +78,7 @@ function RecipeUsersAllCards() {
           marginBottom: '20px',
         }}
       >
-        {data.map((recipe, index) => {
+        {data.getAll.map((recipe, index) => {
           return <RecipeCardSmall recipeData={recipe} key={index} />;
         })}
       </Box>

@@ -10,7 +10,7 @@ function ProfileCard() {
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
-    }
+    } 
   }, []);
 
 //   const avatarUrl = user

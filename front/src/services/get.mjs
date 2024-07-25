@@ -1,5 +1,5 @@
 import axios from 'axios';
-const get_app_category = import.meta.env.VITE_CATEGORY
+const get_app_category = import.meta.env.VITE_CATEGORY;
 const get_app_cuisine = import.meta.env.VITE_CUISINE;
 
 export const getCategoryById = async (id) => {
@@ -150,15 +150,18 @@ export const getCusinesWithRecipes = async () => {
 
 export const getRecipeComments = async (recipeId, queryString) => {
   try {
-    const social_url = import.meta.env.VITE_SOCIAL
+    const social_url = import.meta.env.VITE_SOCIAL;
     const token = window.localStorage.getItem('token');
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const response = await axios.get(`${social_url}/${recipeId}?${queryString}`, config)
-    if(response.status ===200){
-      return response.data
-    } 
+    const response = await axios.get(
+      `${social_url}/${recipeId}?${queryString}`,
+      config
+    );
+    if (response.status === 200) {
+      return response.data;
+    }
   } catch (error) {
     console.error(error);
     throw error;
@@ -167,41 +170,47 @@ export const getRecipeComments = async (recipeId, queryString) => {
 
 export const cuisineSearch = async (cuisine, queryString) => {
   try {
-    const cusines_url = import.meta.env.VITE_CUISINES
+    const cusines_url = import.meta.env.VITE_CUISINES;
     console.log(`${cusines_url}/searchCuisine/${cuisine}?${queryString}`);
 
     const token = window.localStorage.getItem('token');
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const response = await axios.get(`${cusines_url}/searchCusine/${cuisine}?${queryString}`, config)
-    if(response.status === 200){
-      return response.data
+    const response = await axios.get(
+      `${cusines_url}/searchCusine/${cuisine}?${queryString}`,
+      config
+    );
+    if (response.status === 200) {
+      return response.data;
     }
   } catch (error) {
     console.error(error);
     throw error;
   }
-}
+};
 
 export const categorySearch = async (category, queryString) => {
   try {
-    const category_url = import.meta.env.VITE_CATEGORY
+    const category_url = import.meta.env.VITE_CATEGORY;
     console.log(`${category_url}/searchCategory/${category}?${queryString}`);
     // console.log(cuisine );
     const token = window.localStorage.getItem('token');
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
-    const response = await axios.get(`${category_url}/searchCategory/${category}?${queryString}`, config)
-    if(response.status === 200){
-      return response.data
+    const response = await axios.get(
+      `${category_url}/searchCategory/${category}?${queryString}`,
+      config
+    );
+    if (response.status === 200) {
+      return response.data;
     }
   } catch (error) {
     console.error(error);
     throw error;
   }
-}
+};
 export const getUserAllById = async (id) => {
   const getRecipes_url = import.meta.env.VITE_GET_USER_RECIPE;
   const token = window.localStorage.getItem('token');
@@ -211,8 +220,30 @@ export const getUserAllById = async (id) => {
   try {
     const response = await axios.get(`${getRecipes_url}/${id}`, config);
     if (response.status === 200) {
-      return response.data;}
-    } catch (error){
-      console.error(error);
+      return response.data;
+    }
+  } catch (error) {
+    console.error(error);
     throw error;
-    }}
+  }
+};
+
+export const isFollowing = async (profileId) => {
+  const users_url = import.meta.env.VITE_USERS;
+  const token = window.localStorage.getItem('token');
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  try {
+    const response = await axios.get(
+      `${users_url}/isFollowing/${profileId}`,
+      config
+    );
+    console.log(`${users_url}/isFollowing/${profileId}`);
+    // console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
