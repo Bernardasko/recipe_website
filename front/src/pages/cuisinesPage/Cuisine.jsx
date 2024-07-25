@@ -45,6 +45,7 @@ function Cuisine() {
   }, [search, sort, page, limit]);
   return (
     <>
+    <Box sx={{marginTop: '68px'}}>
       <div className='border'>
         <SearchBar
           setLimit={setLimit}
@@ -93,6 +94,7 @@ function Cuisine() {
         color='primary'
         onChange={(e, value) => setPage(value)}
       />
+      </Box>
     </>
   );
 }
