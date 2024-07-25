@@ -33,7 +33,7 @@ function RecipeCardSmall({ recipeData, showRating }) {
   const defaultImage = recipeData.images ? recipeData.images : getDefaultImage(recipeData.category);
 
   return (
-    <Card sx={{ width: 350, height: 480, margin: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+    <Card sx={{ width: 315, height: 480, margin: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -42,6 +42,8 @@ function RecipeCardSmall({ recipeData, showRating }) {
           sx={{
             height: 300,
             width: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
           }}
         />
         <CardContent>

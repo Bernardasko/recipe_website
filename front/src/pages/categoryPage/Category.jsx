@@ -47,7 +47,8 @@ function Category() {
   }
   return (
     <>
-      <SearchBar
+    <Box sx={{marginTop: '68px'}}>
+    <SearchBar
         setLimit={setLimit}
         setSearch={setSearch}
         search={search}
@@ -97,6 +98,7 @@ function Category() {
         color='primary'
         onChange={(e, value) => setPage(value)}
       />
+    </Box>
     </>
   );
 }
