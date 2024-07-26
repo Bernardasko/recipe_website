@@ -37,7 +37,7 @@ export const deleteRecipyById = async (recipeId) => {
 };
 
 export const deleteLikeByRecipeIdUserId = async (recipeid, userid) => {
-  const delete_like_url = import.meta.env.VITE_DELETE_LIKE;
+  const delete_like_url = import.meta.env.VITE_DELETE_LIKES;
   const token = window.localStorage.getItem('token');
   try {
     const config = {

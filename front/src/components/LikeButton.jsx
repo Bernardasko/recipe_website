@@ -1,11 +1,8 @@
-// import { useState, useEffect } from 'react';
-// import axios from 'axios';
-
 
 import  { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 // import axios from 'axios';
 import { getIsUserLiked, getLikesByRecipeId } from '../services/get.mjs';
 import { deleteLikeByRecipeIdUserId } from '../services/delete.mjs';
@@ -73,7 +70,7 @@ const LikeButton = ({ recipeid }) => {
 
   return (
     <Button onClick={handleLike} disabled={!userid}>
-      {liked ? <ThumbUpIcon /> : <ThumbUpOffAltIcon />} {likeCount}
+      {liked ? <ThumbUpIcon /> : <ThumbDownAltIcon />} {likeCount}
     </Button>
   );
 };
