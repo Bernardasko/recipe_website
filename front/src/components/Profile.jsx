@@ -33,24 +33,24 @@ function Profile() {
         <div className='md:w-1/6 flex flex-col space-y-4 mt-4 '>
           {token.role === 'admin' && (
             <Link id='link' to={'/profile/categories'}>
-              <button className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
+              <button  className='px-4 py-2 bg-[#ff8a65] rounded hover:bg-[#ff7043] text-white w-full'>
                 Categories
               </button>
             </Link>
           )}
 
           <Link to={'/profile/followers'}>
-            <button id='buttonproffollow' className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
-              followers
+            <button id='buttonproffollow' className='px-4 py-2 bg-[#ff8a65] rounded hover:bg-[#ff7043] text-white w-full'>
+              Followers
             </button>
           </Link>
           <Link to={'/profile/recipes'}>
-            <button id='buttonprof' className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
+            <button id='buttonprof' className='px-4 py-2 bg-[#ff8a65] rounded hover:bg-[#ff7043] text-white w-full'>
               Recipes
             </button>
           </Link>
           <Link to={'/profile/add_recipe'}>
-            <button id='buttonprofrec' className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
+            <button id='buttonprofrec' className='px-4 py-2 bg-[#ff8a65] rounded hover:bg-[#ff7043] text-white w-full'>
               Add Recipe
             </button>
           </Link>

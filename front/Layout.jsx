@@ -16,7 +16,7 @@ import { AppContext } from './src/context/AppContext';
 import SearchBar from './src/components/SearchBar';
 import AppDrawer from './src/components/AppDrawer';
 import { useNavigate } from 'react-router-dom';
-import logo from "./public/logo2.png"
+import logo from "./public/logo.png"
 
 const drawerWidth = 240;
 
@@ -48,7 +48,7 @@ function Layout() {
     
       <Box sx={{ flexGrow: 1 }}>
         <CssBaseline />
-        <AppBar position='fixed'>
+        <AppBar position='fixed' sx={{ bgcolor: '#ff914d' }}>
           <Toolbar>
             <IconButton
               color='inherit'

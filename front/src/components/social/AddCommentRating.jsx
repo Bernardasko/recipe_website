@@ -151,7 +151,9 @@ const {recipeId: id} = useParams()
         )}
         rules={{ required: true }}
       />
-      <Button id='addcomment' type='submit' variant='contained' color='primary'>
+      <Button id='addcomment' type='submit' variant='contained' sx={{bgcolor: '#ff8a65', "&:hover": {
+                    bgcolor: "#ff7043",
+                  }, }}>
         Add comment
       </Button>
       <Toaster/>

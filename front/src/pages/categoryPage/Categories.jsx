@@ -13,9 +13,14 @@ function Categories() {
       <Typography
         variant="h3"
         component="h1"
-        sx={{ textAlign: "center", textTransform: "uppercase", marginTop: "68px" }}
+        sx={{
+          textAlign: "center",
+          textTransform: "uppercase",
+          marginTop: "68px",
+          fontFamily: "Dancing Script, cursive",
+        }}
         gutterBottom
-        color="primary"
+        color="#5d4037"
       >
         All Categories
       </Typography>
@@ -23,12 +28,21 @@ function Categories() {
         return (
           <Box
             key={index}
-            sx={{ border: "1px solid blue", marginBottom: "20px" }}
+            sx={{
+              border: "4px solid #9fa8da",
+              boxShadow: 3,
+              marginBottom: "20px",
+            }}
           >
             <Typography
               variant="h5"
               component="h2"
-              sx={{ textAlign: "center", textTransform: "uppercase" }}
+              sx={{
+                textAlign: "center",
+                textTransform: "uppercase",
+                color: "#5d4037",
+                fontFamily: "Dancing Script, cursive",
+              }}
               gutterBottom
               color="primary"
             >
@@ -46,8 +60,20 @@ function Categories() {
               <AllcategoriesRecipes categoryId={category.categoryid} />
             </Box>
             <Box sx={{ textAlign: "center", marginBottom: "20px" }}>
-              <Button id="btnview" variant="contained" color="primary">
-                <Link to={`/category/${category.categoryid}`} style={{ color: 'white', textDecoration: 'none' }}>
+              <Button
+                id="btnview"
+                variant="contained"
+                sx={{
+                  bgcolor: "#ff8a65",
+                  "&:hover": {
+                    bgcolor: "#ff7043",
+                  },
+                }}
+              >
+                <Link
+                  to={`/category/${category.categoryid}`}
+                  style={{ color: "white", textDecoration: "none" }}
+                >
                   View all
                 </Link>
               </Button>

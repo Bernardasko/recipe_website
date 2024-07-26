@@ -69,7 +69,7 @@ function RecipeCardSmall({ recipeData, showRating }) {
           </Typography>
           </Box>
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "flex-end", height: "100%" }}>
-        <Button id="btnlinkrecipe">
+        <Button id="btnlinkrecipe" sx={{bgcolor: '#fbe9e7', color: "#5d4037" }} >
           <Link to={`/recipe/${id}`}>
             View Recipe
           </Link>

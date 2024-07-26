@@ -60,7 +60,7 @@ function Category() {
       <Typography
        variant='h3'
         component='h1'
-        sx={{ textAlign: 'center', textTransform: 'uppercase' }}
+        sx={{ textAlign: 'center', textTransform: 'uppercase', color: '#5d4037' ,fontFamily: 'Dancing Script, cursive'  }}
         gutterBottom
         color='primary'
       >

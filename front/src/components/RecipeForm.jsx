@@ -261,7 +261,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               type="button"
               fullWidth
               variant="outlined"
-              sx={{ mt: 2, mb: 2 }}
+              sx={{ mt: 2, mb: 2,color: '#5d4037',border: "1px solid #9fa8da", }}
               onClick={handleAddIngredient}
             >
               + Add Ingredient
@@ -275,6 +275,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   gap: 1,
                   alignItems: "center",
                   marginBottom: 2,
+                  border: "px solid #9fa8da",
                 }}
               >
                 <TextField
@@ -307,7 +308,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
               type="button"
               fullWidth
               variant="outlined"
-              sx={{ mt: 2, mb: 2 }}
+              sx={{ mt: 2, mb: 2, color: '#5d4037',border: "1px solid #9fa8da",}}
               onClick={handleAddStep}
             >
               + Add Step
@@ -386,7 +387,10 @@ function RecipeForm({ recipeInfo, setOpen }) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, bgcolor: "#ff8a65",
+                "&:hover": {
+                  bgcolor: "#ff7043",
+                }, }}
             >
               {recipeInfo ? "Update Recipe" : "Add Recipe"}
             </Button>
