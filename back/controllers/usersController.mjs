@@ -118,8 +118,8 @@ export const loginUser = async (req, res) => {
     // if password and email matches create user new token
     const token = getToken(
       existingUser.id,
-      existingUser.lastname,
       existingUser.name,
+      existingUser.lastname,
       existingUser.email,
       existingUser.role
     );
