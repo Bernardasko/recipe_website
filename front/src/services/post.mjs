@@ -53,7 +53,7 @@ export const postReview = async (review) => {
 
 export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
   const token = window.localStorage.getItem("token");
-  const post_like_url = import.meta.env.VITE_LIKES;
+  const post_like_url = import.meta.env.VITE_POST_LIKES;
 
   try {
     const config = {
