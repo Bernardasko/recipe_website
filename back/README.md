@@ -296,15 +296,15 @@ CREATE TABLE ratings (
     FOREIGN KEY (commentid) REFERENCES comments(commentid) ON DELETE CASCADE
 );
 
--- Create the followers table
-CREATE TABLE followers (
-    follower_id INT NOT NULL,
-    followed_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (follower_id, followed_id),
-    FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (followed_id) REFERENCES users(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS followers (
+  user_id INT NOT NULL,
+  follower_id INT NOT NULL,
+  followed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, follower_id),
+  FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  FOREIGN KEY (follower_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
 
 -- Create Likes Table
 CREATE TABLE likes (

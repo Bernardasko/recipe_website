@@ -8,6 +8,21 @@ function Profile() {
   const token = jwtDecode(window.localStorage.getItem('token'));
   return (
     <>
+      {/* <h1 className='text-center my-2 text-2xl capitalize'>profile page</h1>
+     <ProfileCard/>
+      <div className='flex justify-around'>
+        {token.role === 'admin' && (
+          <Link id='link' to={'/profile/categories'}>categories</Link>
+        )}
+        <Link to={'/profile/followers'}>
+          <button id='buttonprof'>Followers</button>
+        </Link>
+        <Link to={'/profile/recipes'}>
+          <button id='buttonprof'>Recipes</button>
+        </Link>
+        <Link to={'/profile/add_recipe'}>
+          <button id='buttonprofrec'>Add Recipe</button>
+        </Link> */}
       <h1 style={{ marginTop: '68px', marginBottom: '20px' }} className='text-center my-2 text-2xl capitalize'>
         Profile Page
       </h1>
@@ -23,6 +38,12 @@ function Profile() {
               </button>
             </Link>
           )}
+
+          <Link to={'/profile/followers'}>
+            <button id='buttonprof' className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
+              followers
+            </button>
+          </Link>
           <Link to={'/profile/recipes'}>
             <button id='buttonprof' className='px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 w-full'>
               Recipes

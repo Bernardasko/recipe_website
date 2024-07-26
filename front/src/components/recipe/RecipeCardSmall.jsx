@@ -5,8 +5,10 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import Button from "@mui/material/Button";
+// console.log(recipeData);
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
+// function RecipeCardSmall({ recipeData }) {
 function RecipeCardSmall({ recipeData, showRating }) {
   console.log(`testas`,recipeData);
 

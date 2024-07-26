@@ -53,7 +53,7 @@ export const postReview = async (review) => {
 
 export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
   const token = window.localStorage.getItem("token");
-  const post_like_url = import.meta.env.VITE_POST_LIKES;
+  const post_like_url = import.meta.env.VITE_LIKES;
 
   try {
     const config = {
@@ -69,6 +69,45 @@ export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
     return response;
   } catch (error) {
     console.error("Error posting like:", error);
+    return error;
+  }
+};
+
+export const followUser = async (followerId) => {
+  const token = window.localStorage.getItem("token");
+  const users_url = import.meta.env.VITE_USERS;
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.post(
+      `${users_url}/addFollower`,
+      { followerId: followerId },
+      config
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+    return error;
+  }
+};
+
+export const unfollowUser = async (followerId) => {
+  const token = window.localStorage.getItem("token");
+  const users_url = import.meta.env.VITE_USERS;
+  try {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const response = await axios.post(
+      `${users_url}/removeFollower`,
+      { followerId: followerId },
+      config
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(error);
     return error;
   }
 };
