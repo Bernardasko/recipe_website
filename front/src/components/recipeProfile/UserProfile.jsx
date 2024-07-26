@@ -57,11 +57,11 @@ function RecipeUsersAllCards() {
         </Typography>
         {!isOwnProfile &&
           (following ? (
-            <Button onClick={handleUnfollow} variant='outlined'>
+            <Button id='btnunfoll' onClick={handleUnfollow} variant='outlined'>
               Unfollow
             </Button>
           ) : (
-            <Button onClick={handleFollow} variant='contained'>
+            <Button id='btnfll' onClick={handleFollow} variant='contained'>
               Follow
             </Button>
           ))}

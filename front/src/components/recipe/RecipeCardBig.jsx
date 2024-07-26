@@ -42,7 +42,7 @@ const RecipeCardBig = ({ recipe }) => {
 
   return (
     <>
-      <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 4 }}>
+      <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 15 }}>
         <CardMedia
           component="img"
           height="200"
