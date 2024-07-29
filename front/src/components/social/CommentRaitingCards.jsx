@@ -141,7 +141,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
                 <div className='flex flex-col mr-3'>
                   <p className='text-sm text-right'>{comment.commentdate}</p>
                   <div className='text-right mt-2'>
-                    <Button
+                    {/* <Button
                     id='btnlike'
                       sx={{ width: '' }}
                       color='danger'
@@ -149,7 +149,7 @@ const AddCommentRating = ({ recipeData, refresh }) => {
                       onClick={handleLike}
                     >
                       <FavoriteBorderIcon />
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
               </div>
