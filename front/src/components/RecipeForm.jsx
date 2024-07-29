@@ -291,6 +291,9 @@ function RecipeForm({ recipeInfo, setOpen }) {
                   error={!!errors.steps?.[index]}
                   InputProps={{
                     startAdornment: (
+                      {...register(`steps.${index}`, {
+                        required: `Step ${index + 1} is required`,
+                      })},
                       <InputAdornment position="start">
                         {index + 1}
                       </InputAdornment>
