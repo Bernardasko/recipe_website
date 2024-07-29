@@ -13,6 +13,23 @@ export const postRecipe = async (req, res) => {
     let { title, ingredients, steps, category, cuisine, image } = req.body;
     const { id } = req.user;
 
+    if (!title || typeof title !== 'string' || !title.trim()) {
+      return res.status(400).json({ message: 'Title is required' });
+    }
+    if (!Array.isArray(ingredients) || ingredients.length === 0) {
+      return res.status(400).json({ message: 'Ingredients are required' });
+    }
+    if (!Array.isArray(steps) || steps.length === 0) {
+      return res.status(400).json({ message: 'Steps are required' });
+    }
+    if (!category || typeof category !== 'string' || !category.trim()) {
+      return res.status(400).json({ message: 'Category is required' });
+    }
+    if (!cuisine || typeof cuisine !== 'string' || !cuisine.trim()) {
+      return res.status(400).json({ message: 'Cuisine is required' });
+    }
+
+
     ingredients.forEach((obj) => {
       if (obj.ingredient) {
         obj.ingredient = obj.ingredient.toLowerCase().trim();
