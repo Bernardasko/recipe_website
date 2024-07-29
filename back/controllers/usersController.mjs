@@ -10,6 +10,8 @@ import {
   pg_isFollowing,
 } from '../models/usersModel.mjs';
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/;
+
 // --------generate token----------------
 const getToken = (id, name, lastname, email, role) => {
   const token = jwt.sign(
@@ -44,6 +46,10 @@ export const signupUser = async (req, res) => {
     } = req.body;
     if (password !== repeatPassword) {
       return res.status(400).json({ message: 'Passwords does not match ☹️' });
+    }
+
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ message: 'Password must include at least one uppercase letter, one lowercase letter, and one symbol. It must be between 8 and 20 characters long.' });
     }
     // if (role !== 'user' && role !== 'admin') {
     //   return res.status(400).json({ message: 'Role must be admin or user' });
