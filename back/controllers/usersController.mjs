@@ -11,6 +11,7 @@ import {
 } from '../models/usersModel.mjs';
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,20}$/;
+const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 // --------generate token----------------
 const getToken = (id, name, lastname, email, role) => {
@@ -44,6 +45,22 @@ export const signupUser = async (req, res) => {
       repeatPassword,
       role = 'user',
     } = req.body;
+
+// Check if fields are empty
+// if (!name || !lastname || !email || !password || !repeatPassword) {
+//   return res.status(400).json({ message: 'All fields are required' });
+// }
+
+// Check if firstname and lastname are empty
+if (!name.trim() || !lastname.trim()) {
+  return res.status(400).json({ message: 'Firstname and lastname cannot be empty' });
+}
+
+// Validate email format
+if (!emailRegex.test(email)) {
+  return res.status(400).json({ message: 'Invalid email address format' });
+}
+
     if (password !== repeatPassword) {
       return res.status(400).json({ message: 'Passwords does not match ☹️' });
     }
