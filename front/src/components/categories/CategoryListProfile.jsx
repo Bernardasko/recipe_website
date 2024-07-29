@@ -37,7 +37,7 @@ function CategoryListProfile({ data }) {
         {data.map((item, index) => (
           <li key={index} className='flex flex-col items-center bg-gray-100 p-6 ml-4 mr-8 rounded-lg shadow'>
             <div className='mb-4'>
-              <p className='bg-yellow-400 py-2 px-4 text-white rounded-md text-center'>
+              <p className='bg-green-300 py-2 px-4 text-white rounded-md text-center'>
                 {item.name}
               </p >
               <button 

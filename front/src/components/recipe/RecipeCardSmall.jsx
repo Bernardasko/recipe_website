@@ -50,7 +50,7 @@ function RecipeCardSmall({ recipeData, showRating }) {
         />
         <CardContent>
           <Typography sx={{ textAlign: "center", height: "100%", }} gutterBottom variant="h5" component="div">
-            recipe name: {recipeData.recipe} {recipeData.name}
+            Recipe name: {recipeData.recipe} {recipeData.name}
           </Typography>
           {showRating && recipeData.average_rating && (
             <Box sx={{ textAlign: "center"  }}>
