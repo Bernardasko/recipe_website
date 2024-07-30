@@ -21,6 +21,23 @@ import CommentRaitingCards from "../social/CommentRaitingCards";
 import { jwtDecode } from "jwt-decode";
 import LikeButton from "../LikeButton";
 
+
+
+const getDefaultImage = (category) => {
+  switch (category) {
+    case "appetiser":
+      return "/appetizer.jpg";
+    case "dessert":
+      return "/dessert.jpg";
+    case "drinks":
+      return "/drinks.jpg";
+    case "main dish":
+      return "/main_dish.jpg";
+    // default:
+    //   return "/default.jpg";
+  }
+};
+
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
   console.log(`recipe`, data);
@@ -46,7 +63,7 @@ const RecipeCardBig = ({ recipe }) => {
         <CardMedia
           component="img"
           height="200"
-          image={data.image_url}
+          image={data.image_url || getDefaultImage(data.category)}
           alt={data.name}
         />
         <CardContent>

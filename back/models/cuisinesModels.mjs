@@ -11,13 +11,15 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
     recipe_steps.stepnumber AS step_number,
     recipe_steps.description AS step_description,
     cuisines.name AS cuisine,
-    ratings.rating AS rating
+    ratings.rating AS rating,
+    images.imageurl AS image_url
   FROM recipes
   INNER JOIN categories ON recipes.categoryid = categories.categoryid
   INNER JOIN recipe_ingredients ON recipes.recipeid = recipe_ingredients.recipeid
   INNER JOIN ingredients ON recipe_ingredients.ingredientid = ingredients.ingredientid
   INNER JOIN recipe_steps ON recipes.recipeid = recipe_steps.recipeid
   INNER JOIN cuisines ON recipes.cuisineid = cuisines.cuisineid
+  LEFT JOIN images ON recipes.recipeid = images.recipeid
   LEFT JOIN ratings ON recipes.recipeid = ratings.recipeid
   WHERE recipes.cuisineid = ${cuisineId}
   ORDER BY recipes.recipeid, recipe_steps.stepnumber;
@@ -30,6 +32,7 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
       recipes[row.recipeid] = {
         recipeId: row.recipeid,
         name: row.name,
+        image: row.image_url,
         category: row.category,
         cuisine: row.cuisine,
         ingredients: [],
@@ -66,7 +69,12 @@ export const pg_getRecipesByCuisineId = async (cuisineId) => {
     if (row.rating && !recipes[row.recipeid].ratings.includes(row.rating)) {
       recipes[row.recipeid].ratings.push(row.rating);
     }
+    if (row.image_url) {
+      recipes[row.recipeid].images = row.image_url;
+    }
   });
+
+  
 
   // Convert recipes object to an array
   return Object.values(recipes);

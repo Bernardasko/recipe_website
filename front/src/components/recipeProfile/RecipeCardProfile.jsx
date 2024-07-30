@@ -4,8 +4,26 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import ResponsiveModal from './MuiModal.jsx';
 import { useState } from 'react';
+
+
+const getDefaultImage = (category) => {
+  switch (category) {
+    case "appetiser":
+      return "/appetizer.jpg";
+    case "dessert":
+      return "/dessert.jpg";
+    case "drinks":
+      return "/drinks.jpg";
+    case "main dish":
+      return "/main_dish.jpg";
+    // default:
+    //   return "/default.jpg"; // default įvaizdis
+  }
+};
+
  
 function RecipeCardProfile({ data }) {
+  console.log(`check`, data);
   const navigate = useNavigate();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
  
@@ -37,7 +55,7 @@ function RecipeCardProfile({ data }) {
       <div className='max-w-sm rounded overflow-hidden shadow-lg mb-4' style={{ width: '350px', height: '480px' }}>
   <img
     className='rounded w-full'
-    src={data.images}
+    src={data.images || getDefaultImage(data.category)}
     alt={data.images}
     style={{ height: '230px', objectFit: 'cover', objectPosition: 'center', width: '100%',  }} 
   />

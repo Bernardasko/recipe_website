@@ -96,7 +96,7 @@ export const patchRecipe = async (req, res) => {
       steps,
       category.trim().toLowerCase(),
       cuisine.toLowerCase().trim().toLowerCase(),
-      image.trim()
+      image//.trim()
     );
     console.log(patchedRecipe, 123, 123, 123);
 

@@ -2,6 +2,7 @@ import RecipeCardProfile from './RecipeCardProfile';
 import { useLoaderData } from 'react-router-dom';
 function RecipeListProfile() {
   const data = useLoaderData();
+  
   return (
     <>
       <div className='flex flex-wrap justify-center gap-10'>
