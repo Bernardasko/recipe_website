@@ -84,12 +84,12 @@ function SearchBar({
           inputProps={{ 'aria-label': 'criteria' }}
           IconComponent={ArrowDropDownIcon}
         >
-          <MenuItem disabled>
+          {/* <MenuItem disabled>
             <em>Order By</em>
-          </MenuItem>
+          </MenuItem> */}
           {/* <MenuItem onClick={() => setSort('recipes.title')}>Title</MenuItem> */}
           {/* <MenuItem onClick={() => setSort('ingredients')}>Ingredients</MenuItem> */}
-          {setSortCusine && (
+          {/* {setSortCusine && (
             <MenuItem onClick={() => setSortCusine('categories.name')}>
               Category
             </MenuItem>
@@ -98,7 +98,7 @@ function SearchBar({
             <MenuItem onClick={() => setSortCategory('categories.name')}>
               Cuisine
             </MenuItem>
-          }
+          } */}
           {/* <MenuItem disabled>
             <em>Order</em>
           </MenuItem> */}
