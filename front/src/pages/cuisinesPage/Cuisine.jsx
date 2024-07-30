@@ -16,7 +16,7 @@ import { cuisineSearch } from '../../services/get.mjs';
 function Cuisine() {
   const { categoryId } = useParams();
   const data = useLoaderData();
-  console.log(`cuisine`,data);
+  // console.log(`cuisine`,data);
 
   const [sort, setSortCusine] = useState('recipes.title');
   const [page, setPage] = useState(1);
@@ -24,7 +24,7 @@ function Cuisine() {
   const [search, setSearch] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [order, setOrder] = useState('ASC');
-  console.log(recipes);
+  // console.log(recipes);
 
   let queryParams = new URLSearchParams();
   if (search) queryParams.append('search', search);
@@ -43,7 +43,7 @@ function Cuisine() {
       })();
     } catch (error) {}
   }, [search, sort, page, limit]);
-  console.log(`Paveikslėlio URL: ${data.image}`);
+  // console.log(`Paveikslėlio URL: ${data.image}`);
 
   return (
     <>

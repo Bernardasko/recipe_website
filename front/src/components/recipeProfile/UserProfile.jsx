@@ -16,7 +16,7 @@ function RecipeUsersAllCards() {
   // console.log(profileId);
   const handleFollow = async () => {
     const response = await followUser(profileId);
-    console.log(response.status);
+    // console.log(response.status);
     if (response.status === 200) {
       setFollowing((p) => !p);
       navigate(`/profile/${profileId}`)
@@ -27,14 +27,14 @@ function RecipeUsersAllCards() {
   };
   const handleUnfollow = async () => {
     const response = await unfollowUser(profileId);
-    console.log(response);
+    // console.log(response);
     navigate(`/profile/${profileId}`)
 
   };
   const isOwnProfile = data.isFollow.isFollowing === 'This_is_your_own_profile';
 
   useEffect(() => {
-    console.log(data.isFollow.isFollowing);
+    // console.log(data.isFollow.isFollowing);
     if (data.isFollow.isFollowing === true) {
       setFollowing(true);
     } else {

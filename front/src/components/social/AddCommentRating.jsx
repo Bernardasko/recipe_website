@@ -36,7 +36,7 @@ const {recipeId: id} = useParams()
         recipeId: recipeData.recipeid,
       };
       const isPosted = await postReview(newData);
-      console.log(isPosted);
+      // console.log(isPosted);
       if(isPosted.status === 201){
         reset()
         setRefresh((update) => update + 1);
@@ -46,7 +46,7 @@ const {recipeId: id} = useParams()
         toast.error('Please create an account to be able to post comments')
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

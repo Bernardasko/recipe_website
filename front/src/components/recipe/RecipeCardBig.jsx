@@ -40,7 +40,7 @@ const getDefaultImage = (category) => {
 
 const RecipeCardBig = ({ recipe }) => {
   const data = useLoaderData();
-  console.log(`recipe`, data);
+  // console.log(`recipe`, data);
   const token = window.localStorage.getItem("token");
 
   // let decoded;

@@ -51,7 +51,7 @@ export default function Signup() {
     }
 
     try {
-      console.log(values);
+      // console.log(values);
       const { status, data } = await axios.post(signup_url, values);
       if (status === 201) {
         window.localStorage.setItem('token', data);
@@ -73,7 +73,7 @@ export default function Signup() {
             message: "Such email The email address has already been created"
           });
         } else {
-          console.log(error);
+          // console.log(error);
           toast.error('Something went wrong, please try again.');
         }
       }

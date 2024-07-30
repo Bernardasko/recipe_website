@@ -23,8 +23,8 @@ const LikeButton = ({ recipeid }) => {
     const fetchLikes = async () => {
         
       try {
-        console.log('Recipe ID:', recipeid);
-        console.log('User ID:', userid);
+        // console.log('Recipe ID:', recipeid);
+        // console.log('User ID:', userid);
 
         if (!recipeid) {
             console.error('Missing recipe ID');
@@ -36,9 +36,9 @@ const LikeButton = ({ recipeid }) => {
         setLikeCount(Number(data.likeCount));
 
         if (userid) {
-            console.log('Checking if user liked for user ID:', userid);
+            // console.log('Checking if user liked for user ID:', userid);
         const checkLike = await getIsUserLiked(recipeid, userid)
-        console.log('Like count response data:', checkLike.liked);
+        // console.log('Like count response data:', checkLike.liked);
       setLiked(checkLike.liked);
         }
       } catch (error) {
@@ -52,14 +52,14 @@ const LikeButton = ({ recipeid }) => {
   const handleLike = async () => {
     try {
       if (liked) {
-        console.log('Deleting like for recipe ID:', recipeid, 'and user ID:', userid);
+        // console.log('Deleting like for recipe ID:', recipeid, 'and user ID:', userid);
         const deleteLike = await deleteLikeByRecipeIdUserId(recipeid, userid);
-        console.log(deleteLike);
+        // console.log(deleteLike);
         setLiked(false);
         setLikeCount(prevCount => prevCount - 1);
       } else {
         const postLike = await postLikeByRecipeIdUserId(recipeid, userid);
-        console.log(postLike);
+        // console.log(postLike);
         setLiked(true);
         setLikeCount(prevCount => prevCount + 1);
       }

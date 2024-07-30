@@ -44,7 +44,7 @@ const RecipeCardInfo = () => {
     const fetchRecipes = async () => {
       try {
         const response = await getAllRecipes();
-        console.log(response);
+        // console.log(response);
         setRecipes(response);
       } catch (error) {
         console.error(error);

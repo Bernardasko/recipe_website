@@ -4,7 +4,7 @@ import { useLoaderData } from 'react-router-dom';
 
 function CategoriesProfile() {
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
   if (!data) {
     return <div>Loading...</div>;
   }

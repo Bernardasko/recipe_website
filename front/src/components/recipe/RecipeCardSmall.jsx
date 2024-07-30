@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 // function RecipeCardSmall({ recipeData }) {
 function RecipeCardSmall({ recipeData, showRating }) {
-  console.log(`testas`,recipeData);
+  // console.log(`testas`,recipeData);
 
   const { categoryId } = useParams();
 
@@ -32,7 +32,7 @@ function RecipeCardSmall({ recipeData, showRating }) {
     }
   };
 
-  const defaultImage = recipeData.images || recipeData.image_url ? (recipeData.image ||recipeData.image_url) : getDefaultImage(recipeData.category);
+  const defaultImage = recipeData.images || recipeData.image_url ? (recipeData.images ||recipeData.image_url) : getDefaultImage(recipeData.category);
 
   return (
     <Card sx={{ width: 315, height: 480, margin: "10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>

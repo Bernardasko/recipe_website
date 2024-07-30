@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const postRecipe = async (formInfo) => {
-  console.log(formInfo);
+  // console.log(formInfo);
   const post_recipe_url = import.meta.env.VITE_POST_RECIPE;
   const token = window.localStorage.getItem("token");
   try {
@@ -9,7 +9,7 @@ export const postRecipe = async (formInfo) => {
       headers: { Authorization: `Bearer ${token}` },
     };
     const response = await axios.post(post_recipe_url, formInfo, config);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error(error);
@@ -36,14 +36,14 @@ export const postNewCategory = async (categoryName) => {
 export const postReview = async (review) => {
   const token = window.localStorage.getItem("token");
   const post_review_url = import.meta.env.VITE_SOCIAL;
-  console.log(post_review_url);
+  // console.log(post_review_url);
   try {
     const config = {
       headers: { Authorization: `Bearer ${token}` },
     };
 
     const response = await axios.post(post_review_url, review, config);
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error(error);
@@ -65,7 +65,7 @@ export const postLikeByRecipeIdUserId = async (recipeid, userid) => {
       {},
       config
     );
-    console.log("Post like response:", response.data);
+    // console.log("Post like response:", response.data);
     return response;
   } catch (error) {
     console.error("Error posting like:", error);
@@ -104,7 +104,7 @@ export const unfollowUser = async (followerId) => {
       { followerId: followerId },
       config
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
     console.error(error);

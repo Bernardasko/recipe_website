@@ -12,7 +12,7 @@ import { categorySearch } from '../../services/get.mjs';
 function Category() {
   const { categoryId } = useParams();
   const data = useLoaderData();
-  console.log(data);
+  // console.log(data);
 
   const [sort, setSortCategory] = useState('recipes.title');
   const [page, setPage] = useState(1);
@@ -79,7 +79,7 @@ function Category() {
         }}
       >
         {recipes.map((recipe, index) => {
-          console.log(recipe);
+          // console.log(recipe);
           return (
             <Link
               key={index}

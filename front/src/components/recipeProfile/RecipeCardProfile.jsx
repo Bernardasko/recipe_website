@@ -23,7 +23,7 @@ const getDefaultImage = (category) => {
 
  
 function RecipeCardProfile({ data }) {
-  console.log(`check`, data);
+  // console.log(`check`, data);
   const navigate = useNavigate();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
  

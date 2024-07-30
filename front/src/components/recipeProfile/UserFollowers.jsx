@@ -13,7 +13,7 @@ function UserFollowers() {
       )}
       <ul className='mx-auto flex flex-wrap gap-3 justify-center'>
         {data.map((follower, index) => {
-          console.log(follower.id);
+          // console.log(follower.id);
           return (
             <Link key={index} to={`/profile/${follower.id}`}>
               <li className='border m-3 p-2 w-full inline-block'>

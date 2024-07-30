@@ -1,7 +1,7 @@
 
 import RecipeCardInfo from './RecipeCardInfo';
 function RecipeListInfo({ data }) {
-  console.log(data);
+  // console.log(data);
   return ( 
     <>
     {data.length === 0 ? <p>No data</p> : 

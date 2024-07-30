@@ -112,7 +112,7 @@ const router = createBrowserRouter([
         element: <RecipeUsersAllCards />,
         errorElement: <ErrorPage />,
         loader: async ({ params }) => {
-          console.log(params);
+          // console.log(params);
           const { profileId } = params;
           const getAll = await getUserAllById(profileId);
           const isFollow = await isFollowing(profileId);

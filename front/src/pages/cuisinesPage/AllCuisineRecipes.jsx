@@ -14,7 +14,7 @@ import '../../components/SwiperStyles.css';
 
 function AllCuisinesRecipes({ cuisineId }) {
   const [recipes, setRecipes] = useState([]);
-  console.log(recipes);
+  // console.log(recipes);
   useEffect(() => {
     (async () => {
       setRecipes(await getCuisineById(cuisineId));

@@ -41,9 +41,9 @@ function Login() {
       const { status, data } = await axios.post(login_url, formInfo);
       if (status === 200) {
         const decoded = jwtDecode(data);
-        console.log(decoded);
+        // console.log(decoded);
         setToken(decoded);
-        console.log(data);
+        // console.log(data);
         window.localStorage.setItem("token", data);
         toast.success("Login successful!");
         setTimeout(() => {

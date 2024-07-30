@@ -112,7 +112,7 @@ function RecipeForm({ recipeInfo, setOpen }) {
 
   useEffect(() => {
     if (recipeInfo) {
-      console.log(recipeInfo);
+      // console.log(recipeInfo);
       setValue("title", recipeInfo.name);
       const cuisineObject = data.cuisines.data.find(
         (cuisine) =>
