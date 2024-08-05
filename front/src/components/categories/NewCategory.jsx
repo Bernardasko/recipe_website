@@ -9,6 +9,7 @@ function NewCategory() {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -20,6 +21,7 @@ function NewCategory() {
       const newCategory = await postNewCategory(newCat);
       if (newCategory.status === 201) {
         navigate('/profile/categories');
+        reset();
         toast.success('New category created 🔥');
       } else if (newCategory.response.status === 406) {
         toast.error(`Category: ${data.category} already created`);
